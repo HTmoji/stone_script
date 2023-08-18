@@ -1,0 +1,67 @@
+// todo: ☆15 火力不足
+
+// external script
+var move = import user_script/move
+var weapon = import user_script/weapon
+
+// 変数
+var bardiche_using = 0
+
+func boss_attack()
+  ?foe.armor > 0
+    ?foe.distance >= 6
+      weapon.equip_weapon(0)
+    :
+      weapon.equip_weapon(3)
+  :?item.GetCooldown("blade") = 0
+    weapon.equip_weapon(11)
+    activate R
+  :?item.GetCooldown("mask") = 0
+    weapon.equip_weapon(14)
+    activate R
+  :?foe = yeti & foe.distance <= 7 & (item.GetCooldown("bardiche") = 0 | buffs.string = bardiche)
+    weapon.equip_weapon(1)
+    activate R
+  // todo: wandがモーションキャンセルされるので対策必要
+  :?foe.distance >= 8
+    weapon.equip_weapon(0)
+  // 謎の待機時間
+  :?foe = yeti & foe.state = 1
+    move.walk()
+  :?debuffs.count <= 1
+    weapon.equip_weapon(2)
+  :
+    weapon.equip_weapon(21)
+
+func normal_attack()
+  ?foe.count >= 10 & item.GetCooldown("blade") = 0
+    weapon.equip_weapon(11)
+    activate R
+  // ☆11 ガリガリさん or ツララ はbardicheで押し切る
+  :?foe = Giant Ice Elemental | foe = ice_pillar
+    ?foe.distance >= 6
+      weapon.equip_weapon(0)
+    :
+      ?time%20 = 0
+        ?bardiche_using = 2
+          weapon.equip_weapon(1)
+          bardiche_using = 1
+        :
+          weapon.equip_weapon(2)
+          bardiche_using = 2
+  :
+    weapon.equip_weapon(10)
+
+/** 雪山 **/
+// ボス部屋判定不可
+?foe = yeti | foe = ice_wall
+  boss_attack()
+  ?hp <= 15
+    activate potion
+:?loc = icy_ridge
+  ?foe.distance >= 22
+    move.walk()
+  :
+    normal_attack()
+  ?hp <= 15
+    activate potion

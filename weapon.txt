@@ -1,0 +1,46 @@
+// todo: 同武器を装備する場合、名札orピカピカorエンチャントレベル違いにする必要アリ
+var weapon_list = [
+  ["sword ice", "dash shield"],                    // 0: 距離詰め
+  ["bardiche *10 +11"],                            // 1: crit
+  ["bardiche *10 +10"],                            // 2: damage
+  ["hammer ice", "hammer fire"],                   // 3: swap
+  ["hammer aether", "hammer poison"],              // 4: swap
+  ["sword ice *10 +10", "sword ice *10 +9"],       // 5: speed
+  ["sword fire *10 +10", "sword vigor *10 +10"],   // 6: damage
+  ["wand aether *10 +10", "wand aether *10 +9"],   // 7: swap //todo: エンチャ
+  ["wand vigor *10 +10", "wand vigor *10 +9"],     // 8: swap
+  ["wand ice *10 +10", "gari-gari kun"],           // 9: swap
+  ["repeat crossbow"],                             // 10: 雑魚処理
+  ["blade"],                                       // 11: 雑魚処理 + ボス
+  ["mind stone", "wand poison"],                   // 12: 後方回避
+  ["sword ice", "bash shield"],                    // 13: 距離詰め + スタン
+  ["sword ice", "mask"],                           // 14: nagalaja mask
+  ["wand poison", "shield ice"],                   // 15: 回避盾 + デバフ
+  ["sword ice", "shield ice"],                     // 16: 回避盾
+  ["sword ice", "com shield"],                     // 17: 対キノコ 通常装備
+  ["sword fire", "shield fire"],                   // 18: 対蛇・キノコ デバフ装備
+  ["wand poison", "wand fire"],                    // 19: 対蜘蛛・ドクロ デバフ装備
+  ["ouroboros", "triskelion stone"],               // 20: 回復移動
+  ["wand fire", "shield fire"]                     // 21: 対イエティ デバフ装備
+]
+
+func equip_weapon(index)
+  ?weapon_list[index].Count() = 1
+    equip @weapon_list[index][0]@
+  :
+    equipL @weapon_list[index][0]@
+    equipR @weapon_list[index][1]@
+
+/* loadtout memo */
+/*
+loadout 1: sword fire, dash shield  // move
+loadout 2: bardiche                 // crit
+loadout 3: bardiche                 // damage
+loadout 4: axe ice *2               // speed 
+loadout 5: axe fire, axe poison     // long
+loadout 6: sword vigor, sword ice   // speed
+loadout 7: sword fire, sword ice    // ?
+loadout 8: wand fire, wand poison   // long
+loadout 9: wand vigor *2            // speed
+loadout 0: wand ice*2               // speed
+*/

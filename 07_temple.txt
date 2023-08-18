@@ -1,0 +1,82 @@
+// external script
+var move = import user_script/move
+var weapon = import user_script/weapon
+
+// 変数
+var bardiche_using = 0
+var sword_using = 0
+
+func boss_attack()
+  // 捕食モーション
+  ?foe.state = 103 | foe.state = 104 | foe.state = 105
+    ?debuffs.count >= 20
+      weapon.equip_weapon(2)
+    :
+      weapon.equip_weapon(6)
+  // 落石
+  :?foe.state = 112
+      weapon.equip_weapon(12)
+  // 毒吐きモーション
+  // todo: デバフ蓄積されているなら6を握るべき？
+  :?foe.state = 32 | foe.state = 33
+    ?foe.debuffs.string ! dot
+      weapon.equip_weapon(18)
+    :
+      weapon.equip_weapon(16)
+  :?debuffs.count >= 20
+    weapon.equip_weapon(11)
+    activate R
+  :?debuffs.count >= 10
+    weapon.equip_weapon(2)
+    activate R
+  :
+    weapon.equip_weapon(5)
+
+func normal_attack()
+  ?item.GetCooldown("blade") = 0 & foe.count >= 10
+    weapon.equip_weapon(11)
+    activate R
+  // ☆11の特殊敵 時間経過でバフ
+  :?foe = acronian_cultist
+    ?foe.hp < 620
+      weapon.equip_weapon(1)
+      activate R
+    :?foe.distance > 6
+      weapon.equip_weapon(13)
+    :?foe.debuffs.string ! damage
+      weapon.equip_weapon(19)
+    :
+      ?time%20 = 0
+        ?bardiche_using = 2
+          weapon.equip_weapon(1)
+          bardiche_using = 1
+        :
+          weapon.equip_weapon(2)
+          bardiche_using = 2
+  // 一部mobは近接で仕留める
+  :?foe = cult_guard | foe = worm_rider
+    ?foe.hp < 107
+      weapon.equip_weapon(2)
+    :
+      equip blade
+  :?debuffs.count > 0
+    weapon.equip_weapon(2)
+  :
+    weapon.equip_weapon(10)
+
+/** 蛇 **/
+// ボス部屋判定可能
+?loc = nagaraja
+  ?foe.distance > 17
+    move.walk()
+  :
+    boss_attack()
+  ?hp <= 5 | debuffs.count >= 25
+    activate potion
+:?loc = temple
+  ?foe.distance > 17
+    move.walk()
+  :
+    normal_attack()
+  ?hp <= 5
+    activate potion

@@ -1,0 +1,186 @@
+// 変数
+var loopCount = 0
+var viewFlg = true
+var debugFlg = false
+
+// 初期化
+func initialize()
+  var viewButton = ui.AddButton()
+  viewButton.text = 画面表示
+  viewButton.anchor = top_left
+  viewButton.dock = top_left
+  viewButton.w = 8
+  viewButton.h = 1
+  viewButton.y = 0
+  viewButton.x = 1
+  viewButton.SetPressed(UI_buttonPress)
+
+  var debugButton =ui.AddButton()
+  debugButton.text = デバッグ
+  debugButton.anchor = top_left
+  debugButton.dock = top_left
+  debugButton.w = 8
+  debugButton.h = 1
+  debugButton.y = 0
+  debugButton.x = 10
+  debugButton.SetPressed(debug_buttonPress)
+
+// 武器表示
+func weapon_print()
+  >`0,6,L:@string.Split(item.left, " ")[0]@
+  >`0,7,R:@string.Split(item.right, " ")[0]@
+
+// クールダウン
+func cooldown_print()
+  >`0,9,bard:@item.GetCooldown("bardiche")@
+  >`0,10,blad:@item.GetCooldown("blade")@
+  >`0,11,mask:@item.GetCooldown("mask")@
+  >`0,12,sarm:@item.GetCooldown("skeleton_arm")@
+  >`0,13,bash:@item.GetCooldown("bash")@
+  >`0,14,mind:@item.GetCooldown("mind")@
+  >`0,15,dash:@item.GetCooldown("dash")@
+
+// 環境情報
+func info_update_print()
+  // loc
+  var star_index = string.IndexOf(loc, ☆)
+  var star_end = string.Size(loc) - star_index
+  var star_text = string.Sub(loc, star_index, star_end)
+  var area_index = string.IndexOf(loc, " ")
+  var area_text = string.Sub(loc, area_index, star_index - area_index -1)
+  var loc_text = string.Sub(loc, 0, area_index)
+  >`19,1,loc:@star_text@@area_text@(@loc_text@)
+
+  // player
+  var p_text = "idle:"
+  ?ai.idle
+    p_text += T
+  :
+    p_text += F
+  p_text += " walking:"
+  ?ai.walking
+    p_text += T
+  :
+    p_text += F
+  p_text += " paused:"
+  ?ai.paused
+    p_text += T
+  :
+    p_text += F
+  >`19,2,player pos[@pos.x@,@pos.y@,@pos.z@] @p_text@
+
+  // enemy
+  >`19,3,enemy count:@foe.count@ state:@foe.state@ distance:@foe.distance@
+
+  // game info
+  >`25,@screen.h -1@,loop:@loopCount@ Time[@totaltime/30@s/@time@(@time/30@s)]
+
+// プレイヤーの情報
+func player_update_print()
+  >`0,@screen.h -3@,  buff:
+  >`0,@screen.h -2@,debuff:
+
+  // バフ表示
+  ?buffs.count > 0
+    >`7,@screen.h -3@,@buffs.string@
+
+  // デバフ表示
+  ?debuffs.count > 0
+    var text = " "
+    var split1 = string.Split(debuffs.string, ",")
+    for i = 0 .. split1.Count()-1
+      // icon, debuff_name, count, time
+      var split2 = string.Split(split1[i], ":")
+      text += split2[0]
+      text += "*"
+      text += split2[2]
+      text += ":"
+      text += split2[3]
+      text += " "
+    >`7,@screen.h -2@,@text@
+
+// 敵の情報
+// todo: 表示バグってるので修正必要
+func enemy_update_print()
+  >`@screen.w - 7@,@screen.h - 3@,:buff  
+  >`@screen.w - 7@,@screen.h - 2@,:debuff
+
+  // 時間付きバフ表示
+  ?foe.buffs.count > 0
+    var text = ""
+    var split1 = string.Split(foe.buffs.string, ",")
+    for i = 0 .. split1.Count()-1
+      ?string.Size(text) > 0
+        text += " "
+      // icon, buff_name, count, time
+      var split2 = string.Split(split1[i], ":")
+      text += split2[0]
+      text += ":"
+      text += split2[3]
+    var text_length = string.Size(text)
+    >`@screen.w -7 - text_length@,@screen.h - 3@,@text@
+
+  // 時間付きデバフ表示
+  ?foe.debuffs.count > 0
+    var d_text = ""
+    var split1 = string.Split(foe.debuffs.string, ",")
+    for i = 0 .. split1.Count()-1
+      ?string.Size(d_text) > 0
+        d_text += " "
+      // icon, debuff_name, count, time
+      var split2 = string.Split(split1[i], ":")
+      d_text += split2[0]
+      d_text += ":"
+      d_text += split2[3]
+    var text_length = string.Size(d_text)
+    >`@screen.w -7 - text_length@,@screen.h - 2@,@d_text@
+
+  // 名前付き照準
+  ?foe.count > 0
+    >f-2,-1,#red,ascii
+@foe.name@
+##!
+##v
+asciiend
+
+  // hp, armor 表示
+    >f0,4,#696969,ascii
+[@foe.hp@/@foe.maxhp@][@foe.armor@/@foe.maxarmor@]
+asciiend
+
+// デバッグ
+func debug_print()
+  >`10,9,<debug>
+  >`10,10,@item.left@ @item.right@
+  >`10,11,@buffs.string@
+  >`10,12,@debuffs.string@
+  >`10,13,@foe.buffs.string@
+  >`10,14,@foe.debuffs.string@
+  >`10,15,@foe@
+  >`10,16,@loc@
+
+// UIボタン押下
+func UI_buttonPress()
+  viewFlg = !viewFlg
+
+// debugボタン押下
+func debug_buttonPress()
+  debugFlg = !debugFlg
+
+/** UI **/
+?loc.begin | totaltime = 10 
+  initialize()
+
+?loc.loop
+  loopCount++
+
+?totaltime > 10 & viewFlg
+  weapon_print()
+  cooldown_print()
+  info_update_print()
+  player_update_print()
+  enemy_update_print()
+  ?debugFlg
+    debug_print()
+
+// memo: パネル使った方法を試す

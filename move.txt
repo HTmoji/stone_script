@@ -1,0 +1,33 @@
+var harvest_pick = false
+
+func set_harvest_pick(b)
+  harvest_pick = b
+
+func walk()
+  ?harvest_pick & harvest.distance <= 7
+      harvest_walk()
+  :?pickup & pickup.distance <= 7
+      pick_walk()
+  :?hp = maxhp
+    speed_walk()
+  :
+    heal_walk()
+
+func harvest_walk()
+  ?harvest = Boulder
+    equip shovel
+  :
+    equipL triskelion stone
+    equipR hatchet
+
+func pick_walk()
+  equipL triskelion stone
+  equipR star_stone
+
+func heal_walk()
+  equipL ouroboros
+  equipR com shield
+
+func speed_walk()
+  equipL triskelion stone
+  equipR com shield

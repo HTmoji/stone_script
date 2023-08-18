@@ -1,0 +1,92 @@
+// ☆13から手動でlucky potion + 武器操作が必要
+
+// external script
+var move = import user_script/move
+var weapon = import user_script/weapon
+
+// 変数
+var bardiche_using = 0
+var hammer_using = 0
+var boss_count = 0
+
+func boss_attack()
+  // 高速回復移動
+  ?time < 180
+    weapon.equip_weapon(20)
+  // 開始待ち
+  :?time < 540
+    weapon.equip_weapon(17)
+  :?item.GetCooldown("blade") = 0
+    weapon.equip_weapon(11)
+    activate R
+  :?item.GetCooldown("mask") = 0
+    weapon.equip_weapon(14)
+    activate R
+  :?foe.state = 32
+    boss_count++
+    ?boss_count > 16
+      weapon.equip_weapon(12)
+  // 近接距離
+  :?pos.y > 0 & foe.distance > 5
+    weapon.equip_weapon(0)
+  :?foe.distance <= 5
+    ?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
+      weapon.equip_weapon(1)
+      activate R
+    :?foe.armor > 0
+      ?time%10 = 0
+        ?hammer_using = 3
+          hammer_using = 4
+          weapon.equip_weapon(4)
+        :
+          hammer_using = 3
+          weapon.equip_weapon(3)
+    :
+      ?time%20 = 0
+        ?bardiche_using = 2
+          weapon.equip_weapon(2)
+          bardiche_using = 3
+        :
+          weapon.equip_weapon(1)
+          bardiche_using = 2
+  :
+    // todo: 炎デバフを付ける
+    // todo: エーテルダメージ特化の方が効率良いかも
+    weapon.equip_weapon(10)
+    boss_count = 0
+
+
+func normal_attack()
+  ?foe.count >= 10 & item.GetCooldown("blade") = 0
+    weapon.equip_weapon(11)
+    activate R
+  // ☆11 ボンバーカート
+  :?foe = bomb_cart
+    ?foe.distance <= 6
+      weapon.equip_weapon(12)
+    :
+      weapon.equip_weapon(10)
+  // 連射2発で倒せるなら遠距離から始末
+  :?foe.hp + foe.armor <= 30
+    weapon.equip_weapon(10)
+  :?foe.distance > 10
+    ?item.GetCooldown("bash") <= 0
+      weapon.equip_weapon(13)
+    :
+      weapon.equip_weapon(0)
+  :
+    weapon.equip_weapon(2)
+
+/** 鉱山 **/
+// ボス部屋判定可能
+?loc = bronze_guardian
+  boss_attack()
+  ?hp <= 10
+    activate potion
+:?loc =bronze_mine
+  ?foe.distance >= 20
+    move.walk()
+  :
+    normal_attack()
+  ?hp <= 10
+    activate potion

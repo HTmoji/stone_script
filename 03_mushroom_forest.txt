@@ -1,0 +1,90 @@
+// external script
+var move = import user_script/move
+var weapon = import user_script/weapon
+
+// 変数
+var hammer_using = 0
+
+func boss_attack()
+  // 第一形態
+  ?foe = boss_harder
+    // 距離を詰める
+    ?foe.distance > 6
+      weapon.equip_weapon(0)
+    :?item.GetCooldown("mask") = 0
+      weapon.equip_weapon(14)
+      activate R
+    // 止めを刺す
+    :?(foe.armor + foe.hp <= 620 & item.GetCooldown("bardiche") = 0) | buffs.string = bardiche
+      weapon.equip_weapon(1)
+      activate R
+    :
+      ?time%10 = 0
+        ?hammer_using = 3
+          hammer_using = 4
+          weapon.equip_weapon(4)
+        :
+          hammer_using = 3
+          weapon.equip_weapon(3)
+  // 第二形態 手前
+  :?foe = boss_fat
+    ?item.GetCooldown("blade") = 0
+      weapon.equip_weapon(11)
+      activate R
+    :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
+      weapon.equip_weapon(1)
+      activate R
+    :?foe.armor > 0
+      weapon.equip_weapon(3)
+    :?foe.state = 32
+      weapon.equip_weapon(18)
+    :
+      weapon.equip_weapon(17)
+  // 第二形態 奥
+  :?foe = boss_skinny
+    // 距離を詰める
+    ?foe.distance > 6
+      weapon.equip_weapon(13)
+    :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
+      weapon.equip_weapon(1)
+      activate R
+    :
+      weapon.equip_weapon(17)
+  :
+    move.walk()
+
+func normal_attack()
+  // ☆11のカタツムリ
+  ?foe.armor >= 100 & pos.x > 350
+    weapon.equip_weapon(1)
+    ?foe.distance <= 9
+      activate R
+  // 毛玉
+  :?foe = fluff & foe.distance <= 5 & item.GetCooldown("mind") = 0
+    weapon.equip_weapon(12)
+  :?foe.count >= 10 & item.GetCooldown("blade") = 0
+    weapon.equip_weapon(11)
+    activate R
+  // mobが多すぎる場合
+  :?foe.count >= 15
+    weapon.equip_weapon(2)
+  :
+    weapon.equip_weapon(10)
+
+/**キノコ**/
+// ボス部屋判定可能
+?loc = fungus_forest_boss
+  ?foe.distance > 17
+    move.walk()
+  :
+    boss_attack()
+  ?hp <= 15
+    activate potion
+
+:?loc = fungus_forest
+  ?foe.distance >= 22
+    move.walk()
+  :
+    normal_attack()
+  ?hp <= 15
+    activate potion
