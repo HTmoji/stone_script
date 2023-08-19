@@ -1,3 +1,5 @@
+// todo: 整備しましょう
+
 // external script
 var move = import user_script/move
 var weapon = import user_script/weapon
@@ -43,40 +45,13 @@ func state1()
 
 // 第二形態
 func state2()
-  ?(time%300 = 0 | wand_using = 1) & wand_motion_count < 40
-    loadout 0
-    wand_using = 1
-    wand_motion_count++
-  :
-    wand_using = 0
-    wand_motion_count = 0
-    // chill debuff を考慮に入れる必要がある
-    ?time%20 = 0
-      ?bardiche_using = 2
-        loadout 3
-        bardiche_using = 3
-      :
-        loadout 2
-        bardiche_using = 2
+  var a = 0
 
 // 第三形態
 func state3()
-  ?(time%85 = 0 | wand_using = 1) & wand_motion_count < 16
-    loadout 8
-    wand_using = 1
-    wand_motion_count++
-  :
-    wand_using = 0
-    wand_motion_count = 0
-    ?time%20 = 0
-      ?bardiche_using = 2
-        loadout 3
-        bardiche_using = 3
-      :
-        loadout 2
-        bardiche_using = 2
+  var a = 0
 
-/** ロッキー **/
+/** ロッキー高原 **/
 ?loc = rocky_plateau
   ?foe.distance >= 40
     move.walk()

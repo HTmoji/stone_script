@@ -77,7 +77,7 @@ func normal_attack()
   :
     weapon.equip_weapon(2)
 
-/** 鉱山 **/
+/** 地獄の鉱山 **/
 // ボス部屋判定可能
 ?loc = bronze_guardian
   boss_attack()

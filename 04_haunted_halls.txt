@@ -9,13 +9,11 @@ var bardiche_using = 0
 func boss_attack()
   // 第一形態
   ?foe = boss_harder
-    // 待ち時間は盾を持つ
+    // 待ち時間
     ?time < 400
       move.walk()
-    // 距離を詰める
     :?foe.distance > 5 
       weapon.equip_weapon(0)
-    // 止めを刺す
     :?foe.distance <= 7 & foe.hp < 620
       weapon.equip_weapon(1)
       activate R
@@ -76,7 +74,7 @@ func normal_attack()
         weapon.equip_weapon(9)
         wand_using = 9
 
-/** ガイコツ **/
+/** 呪われた会館 **/
 // ボス部屋判定可能
 ?loc = undead_crypt_boss
   boss_attack()

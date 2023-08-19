@@ -64,7 +64,7 @@ func normal_attack()
   :
     weapon.equip_weapon(10)
 
-/** 蛇 **/
+/** 神殿 **/
 // ボス部屋判定可能
 ?loc = nagaraja
   ?foe.distance > 17

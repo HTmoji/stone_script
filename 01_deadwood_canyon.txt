@@ -49,7 +49,7 @@ func normal_attack()
     :
       weapon.equip_weapon(2)
 
-/** 枯木 **/
+/** 枯木の渓谷 **/
 ?loc = deadwood_valley
   ?foe.distance >= 22
     move.walk()
