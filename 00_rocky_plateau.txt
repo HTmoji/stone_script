@@ -1,4 +1,4 @@
-// todo: 整備しましょう
+// potionをBerserk(wood + bronze) にしておく
 
 // external script
 var move = import user_script/move
@@ -8,14 +8,13 @@ var weapon = import user_script/weapon
 move.set_harvest_pick(false)
 
 // 変数
-var boss_count = 0
-var wand_motion_count = 0
-var wand_using = 0
+var bearer_wand_using = 0
+var bearer_wand_motion_count = 0
+var perfected_attack_motion_count = 0
 
 var bardiche_using = 0
 
-// todo: 武器swap は氷デバフの考慮できていないので事故る状態
-func attack()
+func boss_attack()
   ?foe = bearer
     state1()
   :?foe = elementalist
@@ -27,35 +26,91 @@ func attack()
 
 // 第一形態
 func state1()
-  ?(time%300 = 0 | wand_using = 1) & wand_motion_count < 40
-    loadout 0
-    wand_using = 1
-    wand_motion_count++
+  ?foe.distance >= 6
+    weapon.equip_weapon(0)
+  :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
+    weapon.equip_weapon(1)
+    activate R
+  :?item.GetCooldown("blade") = 0
+    weapon.equip_weapon(11)
+    activate R
+  :?item.GetCooldown("mask") = 0
+    weapon.equip_weapon(14)
+    activate R
+  :?(time%180 = 0 | bearer_wand_using = 1) & bearer_wand_motion_count <= 35
+    weapon.equip_weapon(9)
+    bearer_wand_using = 1
+    bearer_wand_motion_count++
+  :?foe.debuffs.string ! dot
+    weapon.equip_weapon(19)
   :
-    wand_using = 0
-    wand_motion_count = 0
-    // chill debuff を考慮に入れる必要がある
-    ?time%20 = 0
-      ?bardiche_using = 2
-        loadout 3
-        bardiche_using = 3
-      :
-        loadout 2
-        bardiche_using = 2
+    weapon.equip_weapon(10)
+    bearer_wand_using = 0
+    bearer_wand_motion_count = 0
 
 // 第二形態
+// todo: Find() が使えるようになったら放置できるかも
 func state2()
-  var a = 0
+  ?foe.distance >= 6
+    weapon.equip_weapon(0)
+  :
+    // ポーション手動起動 7000damageくらいは見込める
+    //activate potion
+    weapon.equip_weapon(6)
 
 // 第三形態
 func state3()
+  // 光線回避
+  ?foe.state = 115
+    perfected_attack_motion_count++
+    ?perfected_attack_motion_count >= 60
+      weapon.equip_weapon(12)
+  :
+    perfected_attack_motion_count = 0
+    ?foe.distance >= 9
+      weapon.equip_weapon(0)
+    :?foe.armor > 0
+      weapon.equip_weapon(3)
+    // 回復
+    :?hp <= 20
+      ?foe.state = 32 | foe.state = 33
+        weapon.equip_weapon(22)
+      :
+        weapon.equip_weapon(8)
+    :?foe.debuffs.string ! dot
+      weapon.equip_weapon(19)
+    :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
+      weapon.equip_weapon(1)
+      activate R
+    :?item.GetCooldown("blade") = 0
+      weapon.equip_weapon(11)
+      activate R
+    :?item.GetCooldown("mask") = 0
+      weapon.equip_weapon(14)
+      activate R
+    // 第二形態のデバフで持ち替え
+    :?debuffs.string = damage
+      ?time%20 = 0
+        ?bardiche_using = 2
+          weapon.equip_weapon(1)
+          bardiche_using = 1
+        :
+          weapon.equip_weapon(2)
+          bardiche_using = 2
+    :
+      weapon.equip_weapon(10)
+    
+// todo: アルカディアの偵察兵
+func normal_attack()
   var a = 0
 
 /** ロッキー高原 **/
 ?loc = rocky_plateau
   ?foe.distance >= 40
     move.walk()
+  :?foe = acronian_scout
+    normal_attack()
   :
-    attack()
+    boss_attack()
   ?hp <= 10
       activate potion

@@ -1,6 +1,6 @@
 // todo: 同武器を装備する場合、名札orピカピカorエンチャントレベル違いにする必要アリ
 var weapon_list = [
-  ["sword ice", "dash shield"],                    // 0: 距離詰め
+  ["sword ice", "dash shield *10"],                // 0: 距離詰め
   ["bardiche *10 +11"],                            // 1: crit
   ["bardiche *10 +10"],                            // 2: damage
   ["hammer ice", "hammer fire"],                   // 3: swap
@@ -21,7 +21,8 @@ var weapon_list = [
   ["sword fire", "shield fire"],                   // 18: 対蛇・キノコ デバフ装備
   ["wand poison", "wand fire"],                    // 19: 対蜘蛛・ドクロ デバフ装備
   ["ouroboros", "triskelion stone"],               // 20: 回復移動
-  ["wand fire", "shield fire"]                     // 21: 対イエティ デバフ装備
+  ["wand fire", "shield fire"],                    // 21: 対イエティ デバフ装備
+  ["wand poison", "shield vigor"]                  // 22: 受け
 ]
 
 func equip_weapon(index)
@@ -33,14 +34,14 @@ func equip_weapon(index)
 
 /* loadtout memo */
 /*
-loadout 1: sword fire, dash shield  // move
-loadout 2: bardiche                 // crit
-loadout 3: bardiche                 // damage
-loadout 4: axe ice *2               // speed 
-loadout 5: axe fire, axe poison     // long
-loadout 6: sword vigor, sword ice   // speed
-loadout 7: sword fire, sword ice    // ?
-loadout 8: wand fire, wand poison   // long
-loadout 9: wand vigor *2            // speed
-loadout 0: wand ice*2               // speed
+loadout 1: sword ice, dash shield     // move
+loadout 2: sword ice, bash shield     // move
+loadout 3: bardiche                   // crit
+loadout 4: bardiche                   // damage
+loadout 5: repeat crowssbow           //  
+loadout 6: sword ice, shield ice      // ice
+loadout 7: sword fire, shield fire    // fire
+loadout 8: sword vigor, shield vigor  // vigor
+loadout 9: wand poison, shield poison // poison
+loadout 0: mind stone, com shield     // escape
 */
