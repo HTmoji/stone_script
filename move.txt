@@ -17,6 +17,7 @@ func harvest_walk()
   ?harvest = Boulder
     equip shovel
   :
+    // todo: hatchet のactive を振りたい
     equipL triskelion stone
     equipR hatchet
 
