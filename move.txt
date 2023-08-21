@@ -26,9 +26,17 @@ func pick_walk()
   equipR star_stone
 
 func heal_walk()
-  equipL ouroboros
-  equipR com shield
+  equip quarterstaff
+  ?(time > 10 & item.CanActivate() & item.GetCooldown("quarterstaff") = 0) | buffs.string = quarterstaff
+    activate R
+  :
+    equipL ouroboros
+    equipR com shield
 
 func speed_walk()
-  equipL triskelion stone
-  equipR com shield
+  equip quarterstaff
+  ?(time > 10 & item.CanActivate() & item.GetCooldown("quarterstaff") = 0) | buffs.string = quarterstaff
+    activate R
+  :
+    equipL triskelion stone
+    equipR com shield

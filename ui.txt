@@ -39,6 +39,8 @@ func cooldown_print()
   >`0,13,bash:@item.GetCooldown("bash")@
   >`0,14,mind:@item.GetCooldown("mind")@
   >`0,15,dash:@item.GetCooldown("dash")@
+  >`0,16,staf:@item.GetCooldown("quarterstaff")@
+  >`0,17,hatc:@item.GetCooldown("hatchet")@
 
 // 環境情報
 func info_update_print()
@@ -156,8 +158,8 @@ func debug_print()
   >`10,12,@debuffs.string@
   >`10,13,@foe.buffs.string@
   >`10,14,@foe.debuffs.string@
-  >`10,15,@foe@
-  >`10,16,@loc@
+  >`10,15,foe:@foe@
+  >`10,16,loc:@loc@
 
 // UIボタン押下
 func UI_buttonPress()
