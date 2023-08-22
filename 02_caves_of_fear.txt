@@ -6,81 +6,72 @@ var weapon = import user_script/weapon
 var chill_count = 0
 
 var bat_count = 0
-var bardiche_using = 0
+var heavy_hammer_using = 0
 
 var boss_count = 0
 var wand_motion_count = 0
+var debuff_using = 0
 var wand_using = 0
 
 func boss_attack()
   ?foe.hp < 600
     ?foe.distance >= 8
-      weapon.equip_weapon(0)
+      weapon.equip_weapon(10)
     :
-      weapon.equip_weapon(1)
+      weapon.equip_weapon(3)
       activate R
   // damage debuffは切らさない
   :?(boss_count%85 = 0 | wand_using = 1) & wand_motion_count < 16
-    weapon.equip_weapon(19)
-    wand_using = 1
+    weapon.equip_weapon(29)
+    debuff_using = 1
     wand_motion_count++
   :
-    wand_using = 0
+    debuff_using = 0
     wand_motion_count = 0
-    ?debuffs.count >= 5
-      weapon.equip_weapon(9)
-    :
-      weapon.equip_weapon(10)
+    ?boss_count%16 = 0
+      ?wand_using = 23
+        weapon.equip_weapon(24)
+        wand_using = 24
+      :
+        weapon.equip_weapon(23)
+        wand_using = 23
   boss_count++
 
 func normal_attack()
   ?item.GetCooldown("blade") = 0 & foe.count > 5
-    weapon.equip_weapon(11)
+    weapon.equip_weapon(0)
     activate R
   // ☆11 コウモリーズ
   :?foe = boss
     ?foe.distance >= 8
-      ?item.GetCooldown("bash") = 0
-        weapon.equip_weapon(13)
+      ?item.GetCooldown("bash") <= 0
+        weapon.equip_weapon(9)
       :
-        weapon.equip_weapon(0)
-      chill_count++
-    // 回避
-    :?chill_count = 40
-      weapon.equip_weapon(12)
+        weapon.equip_weapon(10)
     // chill 6
-    :?chill_count < 80
-      weapon.equip_weapon(9)
+    :?chill_count < 50
+      ?chill_count%16 = 0
+        ?wand_using = 23
+          weapon.equip_weapon(24)
+          wand_using = 24
+        :
+          weapon.equip_weapon(23)
+          wand_using = 23
       chill_count++
-    // デバフ考慮して閾値設定
-    :?foe.hp < 600
-      weapon.equip_weapon(1)
+    :?foe.hp < 620
+      weapon.equip_weapon(3)
       activate R 
     :
-      ?bat_count%20 = 0
-        ?bardiche_using = 2
-          weapon.equip_weapon(2)
-          bardiche_using = 3
+      ?bat_count%19 = 0
+        ?heavy_hammer_using = 6
+          weapon.equip_weapon(5)
+          heavy_hammer_using = 5
         :
-          weapon.equip_weapon(1)
-          bardiche_using = 2
+          weapon.equip_weapon(6)
+          heavy_hammer_using = 6
       bat_count++
-  // 念のため周回用
-  :?debuffs.count >= 5
-    ?foe.distance >= 8
-      weapon.equip_weapon(0)
-    :
-      weapon.equip_weapon(2)
   :
-    weapon.equip_weapon(10)
-    // コウモリーズ用変数初期化
-    chill_count = 0
-    bat_count = 0
-    bardiche_using = 0
-  // ボス用変数初期化
-  boss_count = 0
-  wand_motion_count = 0
-  wand_using = 0
+    weapon.equip_weapon(7)
 
 /** 恐怖の洞窟 **/
 // ボス部屋判定不可 且つ 距離判定不可
@@ -91,5 +82,3 @@ func normal_attack()
     normal_attack()
   :?foe = Bolesh
       boss_attack()
-  ?hp <= 40
-    activate potion

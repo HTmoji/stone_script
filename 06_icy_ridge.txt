@@ -1,56 +1,81 @@
-// todo: ☆15 火力不足
-
 // external script
 var move = import user_script/move
 var weapon = import user_script/weapon
 
 // 変数
 var bardiche_using = 0
+var heavy_hammer_using = 0
+var attack_motion = 0
 
 func boss_attack()
   ?foe.armor > 0
     ?foe.distance >= 6
-      weapon.equip_weapon(0)
+      weapon.equip_weapon(10)
     :
-      weapon.equip_weapon(3)
+      weapon.equip_weapon(17)
   :?item.GetCooldown("blade") = 0
-    weapon.equip_weapon(11)
+    weapon.equip_weapon(0)
     activate R
   :?item.GetCooldown("mask") = 0
-    weapon.equip_weapon(14)
-    activate R
-  :?foe = yeti & foe.distance <= 7 & (item.GetCooldown("bardiche") = 0 | buffs.string = bardiche)
     weapon.equip_weapon(1)
     activate R
-  // todo: wandがモーションキャンセルされるので対策必要
-  :?foe.distance >= 8
-    weapon.equip_weapon(0)
+  :?foe = yeti & foe.distance <= 7 & (item.GetCooldown("bardiche") = 0 | buffs.string = bardiche)
+    weapon.equip_weapon(3)
+    activate R
   // 謎の待機時間
   :?foe = yeti & foe.state = 1
     move.walk()
-  :?debuffs.count <= 1
-    weapon.equip_weapon(2)
+  :?foe = yeti & foe.distance <= 7 & (item.GetCooldown("hammer") = 0 | buffs.string = bardiche)
+    weapon.equip_weapon(5)
+    activate R
+  :?foe.distance >= 8
+    weapon.equip_weapon(10)
   :
+  /*
+    var chill_count = 0
+    ?foe.debuffs.count > 0
+      var split1 = string.Split(foe.debuffs.string, ",")
+      for i = 0 .. split1.Count()-1
+        // icon, debuff_name, count, time
+        var split2 = string.Split(split1[i], ":")
+        ?split2[1] = chill
+          chill_count = split2[2]
+    ?int.Parse(chill_count) < 6
+      weapon.equip_weapon(19)
+    :
+      weapon.equip_weapon(21)
+      */
     weapon.equip_weapon(21)
 
 func normal_attack()
   ?foe.count >= 10 & item.GetCooldown("blade") = 0
-    weapon.equip_weapon(11)
+    weapon.equip_weapon(0)
     activate R
+  :?foe.distance >= 6
+    ?item.GetCooldown("bash") <= 0
+      weapon.equip_weapon(9)
+    :
+      weapon.equip_weapon(10)
+    attack_motion = 0
   // ☆11 ガリガリさん、ツララ
   :?foe = Giant Ice Elemental | foe = ice_pillar
-    ?foe.distance >= 6
-      weapon.equip_weapon(0)
-    :
-      ?time%20 = 0
-        ?bardiche_using = 2
-          weapon.equip_weapon(1)
-          bardiche_using = 1
-        :
-          weapon.equip_weapon(2)
-          bardiche_using = 2
+    ?attack_motion%20 = 0
+      ?bardiche_using = 3
+        weapon.equip_weapon(4)
+        bardiche_using = 4
+      :
+        weapon.equip_weapon(3)
+        bardiche_using = 3
+    attack_motion++
   :
-    weapon.equip_weapon(10)
+    ?attack_motion%19 = 0
+      ?heavy_hammer_using = 5
+        weapon.equip_weapon(6)
+        heavy_hammer_using = 6
+      :
+        weapon.equip_weapon(5)
+        heavy_hammer_using = 5
+    attack_motion++
 
 /** 氷の尾根 **/
 // ボス部屋判定不可
@@ -61,7 +86,6 @@ func normal_attack()
 :?loc = icy_ridge
   ?foe.distance >= 22
     move.walk()
+    attack_motion = 0
   :
     normal_attack()
-  ?hp <= 15
-    activate potion

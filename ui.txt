@@ -33,14 +33,15 @@ func weapon_print()
 // クールダウン
 func cooldown_print()
   >`0,9,bard:@item.GetCooldown("bardiche")@
-  >`0,10,blad:@item.GetCooldown("blade")@
-  >`0,11,mask:@item.GetCooldown("mask")@
-  >`0,12,sarm:@item.GetCooldown("skeleton_arm")@
-  >`0,13,bash:@item.GetCooldown("bash")@
-  >`0,14,mind:@item.GetCooldown("mind")@
-  >`0,15,dash:@item.GetCooldown("dash")@
-  >`0,16,staf:@item.GetCooldown("quarterstaff")@
-  >`0,17,hatc:@item.GetCooldown("hatchet")@
+  >`0,10,heav:@item.GetCooldown("hammer")@
+  >`0,11,blad:@item.GetCooldown("blade")@
+  >`0,12,mask:@item.GetCooldown("mask")@
+  >`0,13,sarm:@item.GetCooldown("skeleton_arm")@
+  >`0,14,bash:@item.GetCooldown("bash")@
+  >`0,15,mind:@item.GetCooldown("mind")@
+  >`0,16,dash:@item.GetCooldown("dash")@
+  >`0,17,staf:@item.GetCooldown("quarterstaff")@
+  >`0,18,hatc:@item.GetCooldown("hatchet")@
 
 // 環境情報
 func info_update_print()

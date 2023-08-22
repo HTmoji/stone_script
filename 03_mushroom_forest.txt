@@ -9,64 +9,68 @@ func boss_attack()
   // 第一形態
   ?foe = boss_harder
     ?foe.distance > 6
-      weapon.equip_weapon(0)
+      weapon.equip_weapon(10)
     :?item.GetCooldown("mask") = 0
-      weapon.equip_weapon(14)
-      activate R
-    :?(foe.armor + foe.hp <= 620 & item.GetCooldown("bardiche") = 0) | buffs.string = bardiche
       weapon.equip_weapon(1)
       activate R
+    :?(foe.armor + foe.hp <= 620 & item.GetCooldown("bardiche") = 0) | buffs.string = bardiche
+      weapon.equip_weapon(3)
+      activate R
     :
-      ?time%10 = 0
-        ?hammer_using = 3
-          hammer_using = 4
-          weapon.equip_weapon(4)
+      ?time%19 = 0
+        ?hammer_using = 6
+          hammer_using = 5
+          weapon.equip_weapon(5)
         :
-          hammer_using = 3
-          weapon.equip_weapon(3)
+          hammer_using = 6
+          weapon.equip_weapon(6)
   // 第二形態 手前
   :?foe = boss_fat
     ?item.GetCooldown("blade") = 0
-      weapon.equip_weapon(11)
+      weapon.equip_weapon(0)
       activate R
     :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
-      weapon.equip_weapon(1)
+      weapon.equip_weapon(3)
       activate R
     :?foe.armor > 0
-      weapon.equip_weapon(3)
+      weapon.equip_weapon(5)
     :?foe.state = 32
-      weapon.equip_weapon(18)
+      weapon.equip_weapon(12)
     :
-      weapon.equip_weapon(17)
+      weapon.equip_weapon(11)
   // 第二形態 奥
   :?foe = boss_skinny
     ?foe.distance > 6
-      weapon.equip_weapon(13)
+      weapon.equip_weapon(9)
     :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
-      weapon.equip_weapon(1)
+      weapon.equip_weapon(3)
       activate R
     :
-      weapon.equip_weapon(17)
-  :
+      weapon.equip_weapon(11)
+  : 
     move.walk()
 
 func normal_attack()
   // ☆11のカタツムリ
   ?foe.armor >= 100 & pos.x > 350
-    weapon.equip_weapon(1)
+    weapon.equip_weapon(3)
     ?foe.distance <= 9
       activate R
   // 毛玉
   :?foe = fluff & foe.distance <= 5 & item.GetCooldown("mind") = 0
-    weapon.equip_weapon(12)
+    weapon.equip_weapon(30)
   :?foe.count >= 10 & item.GetCooldown("blade") = 0
-    weapon.equip_weapon(11)
+    weapon.equip_weapon(0)
     activate R
   // mobが多すぎる場合
   :?foe.count >= 15
-    weapon.equip_weapon(2)
+    ?(foe.count >= 10 & item.GetCooldown("hammer") = 0) | buffs.string = bardiche
+      weapon.equip_weapon(5)
+      activate R
+    :
+      weapon.equip_weapon(4)
   :
-    weapon.equip_weapon(10)
+    weapon.equip_weapon(7)
 
 /** キノコの森 **/
 // ボス部屋判定可能
