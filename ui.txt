@@ -110,33 +110,33 @@ func enemy_update_print()
 
   // 時間付きバフ表示
   ?foe.buffs.count > 0
-    var text = ""
-    var split1 = string.Split(foe.buffs.string, ",")
-    for i = 0 .. split1.Count()-1
-      ?string.Size(text) > 0
-        text += " "
+    var b_text = ""
+    var split_b_1 = string.Split(foe.buffs.string, ",")
+    for i = 0 .. split_b_1.Count()-1
+      ?string.Size(b_text) > 0
+        b_text += " "
       // icon, buff_name, count, time
-      var split2 = string.Split(split1[i], ":")
-      text += split2[0]
-      text += ":"
-      text += split2[3]
-    var text_length = string.Size(text)
-    >`@screen.w -7 - text_length@,@screen.h - 3@,@text@
+      var split_b_2 = string.Split(split_b_1[i], ":")
+      b_text += split_b_2[0]
+      b_text += ":"
+      b_text += split_b_2[3]
+    var b_text_length = string.Size(b_text)
+    >`@screen.w -7 - b_text_length@,@screen.h - 3@,@b_text@
 
   // 時間付きデバフ表示
   ?foe.debuffs.count > 0
     var d_text = ""
-    var split1 = string.Split(foe.debuffs.string, ",")
-    for i = 0 .. split1.Count()-1
+    var split_d_1 = string.Split(foe.debuffs.string, ",")
+    for i = 0 .. split_d_1.Count()-1
       ?string.Size(d_text) > 0
         d_text += " "
       // icon, debuff_name, count, time
-      var split2 = string.Split(split1[i], ":")
-      d_text += split2[0]
+      var split_d_2 = string.Split(split_d_1[i], ":")
+      d_text += split_d_2[0]
       d_text += ":"
-      d_text += split2[3]
-    var text_length = string.Size(d_text)
-    >`@screen.w -7 - text_length@,@screen.h - 2@,@d_text@
+      d_text += split_d_2[3]
+    var d_text_length = string.Size(d_text)
+    >`@screen.w -7 - d_text_length@,@screen.h - 2@,@d_text@
 
   // 名前付き照準
   ?foe.count > 0

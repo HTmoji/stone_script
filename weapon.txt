@@ -31,7 +31,8 @@ var weapon_list = [
   ["wand vigor *10 +9", "wand vigor *10 +10"],         // 28: vigor wand v2
   ["wand poison *10 +10", "wand fire *10 +10"],        // 29: debuff
   ["wand poison *10 +10", "mind stone"],               // 30: 後方回避
-  ["triskelion stone", "dash shield *10 +1"]           // 31: move for mine boss
+  ["triskelion stone", "dash shield *10 +1"],          // 31: move for mine boss
+  ["sword ice *10 +10", "sword fire *10 +10"]          // 32: jakiro
 ]
 
 func equip_weapon(index)
@@ -41,17 +42,3 @@ func equip_weapon(index)
   :
     equipL @weapon_list[index][0]@
     equipR @weapon_list[index][1]@
-
-/* loadtout memo */
-/*
-loadout 1: sword ice, dash shield     // move
-loadout 2: sword ice, bash shield     // move
-loadout 3: bardiche                   // crit
-loadout 4: bardiche                   // damage
-loadout 5: repeat crowssbow           //  
-loadout 6: sword ice, shield ice      // ice
-loadout 7: sword fire, shield fire    // fire
-loadout 8: sword vigor, shield vigor  // vigor
-loadout 9: wand poison, shield poison // poison
-loadout 0: mind stone, com shield     // escape
-*/
