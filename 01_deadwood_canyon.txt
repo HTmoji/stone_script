@@ -2,6 +2,10 @@
 var move = import user_script/move
 var weapon = import user_script/weapon
 
+// 変数
+var bardiche_using = 0
+var sword_using = 0
+
 // initialize
 move.set_harvest_pick(false)
 
@@ -9,45 +13,62 @@ func boss_attack()
   // 第二形態 
   ?foe = poena
     ?(foe.hp < 620 & item.GetCooldown("bardiche") = 0) | buffs.string = bardiche 
-      weapon.equip_weapon(1)
+      weapon.equip_weapon(3)
       activate R
     :?foe.distance >= 7
-      weapon.equip_weapon(0)
+      weapon.equip_weapon(10)
+    // todo: 初撃を避けたらpotion 使ってkill
     :?foe.state = 32
-      ?foe.debuffs.count <= 0
-        weapon.equip_weapon(15)
-      :
-        weapon.equip_weapon(16)
+      ?time%17 = 0
+        ?sword_using = 20
+          weapon.equip_weapon(19)
+          bardiche_using = 19
+        :
+          weapon.equip_weapon(20)
+          bardiche_using = 20
     :
-      weapon.equip_weapon(11)
+      weapon.equip_weapon(0)
   // 第一形態
   :?foe = boss
     ?item.GetCooldown("blade") = 0
-      weapon.equip_weapon(11)
+      weapon.equip_weapon(0)
       activate R
     :?item.GetCooldown("mask") = 0
-      weapon.equip_weapon(14)
-      activate R
-    :?(foe.hp < 620 & item.GetCooldown("bardiche") = 0) | buffs.string = bardiche
       weapon.equip_weapon(1)
       activate R
+    :?(foe.hp < 620 & item.GetCooldown("bardiche") = 0) | buffs.string = bardiche
+      weapon.equip_weapon(3)
+      activate R
     :?foe.distance >= 7
-      weapon.equip_weapon(13)
-    :
-      weapon.equip_weapon(5)
+      weapon.equip_weapon(9)
+    :?foe.debuffs.count <= 2
+      weapon.equip_weapon(19)
+    :?time%20 = 0
+      ?bardiche_using = 3
+        weapon.equip_weapon(4)
+        bardiche_using = 4
+      :
+        weapon.equip_weapon(3)
+        bardiche_using = 3
 
 func normal_attack()
   ?item.GetCooldown("blade") = 0 & foe.count >= 10
-    weapon.equip_weapon(11)
+    weapon.equip_weapon(0)
     activate R
   ?foe ! scarab
-    weapon.equip_weapon(10)
-  :
-    // 石虫: bardiche で削り切れなければ剣
-    ?foe.hp <= 72
-      weapon.equip_weapon(5)
+    weapon.equip_weapon(7)
+  :?foe.distance >= 8
+    ?item.GetCooldown("bash") <= 0
+      weapon.equip_weapon(9)
     :
-      weapon.equip_weapon(2)
+      weapon.equip_weapon(10)
+  :?item.GetCooldown("hammer") <= 0 | buffs.string = bardiche
+    weapon.equip_weapon(5)
+    activate R
+  :?foe.hp <= 80
+    weapon.equip_weapon(21)
+  :
+    weapon.equip_weapon(5)
 
 /** 枯木の渓谷 **/
 ?loc = deadwood_valley
@@ -59,5 +80,3 @@ func normal_attack()
     normal_attack()
   :
     move.walk()
-  ?hp <= 25
-      activate potion
