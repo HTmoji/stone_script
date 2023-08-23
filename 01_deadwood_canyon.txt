@@ -18,6 +18,10 @@ func boss_attack()
     :?foe.distance >= 7
       weapon.equip_weapon(10)
     // todo: 初撃を避けたらpotion 使ってkill
+    /* ice hammer でstun loop できるらしい
+     * エンチャ無しでもハメできたのでice である必要はないかも
+     * カウンターバフ消えてからポーション殴りした方が早そう 
+     */  
     :?foe.state = 32
       ?time%17 = 0
         ?sword_using = 20
