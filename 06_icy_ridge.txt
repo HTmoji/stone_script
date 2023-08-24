@@ -1,3 +1,5 @@
+// potion: berserk
+
 // external script
 var move = import user_script/move
 var weapon = import user_script/weapon
@@ -32,9 +34,9 @@ func boss_attack()
   :?foe.distance >= 8
     weapon.equip_weapon(10)
   :?foe.state = 132
-    weapon.equip_weapon(21)
+    weapon.equip_weapon(19)
     activate potion
-  :?foe.debuffs.string = "ignition:10"
+  :?foe.debuffs.string = "ignition:9"
     activate cinderwisp
   :
     weapon.equip_weapon(21)
@@ -59,6 +61,9 @@ func normal_attack()
         weapon.equip_weapon(3)
         bardiche_using = 3
     attack_motion++
+  :? debuffs.count > 0
+    weapon.equip_weapon(6)
+    activate R
   :
     ?attack_motion%19 = 0
       ?heavy_hammer_using = 5
@@ -73,8 +78,6 @@ func normal_attack()
 // ボス部屋判定不可
 ?foe = yeti | foe = ice_wall
   boss_attack()
-  ?hp <= 15
-    activate potion
 :?loc = icy_ridge
   ?summon.count = 0 & time > 1
     follow.fire_talisman()
