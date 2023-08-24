@@ -1,6 +1,7 @@
 // external script
 var move = import user_script/move
 var weapon = import user_script/weapon
+var follow = import user_script/follow
 
 // 変数
 var bardiche_using = 0
@@ -30,21 +31,12 @@ func boss_attack()
     activate R
   :?foe.distance >= 8
     weapon.equip_weapon(10)
+  :?foe.state = 132
+    weapon.equip_weapon(21)
+    activate potion
+  :?foe.debuffs.string = "ignition:10"
+    activate cinderwisp
   :
-  /*
-    var chill_count = 0
-    ?foe.debuffs.count > 0
-      var split1 = string.Split(foe.debuffs.string, ",")
-      for i = 0 .. split1.Count()-1
-        // icon, debuff_name, count, time
-        var split2 = string.Split(split1[i], ":")
-        ?split2[1] = chill
-          chill_count = split2[2]
-    ?int.Parse(chill_count) < 6
-      weapon.equip_weapon(19)
-    :
-      weapon.equip_weapon(21)
-      */
     weapon.equip_weapon(21)
 
 func normal_attack()
@@ -84,7 +76,9 @@ func normal_attack()
   ?hp <= 15
     activate potion
 :?loc = icy_ridge
-  ?foe.distance >= 22
+  ?summon.count = 0 & time > 1
+    follow.fire_talisman()
+  :?foe.distance >= 22
     move.walk()
     attack_motion = 0
   :

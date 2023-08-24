@@ -1,0 +1,4 @@
+func fire_talisman()
+  equipL fire talisman
+  ?item.CanActivate("fire_talisman")
+    activate L

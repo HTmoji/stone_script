@@ -27,24 +27,24 @@ func boss_attack()
 // 第一形態
 func state1()
   ?foe.distance >= 6
-    weapon.equip_weapon(0)
+    weapon.equip_weapon(10)
   :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
-    weapon.equip_weapon(1)
+    weapon.equip_weapon(3)
     activate R
   :?item.GetCooldown("blade") = 0
-    weapon.equip_weapon(11)
+    weapon.equip_weapon(0)
     activate R
   :?item.GetCooldown("mask") = 0
-    weapon.equip_weapon(14)
+    weapon.equip_weapon(1)
     activate R
   :?(time%180 = 0 | bearer_wand_using = 1) & bearer_wand_motion_count <= 35
-    weapon.equip_weapon(9)
+    weapon.equip_weapon(23)
     bearer_wand_using = 1
     bearer_wand_motion_count++
   :?foe.debuffs.string ! dot
-    weapon.equip_weapon(19)
+    weapon.equip_weapon(29)
   :
-    weapon.equip_weapon(10)
+    weapon.equip_weapon(19)
     bearer_wand_using = 0
     bearer_wand_motion_count = 0
 
@@ -52,11 +52,11 @@ func state1()
 // todo: Find() が使えるようになったら放置できるかも
 func state2()
   ?foe.distance >= 6
-    weapon.equip_weapon(0)
+    weapon.equip_weapon(10)
   :
     // ポーション手動起動 7000damageくらいは見込める
     //activate potion
-    weapon.equip_weapon(6)
+    weapon.equip_weapon(32)
 
 // 第三形態
 func state3()

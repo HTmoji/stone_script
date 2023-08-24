@@ -4,10 +4,7 @@ func set_harvest_pick(b)
   harvest_pick = b
 
 func walk()
-  // todo: activate Eが効かないのでゲーム開始から1F待機して判定
-  ?summon.count = 0 & time > 1
-    activate_summon()
-  :?harvest_pick & harvest.distance <= 7
+  ?harvest_pick & harvest.distance <= 7
       harvest_walk()
   :?pickup & pickup.distance <= 7
       pick_walk()
@@ -15,11 +12,6 @@ func walk()
     speed_walk()
   :
     heal_walk()
-
-func activate_summon()
-  equipR fire talisman
-  ?item.CanActivate("fire_talisman")
-    activate R
 
 func harvest_walk()
   ?harvest = Boulder
