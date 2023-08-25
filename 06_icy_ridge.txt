@@ -28,9 +28,11 @@ func boss_attack()
   // 謎の待機時間
   :?foe = yeti & foe.state = 1
     move.walk()
-  :?foe = yeti & foe.distance <= 7 & (item.GetCooldown("hammer") = 0 | buffs.string = bardiche)
+/* todo: 移動判定が重なることでモーションキャンセルされる状態
+  :?foe = ice_wall & foe.distance <= 7 & (item.GetCooldown("hammer") = 0 | buffs.string = bardiche)
     weapon.equip_weapon(5)
     activate R
+*/
   :?foe.distance >= 8
     weapon.equip_weapon(10)
   :?foe.state = 132

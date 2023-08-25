@@ -1,4 +1,5 @@
 var harvest_pick = false
+var speed_mode = true
 
 func set_harvest_pick(b)
   harvest_pick = b
@@ -8,10 +9,13 @@ func walk()
       harvest_walk()
   :?pickup & pickup.distance <= 7
       pick_walk()
-  :?hp = maxhp
+  :?speed_mode
     speed_walk()
   :
-    heal_walk()
+    ?hp = maxhp
+      speed_walk()
+    :
+      heal_walk()
 
 func harvest_walk()
   ?harvest = Boulder
