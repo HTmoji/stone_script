@@ -1,22 +1,23 @@
-// ☆13から手動でlucky potion + 武器操作が必要
+// potion: lucky or berserk
 
 // external script
 var move = import user_script/move
 var weapon = import user_script/weapon
+var follow = import user_script/follow
 
 // 変数
-var heavy_hammer_using = 0
 var bardiche_using = 0
 var hammer_using = 0
 var wand_using = 0
 var boss_motion_count = 0
 
 func boss_attack()
-  // 高速回復移動
-  ?time < 540
-    move.speed_walk()
+  ?foe.debuffs.string = "ignition:9"
+    activate cinderwisp
   // 開始待ち
-  :?item.GetCooldown("blade") = 0
+  ?time < 540 | foe.state = -1
+    move.speed_walk()
+  :?item.GetCooldown("blade") = 0 
     weapon.equip_weapon(0)
     activate R
   :?item.GetCooldown("mask") = 0
@@ -53,6 +54,7 @@ func boss_attack()
           weapon.equip_weapon(3)
           bardiche_using = 3
   :
+    activate potion
     ?time%16 = 0
       ?wand_using = 25
         weapon.equip_weapon(26)
@@ -91,7 +93,9 @@ func normal_attack()
 ?loc = bronze_guardian
   boss_attack()
 :?loc = bronze_mine
-  ?foe.distance >= 20
+  ?summon.count = 0 & time > 1
+    follow.fire_talisman()
+  :?foe.distance >= 20
     move.walk()
   :
     normal_attack()

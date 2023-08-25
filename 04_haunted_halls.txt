@@ -1,20 +1,25 @@
+// potion: berserk
+
 // external script
 var move = import user_script/move
 var weapon = import user_script/weapon
+var follow = import user_script/follow
 
 // 変数
 var wand_using = 0
 var bardiche_using = 0
 
 func boss_attack()
+  ?foe.debuffs.string = "ignition:6"
+    activate cinderwisp
   // 第一形態
   ?foe = boss_harder
     // 待ち時間
     ?time < 400
       move.walk()
-    :?foe.distance >= 7 
-      weapon.equip_weapon(9)
-    :?foe.distance <= 7 & foe.hp < 620
+    :?foe.distance > 10
+      weapon.equip_weapon(8)
+    :?foe.hp < 620
       weapon.equip_weapon(3)
       activate R
     :
@@ -64,12 +69,10 @@ func normal_attack()
 // ボス部屋判定可能
 ?loc = undead_crypt_boss
   boss_attack()
-  ?hp <= 20
-    activate potion
 :?loc = undead_crypt
-  ?foe.distance > 17
+  ?summon.count = 0 & time > 1
+    follow.fire_talisman()
+  :?foe.distance > 17
     move.walk()
   :
     normal_attack()
-  ?hp <= 20
-    activate potion

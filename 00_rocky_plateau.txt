@@ -1,20 +1,28 @@
-// potionをBerserk(wood + bronze) にしておく
+// potion: ???
 
 // external script
 var move = import user_script/move
 var weapon = import user_script/weapon
+var follow = import user_script/follow
 
 // initialize
 move.set_harvest_pick(false)
 
 // 変数
-var bearer_wand_using = 0
+var bearer_wand_focus = false
 var bearer_wand_motion_count = 0
-var perfected_attack_motion_count = 0
+var bearer_chill_focus = 0
 
-var bardiche_using = 0
+var elementalist_sword_using = 0
+
+var perfected_attack_motion_count = 0
+var perfected_hammer_using = 0
+var perfected_chill_focus = 0
+var perfected_sword_using = 0
 
 func boss_attack()
+  ?foe.debuffs.string = "ignition:10"
+    activate cinderwisp
   ?foe = bearer
     state1()
   :?foe = elementalist
@@ -37,15 +45,25 @@ func state1()
   :?item.GetCooldown("mask") = 0
     weapon.equip_weapon(1)
     activate R
-  :?(time%180 = 0 | bearer_wand_using = 1) & bearer_wand_motion_count <= 35
+  :?item.GetCooldown("hammer") <= 0 | buffs.string = bardiche
+    weapon.equip_weapon(5)
+    activate R
+  // todo: sword で付与した方がいいかも
+  :?(time%180 = 0 | bearer_wand_focus) & bearer_wand_motion_count <= 35
     weapon.equip_weapon(23)
-    bearer_wand_using = 1
+    bearer_wand_focus = true
     bearer_wand_motion_count++
   :?foe.debuffs.string ! dot
     weapon.equip_weapon(29)
-  :
+  :?(foe.debuffs.string ! chill | bearer_chill_focus) & foe.debuffs.string ! "chill:6"
     weapon.equip_weapon(19)
-    bearer_wand_using = 0
+    bearer_chill_focus = true
+    bearer_wand_focus = false
+    bearer_wand_motion_count = 0
+  :
+    weapon.equip_weapon(21)
+    bearer_wand_focus = false
+    bearer_chill_focus = false
     bearer_wand_motion_count = 0
 
 // 第二形態
@@ -53,10 +71,20 @@ func state1()
 func state2()
   ?foe.distance >= 6
     weapon.equip_weapon(10)
-  :
-    // ポーション手動起動 7000damageくらいは見込める
-    //activate potion
+  :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
+    weapon.equip_weapon(3)
+    activate R
+  :?buffs.count = 0
     weapon.equip_weapon(32)
+    activate potion
+  :
+    ?time%12 = 0
+      ?elementalist_sword_using = 19
+        weapon.equip_weapon(21)
+        elementalist_sword_using = 21
+      :
+        weapon.equip_weapon(19)
+        elementalist_sword_using = 19
 
 // 第三形態
 func state3()
@@ -64,41 +92,42 @@ func state3()
   ?foe.state = 115
     perfected_attack_motion_count++
     ?perfected_attack_motion_count >= 60
-      weapon.equip_weapon(12)
+      weapon.equip_weapon(30)
   :
     perfected_attack_motion_count = 0
     ?foe.distance >= 9
-      weapon.equip_weapon(0)
+      weapon.equip_weapon(10)
     :?foe.armor > 0
-      weapon.equip_weapon(3)
-    // 回復
-    :?hp <= 20
-      ?foe.state = 32 | foe.state = 33
-        weapon.equip_weapon(22)
-      :
-        weapon.equip_weapon(8)
-    :?foe.debuffs.string ! dot
-      weapon.equip_weapon(19)
+      ?time%17 = 0
+        ?perfected_hammer_using = 17
+          weapon.equip_weapon(18)
+          perfected_hammer_using = 18
+        :
+          weapon.equip_weapon(17)
+          perfected_hammer_using = 17
     :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
-      weapon.equip_weapon(1)
+      weapon.equip_weapon(3)
       activate R
     :?item.GetCooldown("blade") = 0
-      weapon.equip_weapon(11)
+      weapon.equip_weapon(0)
       activate R
     :?item.GetCooldown("mask") = 0
-      weapon.equip_weapon(14)
+      weapon.equip_weapon(1)
       activate R
-    // 第二形態のデバフで持ち替え
-    :?debuffs.string = damage
-      ?time%20 = 0
-        ?bardiche_using = 2
-          weapon.equip_weapon(1)
-          bardiche_using = 1
-        :
-          weapon.equip_weapon(2)
-          bardiche_using = 2
+    :?hp < 10
+      weapon.equip_weapon(14)
+    :?(foe.debuffs.string ! chill | perfected_chill_focus) & foe.debuffs.string ! "chill:6"
+      weapon.equip_weapon(19)
+      perfected_chill_focus = true
     :
-      weapon.equip_weapon(10)
+      perfected_chill_focus = false
+      ?time%12 = 0
+        ?perfected_sword_using = 21
+          weapon.equip_weapon(22)
+          perfected_sword_using = 22
+        :
+          weapon.equip_weapon(21)
+          perfected_sword_using = 21
     
 // todo: アルカディアの偵察兵
 func normal_attack()
@@ -106,11 +135,11 @@ func normal_attack()
 
 /** ロッキー高原 **/
 ?loc = rocky_plateau
-  ?foe.distance >= 40
+  ?summon.count = 0 & time > 1
+    follow.fire_talisman()
+  :?foe.distance >= 40
     move.walk()
   :?foe = acronian_scout
     normal_attack()
   :
     boss_attack()
-  ?hp <= 10
-      activate potion

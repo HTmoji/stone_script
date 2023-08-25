@@ -78,5 +78,3 @@ func normal_attack()
     move.walk()
   :
     normal_attack()
-  ?hp <= 5
-    activate potion

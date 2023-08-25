@@ -1,6 +1,9 @@
+// potion: ???
+
 // external script
 var move = import user_script/move
 var weapon = import user_script/weapon
+var follow = import user_script/follow
 
 // 変数
 var hammer_using = 0
@@ -79,13 +82,10 @@ func normal_attack()
     move.walk()
   :
     boss_attack()
-  ?hp <= 15
-    activate potion
-
 :?loc = fungus_forest
-  ?foe.distance >= 22
+  ?summon.count = 0 & time > 1
+    follow.fire_talisman()
+  :?foe.distance >= 22
     move.walk()
   :
     normal_attack()
-  ?hp <= 15
-    activate potion
