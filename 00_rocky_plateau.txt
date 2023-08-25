@@ -21,7 +21,7 @@ var perfected_chill_focus = 0
 var perfected_sword_using = 0
 
 func boss_attack()
-  follow.ignition()
+  follow.ignition(0)
   ?foe = bearer
     state1()
   :?foe = elementalist

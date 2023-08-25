@@ -8,7 +8,7 @@ var heavy_hammer_using = 0
 var sword_using = 0
 
 func boss_attack()
-  follow.ignition()
+  follow.ignition(0)
   // 捕食モーション
   ?foe.state = 103 | foe.state = 104 | foe.state = 105
     ?debuffs.count >= 20

@@ -10,7 +10,7 @@ var wand_using = 0
 var bardiche_using = 0
 
 func boss_attack()
-  follow.ignition()
+  follow.ignition(0)
   // 第一形態
   ?foe = boss_harder
     // 待ち時間
@@ -29,7 +29,7 @@ func boss_attack()
         :
           weapon.equip_weapon(28)
           wand_using = 28
-  // 第二形態 bardiche締め
+  // 第二形態
   :?(foe = boss_stage_2 & item.GetCooldown("bardiche") = 0) | buffs.string = bardiche
       ?foe.distance <= 7
         weapon.equip_weapon(3)

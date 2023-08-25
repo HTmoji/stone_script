@@ -6,7 +6,7 @@ func fire_talisman()
   ?item.CanActivate("fire_talisman")
     activate L
 
-func ignition()
+func ignition(calcHp)
   var ignition_count = 0
   ?foe.debuffs.string = "ignition"
     var split1= string.Split(foe.debuffs.string, ",")
@@ -14,5 +14,5 @@ func ignition()
       var split2 = string.Split(split1[i], ":")
       ?split2[1] = "ignition"
         ignition_count = int.Parse(split2[2])
-  ?foe.armor + foe.hp <= ignition_damage * ignition_count | ignition_count = 10
+  ?foe.armor + foe.hp <= calcHp + ignition_damage * ignition_count | ignition_count = 10
     activate cinderwisp

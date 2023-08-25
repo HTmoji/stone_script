@@ -11,7 +11,7 @@ var heavy_hammer_using = 0
 var attack_motion = 0
 
 func boss_attack()
-  follow.ignition()
+  follow.ignition(0)
   ?foe.armor > 0
     ?foe.distance >= 6
       weapon.equip_weapon(10)

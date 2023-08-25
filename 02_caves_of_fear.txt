@@ -17,7 +17,7 @@ var debuff_using = 0
 var wand_using = 0
 
 func boss_attack()
-  follow.ignition()
+  follow.ignition(620)
   ?(foe.hp < 620 & item.GetCooldown("bardiche") = 0) | buffs.string = bardiche
     ?foe.distance >= 8
       weapon.equip_weapon(10)

@@ -12,7 +12,7 @@ var wand_using = 0
 var boss_motion_count = 0
 
 func boss_attack()
-  follow.ignition()
+  follow.ignition(0)
   // 開始待ち
   ?time < 540 | foe.state = -1
     move.speed_walk()
