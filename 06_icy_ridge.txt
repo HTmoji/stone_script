@@ -11,6 +11,7 @@ var heavy_hammer_using = 0
 var attack_motion = 0
 
 func boss_attack()
+  follow.ignition()
   ?foe.armor > 0
     ?foe.distance >= 6
       weapon.equip_weapon(10)
@@ -38,8 +39,6 @@ func boss_attack()
   :?foe.state = 132
     weapon.equip_weapon(19)
     activate potion
-  :?foe.debuffs.string = "ignition:9"
-    activate cinderwisp
   :
     weapon.equip_weapon(21)
 

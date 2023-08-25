@@ -1,4 +1,4 @@
-// potion: ???
+// potion: berserk
 
 // external script
 var move = import user_script/move
@@ -17,7 +17,8 @@ var debuff_using = 0
 var wand_using = 0
 
 func boss_attack()
-  ?foe.hp < 600
+  follow.ignition()
+  ?(foe.hp < 620 & item.GetCooldown("bardiche") = 0) | buffs.string = bardiche
     ?foe.distance >= 8
       weapon.equip_weapon(10)
     :
@@ -29,6 +30,7 @@ func boss_attack()
     debuff_using = 1
     wand_motion_count++
   :
+    activate potion
     debuff_using = 0
     wand_motion_count = 0
     ?boss_count%16 = 0

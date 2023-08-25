@@ -10,8 +10,7 @@ var wand_using = 0
 var bardiche_using = 0
 
 func boss_attack()
-  ?foe.debuffs.string = "ignition:6"
-    activate cinderwisp
+  follow.ignition()
   // 第一形態
   ?foe = boss_harder
     // 待ち時間

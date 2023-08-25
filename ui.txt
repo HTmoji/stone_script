@@ -103,7 +103,6 @@ func player_update_print()
     >`7,@screen.h -2@,@text@
 
 // 敵の情報
-// todo: 表示バグってるので修正必要
 func enemy_update_print()
   >`@screen.w - 7@,@screen.h - 3@,:buff  
   >`@screen.w - 7@,@screen.h - 2@,:debuff
