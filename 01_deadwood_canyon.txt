@@ -3,7 +3,6 @@
 // external script
 var move = import user_script/move
 var weapon = import user_script/weapon
-var follow = import user_script/follow
 
 // 変数
 var bardiche_using = 0
@@ -79,9 +78,7 @@ func normal_attack()
 
 /** 枯木の渓谷 **/
 ?loc = deadwood_valley
-  ?summon.count = 0 & time > 1
-    follow.fire_talisman()
-  :?foe.distance >= 22
+  ?foe.distance >= 22
     move.walk()
   :?foe = boss | foe = poena
     boss_attack()
