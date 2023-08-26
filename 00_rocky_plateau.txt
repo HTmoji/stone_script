@@ -66,7 +66,6 @@ func state1()
     bearer_wand_motion_count = 0
 
 // 第二形態
-// todo: Find() が使えるようになったら放置できるかも
 func state2()
   ?foe.distance >= 6
     weapon.equip_weapon(10)
@@ -84,6 +83,9 @@ func state2()
       :
         weapon.equip_weapon(19)
         elementalist_sword_using = 19
+  // todo: 目の表示取得できたので弱点武器を担ぐ処理を追加可能
+  var symbol = draw.GetSymbol(54, 9)
+  >`10,10,week = @symbol@
 
 // 第三形態
 func state3()
