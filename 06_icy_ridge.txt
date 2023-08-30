@@ -30,11 +30,9 @@ func boss_attack()
   // 謎の待機時間
   :?foe = yeti & foe.state = 1
     move.walk()
-/*
-  // 雪玉発射モーション中は盾を構える？微妙…
-  :?foe.state = 32
-    weapon.equip_weapon(12)
-*/
+  // todo: もうちょっといい武器を持たせたい
+  :?foe.state = 133
+    weapon.equip_weapon(29)
   :?foe.distance >= 8
     weapon.equip_weapon(10)
   // 登場モーション終了後

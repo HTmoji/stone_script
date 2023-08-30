@@ -5,9 +5,9 @@ func set_harvest_pick(b)
   harvest_pick = b
 
 func walk()
-  ?harvest_pick & harvest.distance <= 7
+  ?harvest_pick & harvest.distance <= 8
       harvest_walk()
-  :?pickup & pickup.distance <= 7
+  :?pickup & pickup.distance <= 8
       pick_walk()
   :?speed_mode
     speed_walk()

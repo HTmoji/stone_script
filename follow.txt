@@ -1,5 +1,5 @@
 // 変数
-var ignition_damage = 84
+var ignition_damage = 88
 
 func fire_talisman()
   equipL fire talisman
