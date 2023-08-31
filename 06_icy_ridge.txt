@@ -88,7 +88,7 @@ func normal_attack()
 ?loc = icy_ridge
   ?summon.count = 0 & time > 1
     follow.fire_talisman()
-  :?foe.distance >= 22
+  :?foe.distance >= 20
     move.walk()
     attack_motion = 0
   :?foe = yeti | foe = ice_wall | pos.x > 500

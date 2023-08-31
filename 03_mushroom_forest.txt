@@ -1,4 +1,4 @@
-// potion: ???
+// potion: berserk
 
 // external script
 var move = import user_script/move
@@ -107,14 +107,15 @@ func normal_attack()
 /** キノコの森 **/
 // ボス部屋判定可能
 ?loc = fungus_forest_boss
-  ?foe.distance > 17 & pos.x < 130
+  ?foe.distance > 17 & harder_alive
     move.walk()
   :
     boss_attack()
 :?loc = fungus_forest
+  harder_alive = true
   ?summon.count = 0 & time > 1
     follow.fire_talisman()
-  :?foe.distance >= 22
+  :?foe.distance >= 20
     move.walk()
   :
     normal_attack()

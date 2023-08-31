@@ -10,10 +10,11 @@ var attack_count = 0
 var wand_motion_count = 0
 var debuff_using = 0
 var wand_using = 0
+var sword_using = 0
 
 func boss_attack()
   follow.ignition(720)
-  ?(foe.hp < 620 & item.GetCooldown("bardiche") = 0) | buffs.string = bardiche
+  ?(foe.hp < 720 & item.GetCooldown("bardiche") = 0) | buffs.string = bardiche
     ?foe.distance >= 8
       weapon.equip_weapon(10)
     :
@@ -49,10 +50,20 @@ func normal_attack()
       weapon.equip_weapon(10)
     attack_count = 0
   // ☆11 コウモリーズ
-  :?foe = boss & foe.hp < 720
+  :?foe = boss
+    ?(foe.hp < 720 & item.GetCooldown("bardiche") = 0) | buffs.string = bardiche
       weapon.equip_weapon(3)
       activate R
       attack_count = 0
+    :
+      ?attack_count%12 = 0
+        ?wand_using = 19
+          weapon.equip_weapon(20)
+          wand_using = 20
+      :
+        weapon.equip_weapon(19)
+        wand_using = 19
+      attack_count++
   :
     ?attack_count%16 = 0
       ?wand_using = 23

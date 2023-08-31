@@ -10,15 +10,15 @@ var wand_using = 0
 var bardiche_using = 0
 
 func boss_attack()
-  follow.ignition(0)
   // 第一形態
   ?foe = boss_harder
+    follow.ignition(900)
     // 待ち時間
     ?time < 400
       move.walk()
     :?foe.distance > 10
-      weapon.equip_weapon(8)
-    :?foe.hp < 620
+      weapon.equip_weapon(10)
+    :?foe.hp < 720
       weapon.equip_weapon(3)
       activate R
     :
@@ -30,14 +30,9 @@ func boss_attack()
           weapon.equip_weapon(28)
           wand_using = 28
   // 第二形態
-  :?(foe = boss_stage_2 & item.GetCooldown("bardiche") = 0) | buffs.string = bardiche
-      ?foe.distance <= 7
-        weapon.equip_weapon(3)
-        activate R
-      :
-        weapon.equip_weapon(10)
   :?foe.distance <= 21
-    activate potion
+    ?ai.paused = false
+      activate potion
     ?time%10 = 0
       ?wand_using = 28
         weapon.equip_weapon(27)
@@ -55,6 +50,12 @@ func normal_attack()
   // ☆11 墓対策
   :?pos.x > 440 & foe.distance >= 10
     weapon.equip_weapon(10)
+  // 時短
+  :?foe.distance >= 10
+    ?item.GetCooldown("bash") <= 0
+      weapon.equip_weapon(9)
+    :
+      weapon.equip_weapon(10)
   :
     ?time%10 = 0
       ?wand_using = 28

@@ -7,6 +7,7 @@ var weapon = import user_script/weapon
 // 変数
 var bardiche_using = 0
 var sword_using = 0
+var poena_flg = false
 
 // initialize
 move.set_harvest_pick(false)
@@ -14,24 +15,26 @@ move.set_harvest_pick(false)
 func boss_attack()
   // 第二形態 
   ?foe = poena
-    ?(foe.hp < 620 & item.GetCooldown("bardiche") = 0) | buffs.string = bardiche 
+    ?(foe.hp < 720 & item.GetCooldown("bardiche") = 0) | buffs.string = bardiche 
       weapon.equip_weapon(3)
       activate R
     :?foe.distance >= 7
       weapon.equip_weapon(10)
-    // todo: 初撃を避けたらpotion 使ってkill
-    /* ice hammer でstun loop できるらしい
-     * エンチャ無しでもハメできたのでice である必要はないかも
-     * カウンターバフ消えてからポーション殴りした方が早そう 
-     */  
-    :?foe.state = 32
-      ?time%17 = 0
-        ?sword_using = 20
-          weapon.equip_weapon(19)
-          bardiche_using = 19
-        :
-          weapon.equip_weapon(20)
-          bardiche_using = 20
+      poena_flg = false
+    :?foe.buffs.string ! mirror | poena_flg
+      poena_flg = true
+      ?foe.debuffs.count < 6
+        weapon.equip_weapon(19)
+        activate potion
+      :
+        // todo: 弱点ないので高火力かオノのstunハメで削り切る
+        ?time%17 = 0
+          ?sword_using = 22
+            weapon.equip_weapon(21)
+            sword_using = 21
+          :
+            weapon.equip_weapon(22)
+            sword_using = 22
     :
       weapon.equip_weapon(0)
   // 第一形態
@@ -42,13 +45,11 @@ func boss_attack()
     :?item.GetCooldown("mask") = 0
       weapon.equip_weapon(1)
       activate R
-    :?(foe.hp < 620 & item.GetCooldown("bardiche") = 0) | buffs.string = bardiche
+    :?(foe.hp < 720 & item.GetCooldown("bardiche") = 0) | buffs.string = bardiche
       weapon.equip_weapon(3)
       activate R
     :?foe.distance >= 7
       weapon.equip_weapon(9)
-    :?foe.debuffs.count <= 2
-      weapon.equip_weapon(19)
     :?time%20 = 0
       ?bardiche_using = 3
         weapon.equip_weapon(4)
@@ -71,8 +72,6 @@ func normal_attack()
   :?item.GetCooldown("hammer") <= 0 | buffs.string = bardiche
     weapon.equip_weapon(5)
     activate R
-  :?foe.hp <= 80
-    weapon.equip_weapon(21)
   :
     weapon.equip_weapon(5)
 

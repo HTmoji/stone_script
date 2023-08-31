@@ -1,4 +1,4 @@
-// potion: lucky or berserk
+// potion: berserk
 
 // external script
 var move = import user_script/move
@@ -67,12 +67,6 @@ func normal_attack()
   ?foe.count >= 10 & item.GetCooldown("blade") = 0
     weapon.equip_weapon(0)
     activate R
-  // ☆11 ボンバーカート
-  :?foe = bomb_cart
-    ?foe.distance <= 6
-      weapon.equip_weapon(30)
-    :
-      weapon.equip_weapon(7)
   // 連射2発で倒せるなら遠距離から始末
   :?foe.hp + foe.armor <= 30
     weapon.equip_weapon(7)
@@ -81,6 +75,9 @@ func normal_attack()
       weapon.equip_weapon(9)
     :
       weapon.equip_weapon(10)
+  // ☆11 ボンバーカート
+  :?foe = bomb_cart & foe.distance < 6
+    weapon.equip_weapon(30)
   :?(foe.count >= 10 & item.GetCooldown("hammer") = 0) | buffs.string = bardiche
     weapon.equip_weapon(5)
     activate R
