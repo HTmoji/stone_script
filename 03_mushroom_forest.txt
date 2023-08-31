@@ -7,78 +7,107 @@ var follow = import user_script/follow
 
 // 変数
 var hammer_using = 0
+var sword_using = 0
+var harder_alive = true
 
 func boss_attack()
   // 第一形態
   ?foe = boss_harder
-    ?foe.distance > 6
-      weapon.equip_weapon(10)
-    :?item.GetCooldown("mask") = 0
-      weapon.equip_weapon(1)
-      activate R
-    :?(foe.armor + foe.hp <= 620 & item.GetCooldown("bardiche") = 0) | buffs.string = bardiche
-      weapon.equip_weapon(3)
-      activate R
-    :
-      ?time%19 = 0
-        ?hammer_using = 6
-          hammer_using = 5
-          weapon.equip_weapon(5)
-        :
-          hammer_using = 6
-          weapon.equip_weapon(6)
-  // 第二形態 手前
-  :?foe = boss_fat
+    harder_alive = false
     ?item.GetCooldown("blade") = 0
       weapon.equip_weapon(0)
       activate R
-    :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
+    :?item.GetCooldown("mask") = 0
+      weapon.equip_weapon(1)
+      activate R
+    :?foe.distance > 10
+      ?item.GetCooldown("bash") <= 0
+        weapon.equip_weapon(9)
+      :
+        weapon.equip_weapon(10)
+    :?item.GetCooldown("hammer") = 0 | buffs.string = bardiche
+      weapon.equip_weapon(5)
+      activate R
+    :
+      // todo: エンチャに余裕があれば毒ハンマー
+      ?time%12 = 0
+        ?sword_using = 33
+          weapon.equip_weapon(34)
+          sword_using = 34
+        :
+          weapon.equip_weapon(33)
+          sword_using = 33
+        activate potion
+  // 第二形態 手前
+  :?foe = boss_fat
+    ?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
       weapon.equip_weapon(3)
       activate R
     :?foe.armor > 0
       weapon.equip_weapon(5)
-    :?foe.state = 32
-      weapon.equip_weapon(12)
     :
-      weapon.equip_weapon(11)
+      ?time%12 = 0
+        ?sword_using = 33
+          weapon.equip_weapon(34)
+          sword_using = 34
+        :
+          weapon.equip_weapon(33)
+          sword_using = 33
+        activate potion
   // 第二形態 奥
   :?foe = boss_skinny
     ?foe.distance > 6
-      weapon.equip_weapon(9)
+      ?item.GetCooldown("bash") <= 0
+        weapon.equip_weapon(9)
+      :
+        weapon.equip_weapon(10)
     :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
       weapon.equip_weapon(3)
       activate R
     :
-      weapon.equip_weapon(11)
-  : 
-    move.walk()
+      ?time%12 = 0
+        ?sword_using = 33
+          weapon.equip_weapon(34)
+          sword_using = 34
+        :
+          weapon.equip_weapon(33)
+          sword_using = 33
+  :
+    // potion の維持
+    weapon.equip_weapon(1)
 
 func normal_attack()
-  // ☆11のカタツムリ
-  ?foe.armor >= 100 & pos.x > 350
-    weapon.equip_weapon(3)
-    ?foe.distance <= 9
-      activate R
-  // 毛玉
-  :?foe = fluff & foe.distance <= 5 & item.GetCooldown("mind") = 0
-    weapon.equip_weapon(30)
-  :?foe.count >= 10 & item.GetCooldown("blade") = 0
+  ?foe.count >= 10 & item.GetCooldown("blade") = 0
     weapon.equip_weapon(0)
     activate R
-  // mobが多すぎる場合
-  :?foe.count >= 15
-    ?(foe.count >= 10 & item.GetCooldown("hammer") = 0) | buffs.string = bardiche
+  :?foe.count >= 10
+    ?item.GetCooldown("hammer") = 0 | buffs.string = bardiche
       weapon.equip_weapon(5)
       activate R
     :
       weapon.equip_weapon(4)
+  // ☆11のカタツムリ
+  :?foe.armor >= 100 & pos.x > 350
+    weapon.equip_weapon(3)
+    ?foe.distance <= 9
+      activate R
+  // 毛玉はdash(bash) で距離を詰めた後、1Fでmind を挟むことで回避可能
+  :?foe = fluff & foe.distance <= 5 & item.GetCooldown("mind") = 0
+    weapon.equip_weapon(30)
+  // 時短
+  :?foe.distance > 6
+    ?item.GetCooldown("bash") <= 0
+      weapon.equip_weapon(9)
+    :
+      weapon.equip_weapon(10)
   :
+    // todo: bardiche, wand 等の範囲武器で処理すべき
     weapon.equip_weapon(7)
 
 /** キノコの森 **/
 // ボス部屋判定可能
 ?loc = fungus_forest_boss
-  ?foe.distance > 17
+  ?foe.distance > 17 & pos.x < 130
     move.walk()
   :
     boss_attack()
