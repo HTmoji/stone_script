@@ -6,10 +6,12 @@ var weapon = import user_script/weapon
 var follow = import user_script/follow
 
 // 変数
-var bardiche_using = 0
-var hammer_using = 0
-var wand_using = 0
 var boss_motion_count = 0
+var heavy_hammer_motion = 0
+var heavy_hammer_flip = false
+var hammer_flip = false
+var wand_flip = false
+var sword_flip = false
 
 func boss_attack()
   follow.ignition(0)
@@ -17,72 +19,72 @@ func boss_attack()
   ?time < 540 | foe.state = -1
     move.speed_walk()
   :?item.GetCooldown("blade") = 0 
-    weapon.equip_weapon(0)
+    weapon._equip(0, false)
     activate R
   :?item.GetCooldown("mask") = 0
-    weapon.equip_weapon(1)
+    weapon._equip(11, false)
     activate R
   :?foe.state = 32
     boss_motion_count++
     ?boss_motion_count > 9
-      weapon.equip_weapon(30)
+      weapon._equip(53, false)
   // 近接距離
-  :?pos.y > 0 & foe.distance >= 6
-    weapon.equip_weapon(31)
-  :?foe.distance <= 5
-    ?item.GetCooldown("hammer") = 0 | buffs.string = bardiche
-      weapon.equip_weapon(5)
+  :?pos.y > 0
+    // トリスケル + ダッシュで距離を詰める
+    ?foe.distance >= 6
+      weapon._equip(54, false)
+    :?item.GetCooldown("hammer") = 0 | buffs.string = bardiche
+      weapon._equip(4, false)
       activate R
     :?foe.armor > 0
       ?time%17 = 0
-        ?hammer_using = 15
-          weapon.equip_weapon(16)
-          hammer_using = 16
-        :
-          weapon.equip_weapon(15)
-          hammer_using = 15
+        hammer_flip = !hammer_flip
+        weapon._equip(30, hammer_flip)
     :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
-      weapon.equip_weapon(3)
-      activate R
+        weapon._equip(2, false)
+        activate R
+    // todo: 近距離から遠距離への移行時、ワンドで殴りたい
     :
-      ?time%20 = 0
-        ?bardiche_using = 3
-          weapon.equip_weapon(4)
-          bardiche_using = 4
-        :
-          weapon.equip_weapon(3)
-          bardiche_using = 3
+      ?time%12 = 0
+        sword_flip = !sword_flip
+        weapon._equip(22, sword_flip)
   :
-    activate potion
     ?time%16 = 0
-      ?wand_using = 25
-        weapon.equip_weapon(26)
-        wand_using = 26
-      :
-        weapon.equip_weapon(25)
-        wand_using = 25
+      wand_flip = !wand_flip
+      weapon._equip(42, wand_flip)
+      activate potion
     boss_motion_count = 0
 
 func normal_attack()
-  ?foe.count >= 10 & item.GetCooldown("blade") = 0
-    weapon.equip_weapon(0)
+  ?item.GetCooldown("blade") = 0 & foe.count >= 10
+    weapon._equip(0, false)
     activate R
-  // 連射2発で倒せるなら遠距離から始末
-  :?foe.hp + foe.armor <= 30
-    weapon.equip_weapon(7)
-  :?foe.distance > 10
+  // 連射2発で倒せる且つ敵の数が少ないなら遠距離から始末
+  :?foe.hp + foe.armor <= 36 & foe.count <= 3
+    weapon._equip(6, false)
+  :?foe.distance > 6
     ?item.GetCooldown("bash") <= 0
-      weapon.equip_weapon(9)
+      weapon._equip(51, false)
     :
-      weapon.equip_weapon(10)
+      weapon._equip(52, false)
+    heavy_hammer_motion = 0
   // ☆11 ボンバーカート
-  :?foe = bomb_cart & foe.distance < 6
-    weapon.equip_weapon(30)
+  :?foe = bomb_cart & foe.distance < 7
+    weapon._equip(53, false)
   :?(foe.count >= 10 & item.GetCooldown("hammer") = 0) | buffs.string = bardiche
-    weapon.equip_weapon(5)
+    weapon._equip(4, false)
     activate R
+    heavy_hammer_motion = 0
+    heavy_hammer_flip = false
   :
-    weapon.equip_weapon(5)
+    // todo: heavy hammer 持ち替え？モーションキャンセルのロスは被ダメの影響が大きいので考慮必要
+    ?heavy_hammer_motion%20 = 0
+      ?heavy_hammer_flip
+        weapon._equip(4, false)
+      :
+        weapon._equip(5, false)
+      heavy_hammer_flip = !heavy_hammer_flip
+    heavy_hammer_motion++
 
 /** 地獄の鉱山 **/
 // ボス部屋判定可能
@@ -92,6 +94,6 @@ func normal_attack()
   ?summon.count = 0 & time > 1
     follow.fire_talisman()
   :?foe.distance >= 20
-    move.walk()
+    move.action()
   :
     normal_attack()

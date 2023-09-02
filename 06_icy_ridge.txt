@@ -6,81 +6,81 @@ var weapon = import user_script/weapon
 var follow = import user_script/follow
 
 // 変数
-var bardiche_using = 0
-var heavy_hammer_using = 0
 var attack_motion = 0
+var heavy_hammer_flip = false
+var bardiche_flip = false
 
 func boss_attack()
   ?foe = yeti
     follow.ignition(0)
   ?foe.armor > 0
     ?foe.distance >= 6
-      weapon.equip_weapon(10)
+      weapon._equip(52, false)
     :
-      weapon.equip_weapon(17)
+      weapon._equip(31, false)
   :?item.GetCooldown("blade") = 0
-    weapon.equip_weapon(0)
+    weapon._equip(0, false)
     activate R
   :?item.GetCooldown("mask") = 0
-    weapon.equip_weapon(1)
+    weapon._equip(11, false)
     activate R
   :?foe = yeti & foe.distance <= 7 & (item.GetCooldown("bardiche") = 0 | buffs.string = bardiche)
-    weapon.equip_weapon(3)
+    weapon._equip(2, false)
     activate R
   // 謎の待機時間
   :?foe = yeti & foe.state = 1
-    move.walk()
-  // todo: もうちょっといい武器を持たせたい
+    move.action()
+  // ノックバックモーション
+  // todo: fire long wand とか持たせる？
   :?foe.state = 133
-    weapon.equip_weapon(29)
+    weapon._equip(43, false)
+  // ノックバックモーション終了後は即距離を詰める
   :?foe.distance >= 8
-    weapon.equip_weapon(10)
-  // 登場モーション終了後
+    weapon._equip(52, false)
+  // 登場モーション終了後はchill を重ねる
   :?foe.state = 132 & foe.debuffs.string ! "chill:6"
-      weapon.equip_weapon(19)
+      weapon._equip(25, false)
       activate potion
   :
-    // todo: buff, debuff に応じてfire sword の持ち替え判定をする必要がある
-    weapon.equip_weapon(21)
+    // todo: buff, debuff に応じてfire sword の持ち替えできるが…そこまでするか？
+    weapon._equip(23, false)
 
 func normal_attack()
-  ?foe.count >= 10 & item.GetCooldown("blade") = 0
-    weapon.equip_weapon(0)
+  ?item.GetCooldown("blade") = 0 & foe.count >= 10
+    weapon._equip(0, false)
     activate R
   :?foe.distance >= 6
     ?item.GetCooldown("bash") <= 0
-      weapon.equip_weapon(9)
+      weapon._equip(51, false)
     :
-      weapon.equip_weapon(10)
+      weapon._equip(52, false)
     attack_motion = 0
   // ☆11 ガリガリさん、ツララ
   :?foe = Giant Ice Elemental | foe = ice_pillar
     ?item.GetCooldown("hammer") = 0 | buffs.string = bardiche
-      weapon.equip_weapon(5)
+      weapon._equip(4, false)
       activate R
       attack_motion = 0
+      heavy_hammer_flip = false
     :
       ?attack_motion%20 = 0
-        ?bardiche_using = 3
-          weapon.equip_weapon(4)
-          bardiche_using = 4
+        ?bardiche_flip
+          weapon._equip(2, bardiche_flip)
         :
-          weapon.equip_weapon(3)
-          bardiche_using = 3
+          weapon._equip(3, bardiche_flip)
+        bardiche_flip = !bardiche_flip
       attack_motion++
-
   // 処理漏れでchill を貰った際はheavy hammerでごり押し
   :?debuffs.count > 0
-    weapon.equip_weapon(6)
+    weapon._equip(4, false)
     activate R
   :
-    ?attack_motion%19 = 0
-      ?heavy_hammer_using = 5
-        weapon.equip_weapon(6)
-        heavy_hammer_using = 6
+    ?attack_motion%20 = 0
+      ?heavy_hammer_flip
+        weapon._equip(4, heavy_hammer_flip)
       :
-        weapon.equip_weapon(5)
-        heavy_hammer_using = 5
+        weapon._equip(5, heavy_hammer_flip)
+      heavy_hammer_flip = !heavy_hammer_flip
     attack_motion++
 
 /** 氷の尾根 **/
@@ -89,7 +89,7 @@ func normal_attack()
   ?summon.count = 0 & time > 1
     follow.fire_talisman()
   :?foe.distance >= 20
-    move.walk()
+    move.action()
     attack_motion = 0
   :?foe = yeti | foe = ice_wall | pos.x > 500
     boss_attack()

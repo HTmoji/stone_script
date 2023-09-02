@@ -6,8 +6,8 @@ var weapon = import user_script/weapon
 var follow = import user_script/follow
 
 // 変数
-var hammer_using = 0
-var sword_using = 0
+//var hammer_flip = false
+var sword_flip = false
 var harder_alive = true
 
 func boss_attack()
@@ -15,100 +15,87 @@ func boss_attack()
   ?foe = boss_harder
     harder_alive = false
     ?item.GetCooldown("blade") = 0
-      weapon.equip_weapon(0)
+      weapon._equip(0, false)
       activate R
     :?item.GetCooldown("mask") = 0
-      weapon.equip_weapon(1)
+      weapon._equip(11, false)
       activate R
     :?foe.distance > 10
       ?item.GetCooldown("bash") <= 0
-        weapon.equip_weapon(9)
+        weapon._equip(51, false)
       :
-        weapon.equip_weapon(10)
+        weapon._equip(52, false)
     :?item.GetCooldown("hammer") = 0 | buffs.string = bardiche
-      weapon.equip_weapon(5)
+      weapon._equip(4, false)
       activate R
     :
       // todo: エンチャに余裕があれば毒ハンマー
       ?time%12 = 0
-        ?sword_using = 33
-          weapon.equip_weapon(34)
-          sword_using = 34
-        :
-          weapon.equip_weapon(33)
-          sword_using = 33
+        sword_flip = !sword_flip
+        weapon._equip(20, false)
         activate potion
   // 第二形態 手前
   :?foe = boss_fat
+    harder_alive = true
     ?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
-      weapon.equip_weapon(3)
+      weapon._equip(2, false)
       activate R
     :?foe.armor > 0
-      weapon.equip_weapon(5)
+      weapon._equip(4, false)
     :
       ?time%12 = 0
-        ?sword_using = 33
-          weapon.equip_weapon(34)
-          sword_using = 34
-        :
-          weapon.equip_weapon(33)
-          sword_using = 33
-        activate potion
+        sword_flip = !sword_flip
+        weapon._equip(20, sword_flip)
   // 第二形態 奥
   :?foe = boss_skinny
     ?foe.distance > 6
       ?item.GetCooldown("bash") <= 0
-        weapon.equip_weapon(9)
+        weapon._equip(51, false)
       :
-        weapon.equip_weapon(10)
-    :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
-      weapon.equip_weapon(3)
+        weapon._equip(52, false)
+    ?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
+      weapon._equip(2, false)
       activate R
     :
       ?time%12 = 0
-        ?sword_using = 33
-          weapon.equip_weapon(34)
-          sword_using = 34
-        :
-          weapon.equip_weapon(33)
-          sword_using = 33
+        sword_flip = !sword_flip
+        weapon._equip(20, sword_flip)
   :
     // potion の維持
-    weapon.equip_weapon(1)
+    weapon._equip(11, false)
 
 func normal_attack()
-  ?foe.count >= 10 & item.GetCooldown("blade") = 0
-    weapon.equip_weapon(0)
+  ?item.GetCooldown("blade") = 0 & foe.count >= 10
+    weapon._equip(0, false)
     activate R
-  :?foe.count >= 10
-    ?item.GetCooldown("hammer") = 0 | buffs.string = bardiche
-      weapon.equip_weapon(5)
-      activate R
-    :
-      weapon.equip_weapon(4)
   // ☆11のカタツムリ
   :?foe.armor >= 100 & pos.x > 350
-    weapon.equip_weapon(3)
+    weapon._equip(2, false)
     ?foe.distance <= 9
       activate R
   // 毛玉はdash(bash) で距離を詰めた後、1Fでmind を挟むことで回避可能
   :?foe = fluff & foe.distance <= 5 & item.GetCooldown("mind") = 0
-    weapon.equip_weapon(30)
+    weapon._equip(53, false)
   // 時短
   :?foe.distance > 6
     ?item.GetCooldown("bash") <= 0
-      weapon.equip_weapon(9)
+      weapon._equip(51, false)
     :
-      weapon.equip_weapon(10)
+      weapon._equip(52, false)
+  // 雑魚が多い際はheavy hammer
+  :?foe.armor > 0
+      weapon._equip(4, false)
+      ?(foe.count > 5 & item.GetCooldown("hammer") = 0) | buffs.string = bardiche
+        activate R
   :
     // todo: bardiche, wand 等の範囲武器で処理すべき
-    weapon.equip_weapon(7)
+    weapon._equip(6, false)
 
 /** キノコの森 **/
 // ボス部屋判定可能
 ?loc = fungus_forest_boss
   ?foe.distance > 17 & harder_alive
-    move.walk()
+    move.action()
   :
     boss_attack()
 :?loc = fungus_forest
@@ -116,6 +103,6 @@ func normal_attack()
   ?summon.count = 0 & time > 1
     follow.fire_talisman()
   :?foe.distance >= 20
-    move.walk()
+    move.action()
   :
     normal_attack()

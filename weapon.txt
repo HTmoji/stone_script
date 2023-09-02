@@ -1,55 +1,5 @@
 // memo: 同武器を装備する場合、名札orピカピカorエンチャントレベル違いにする必要アリ
 var weapon_list = [
-  ["blade *8 +11"],                                    // 0: blade of god
-  ["wand poison *10 +10", "mask *7 +1"],               // 1: nagalaja mask
-  ["skeleton arm *7 +1"],                              // 2: skeleton arm
-  ["bardiche *10 +15"],                                // 3: crit enchant
-  ["bardiche *10 +10"],                                // 4: damage enchant
-  ["heavy hammer *10 +11"],                            // 5: damage enchant
-  ["heavy hammer *10 +9"],                             // 6: damage enchant
-  ["repeat crossbow *10 +10"],                         // 7: damage enchant
-  ["quarterstaff *10 +5"],                             // 8: move
-  ["sword ice *10 +10", "bash shield *5 +8"],          // 9: move + stun
-  ["sword ice *10 +10", "dash shield *10 +1"],         // 10: move
-  ["sword ice *10 +10", "com shield *10 +11"],         // 11: shield
-  ["wand fire *10 +10", "shield fire *10 +7"],         // 12: debuff shield
-  ["sword ice *10 +10", "shield ice *10 +9"],          // 13: evasion shield
-  ["sword ice *10 +10", "shield vigor *10 +6"],        // 14: heal shield (todo: 回復特化の左武器?自動化であれば不要か?)
-  ["hammer aether *10 +11", "hammer aether *10 +10"],  // 15: aether hamer v1
-  ["hammer aether *10 +10", "hammer aether *10 +11"],  // 16: aether hamer v2
-  ["hammer fire *10 +11", "hammer fire *10 +10"],      // 17: fire hammer v1
-  ["hammer fire *10 +10", "hammer fire *10 +11"],      // 18: fire hammer v2
-  ["sword ice *10 +10", "sword ice *10 +9"],           // 19: ice sword v1
-  ["sword ice *10 +9", "sword ice *10 +10"],           // 20: ice sword v2
-  ["sword fire *10 +12", "sword fire *10 +11"],        // 21: fire sword v1
-  ["sword fire *10 +11", "sword fire *10 +12"],        // 22: fire sword v2
-  ["wand ice *10 +11", "gari-gari kun"],               // 23: ice wand v1
-  ["gari-gari kun", "wand ice *10 +11"],               // 24: ice wand v2
-  ["wand aether *10 +11", "wand aether *10 +10"],      // 25: aether wand v1
-  ["wand aether *10 +10", "wand aether *10 +11"],      // 26: aether wand v2
-  ["wand vigor *10 +10", "wand vigor *10 +9"],         // 27: vigor wand v1
-  ["wand vigor *10 +9", "wand vigor *10 +10"],         // 28: vigor wand v2
-  ["wand poison *10 +10", "wand fire *10 +10"],        // 29: debuff
-  ["wand poison *10 +10", "mind stone"],               // 30: 後方回避
-  ["triskelion stone", "dash shield *10 +1"],          // 31: move for mine boss
-  ["sword ice *10 +10", "sword fire *10 +10"],         // 32: jakiro
-  ["sword poison *10 +9", "sword poison *10 +8"],      // 33: poison sword v1
-  ["sword poison *10 +8", "sword poison *10 +9"],      // 34: poison sword v2
-  [""],                                                // 35:
-  [""],                                                // 36:
-  [""],                                                // 37:
-  [""],                                                // 38:
-  [""],                                                // 39:
-  [""],                                                // 40:
-  [""],                                                // 41:
-  [""],                                                // 42:
-  [""],                                                // 43:
-  [""],                                                // 44:
-  [""],                                                // 45:
-  [""]                                                 // 46:
-]
-
-var weapon_list = [
   // 両手武器
   ["blade *8 +11"],           // 0: blade of god
   ["skeleton arm *7 +1"],     // 1: skeleton arm
@@ -58,7 +8,7 @@ var weapon_list = [
   ["heavy hammer *10 +12"],   // 4: damage
   ["heavy hammer *10 +11"],   // 5: damage
   ["repeat crossbow *10 +9"], // 6: damage
-  [""],                       // 7:
+  [""],                       // 7: todo: スキル用のheavy hammer を用意？
   [""],                       // 8:
   [""],                       // 9:
   // 片手武器（スキル系）
@@ -73,19 +23,19 @@ var weapon_list = [
   [""],                                           // 18:
   [""],                                           // 19:
   // 片手武器（片手剣）
-  ["sword poison *10 +11", "sword poison *10 +10"], // 20: D 属性エンチャ
+  ["sword poison *10 +11", "sword poison *10 +9"],  // 20: D 属性エンチャ
   ["sword vigor *10 +11", "sword vigor *10 +10"],   // 21: D 属性エンチャ
-  ["sword aether *10 +11", "sword aether *10 +10"], // 22: D 属性エンチャ
+  ["sword aether *10 +11", "sword aether *10 +9"],  // 22: D 属性エンチャ
   ["sword fire *10 +12", "sword fire *10 +11"],     // 23: D 属性エンチャ
   ["sword ice *10 +10", "sword ice *10 +9"],        // 24: D 属性エンチャ
   ["sword ice *10 +8", "sword ice *10 +7"],         // 25: dI デバフエンチャ
-  [""],                                             // 26:
+  [""],                                             // 26: todo: 無属性クリティカルエンチャ ポエナ用
   [""],                                             // 27:
   [""],                                             // 28:
   [""],                                             // 29:
   // 片手武器（斧）
   ["hammer aether *10 +11", "hammer aether *10 +10"], // 30: D 倍率エンチャ ガーディアン用
-  ["hammer fire *10 +11", "hammer fire *10 +10"],     // 31: D 倍率エンチャ ワルアンジェロ用
+  ["hammer fire *10 +11", "hammer fire *10 +10"],     // 31: D 倍率エンチャ イエティ、ワルアンジェロ用
   [""],                                               // 32:
   [""],                                               // 33:
   [""],                                               // 34:
@@ -110,7 +60,7 @@ var weapon_list = [
   ["sword ice *10 +8", "bash shield *6 +10"],           // 51: ツッコミシールド
   ["sword ice *10 +8", "dash shield *10"],              // 52: ダッシュの盾
   ["wand poison *10 +10", "mind stone"],                // 53: 後方回避用
-  [""],                                                 // 54:
+  ["triskelion stone", "dash shield *10 +1"],           // 54: ガーディアン用移動
   [""],                                                 // 55:
   ["sword ice *10 +8", "shield fire *10 +1"],           // 56: デバフ用
   ["sword ice *10 +8", "shield ice *10 +1"],            // 57: 回避用
