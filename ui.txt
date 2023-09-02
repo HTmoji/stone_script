@@ -184,5 +184,3 @@ func debug_buttonPress()
   enemy_update_print()
   ?debugFlg
     debug_print()
-
-// memo: パネル使った方法を試す

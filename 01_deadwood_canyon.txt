@@ -1,4 +1,4 @@
-// potion: ???
+// potion: berserk
 
 // external script
 var move = import user_script/move

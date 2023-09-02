@@ -1,4 +1,4 @@
-// 変数
+// 燃えカスの係数(+16 エンチャ)
 var ignition_damage = 88
 
 func fire_talisman()

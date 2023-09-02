@@ -49,10 +49,94 @@ var weapon_list = [
   [""]                                                 // 46:
 ]
 
-// todo: 第二引数にflip 入れて入れ替えを実装
-func equip_weapon(index)
+var weapon_list = [
+  // 両手武器
+  ["blade *8 +11"],           // 0: blade of god
+  ["skeleton arm *7 +1"],     // 1: skeleton arm
+  ["bardiche *10 +15"],       // 2: crit
+  ["bardiche *10 +11"],       // 3: damage
+  ["heavy hammer *10 +12"],   // 4: damage
+  ["heavy hammer *10 +11"],   // 5: damage
+  ["repeat crossbow *10 +9"], // 6: damage
+  [""],                       // 7:
+  [""],                       // 8:
+  [""],                       // 9:
+  // 片手武器（スキル系）
+  ["fire talisman *6 +16", "com shield *10 +11"], // 10: 枠だけ、運用はuser_script/follow で行う
+  ["wand poison *10 +10", "mask *7 +1"],          // 11: mask
+  [""],                                           // 12: todo: sword poison + mask21
+  [""],                                           // 13: todo: sword vigor+ mask21
+  [""],                                           // 14: todo: sword aether + mask21
+  [""],                                           // 15: todo: sword fire + mask21
+  [""],                                           // 16: todo: sword ice + mask21
+  [""],                                           // 17:
+  [""],                                           // 18:
+  [""],                                           // 19:
+  // 片手武器（片手剣）
+  ["sword poison *10 +11", "sword poison *10 +10"], // 20: D 属性エンチャ
+  ["sword vigor *10 +11", "sword vigor *10 +10"],   // 21: D 属性エンチャ
+  ["sword aether *10 +11", "sword aether *10 +10"], // 22: D 属性エンチャ
+  ["sword fire *10 +12", "sword fire *10 +11"],     // 23: D 属性エンチャ
+  ["sword ice *10 +10", "sword ice *10 +9"],        // 24: D 属性エンチャ
+  ["sword ice *10 +8", "sword ice *10 +7"],         // 25: dI デバフエンチャ
+  [""],                                             // 26:
+  [""],                                             // 27:
+  [""],                                             // 28:
+  [""],                                             // 29:
+  // 片手武器（斧）
+  ["hammer aether *10 +11", "hammer aether *10 +10"], // 30: D 倍率エンチャ ガーディアン用
+  ["hammer fire *10 +11", "hammer fire *10 +10"],     // 31: D 倍率エンチャ ワルアンジェロ用
+  [""],                                               // 32:
+  [""],                                               // 33:
+  [""],                                               // 34:
+  [""],                                               // 35:
+  [""],                                               // 36:
+  [""],                                               // 37:
+  [""],                                               // 38:
+  [""],                                               // 39:
+  // 片手武器（片手杖）
+  ["wand ice *10 +x", "gari-gari kun"],           // 40: D 属性エンチャ
+  ["wand vigor *10 +11", "wand vigor *10 +10"],   // 41: D 属性エンチャ 
+  ["wand aether *10 +11", "wand aether *10 +10"], // 42: D 属性エンチャ
+  ["wand fire *10 +8", "wand poison *10 +10"],    // 43: デバフ付与
+  [""],                                           // 44:
+  [""],                                           // 45:
+  [""],                                           // 46:
+  [""],                                           // 47:
+  [""],                                           // 48:
+  [""],                                           // 49:
+  // 移動手段、盾
+  ["quarterstaff *10"],                                 // 50: 六尺棒
+  ["sword ice *10 +8", "bash shield *6 +10"],           // 51: ツッコミシールド
+  ["sword ice *10 +8", "dash shield *10"],              // 52: ダッシュの盾
+  ["wand poison *10 +10", "mind stone"],                // 53: 後方回避用
+  [""],                                                 // 54:
+  [""],                                                 // 55:
+  ["sword ice *10 +8", "shield fire *10 +1"],           // 56: デバフ用
+  ["sword ice *10 +8", "shield ice *10 +1"],            // 57: 回避用
+  ["sword vigor *xx +xx", "shield vigor *10 +6"],       // 58: 回復用 todo: 回復率or速度エンチャの剣
+  ["long sword vigor *xx +xx", "shield vigor *10 +6"],  // 59: 回復用 todo: 回復率エンチャの大剣
+  // 拡張用枠
+  // 両手杖、両手剣、属性クロスボウは使いどころが分からん…
+  [""],                         // 60:
+  [""],                         // 61:
+  [""],                         // 62:
+  [""],                         // 63:
+  [""],                         // 64:
+  [""],                         // 65:
+  [""],                         // 66:
+  [""],                         // 67:
+  [""],                         // 68:
+  [""]                          // 69:
+]
+
+func _equip(index, flip)
   ?weapon_list[index].Count() = 1
     equip @weapon_list[index][0]@
   :
-    equipL @weapon_list[index][0]@
-    equipR @weapon_list[index][1]@
+    ?flip
+      equipL @weapon_list[index][1]@
+      equipR @weapon_list[index][0]@
+    :
+      equipL @weapon_list[index][0]@
+      equipR @weapon_list[index][1]@

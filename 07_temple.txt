@@ -1,3 +1,5 @@
+// potion: berserk
+
 // external script
 var move = import user_script/move
 var weapon = import user_script/weapon

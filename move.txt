@@ -4,7 +4,10 @@ var speed_mode = true
 func set_harvest_pick(b)
   harvest_pick = b
 
-func walk()
+func set_speed_mode(b)
+  speed_mode = b
+
+func action()
   ?harvest_pick & harvest.distance <= 8
       harvest_walk()
   :?pickup & pickup.distance <= 8
