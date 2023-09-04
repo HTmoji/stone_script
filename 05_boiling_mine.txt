@@ -39,7 +39,7 @@ func boss_attack()
     :?foe.armor > 0
       ?time%17 = 0
         hammer_flip = !hammer_flip
-        weapon._equip(30, hammer_flip)
+        weapon._equip(28, hammer_flip)
     :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
         weapon._equip(2, false)
         activate R

@@ -9,19 +9,10 @@ var follow = import user_script/follow
 move.set_harvest_pick(false)
 
 // 変数
-var bearer_wand_focus = false
-var bearer_wand_motion_count = 0
-var bearer_chill_focus = 0
-
-var elementalist_sword_using = 0
-
+var weapon_flip = false
 var perfected_attack_motion_count = 0
-var perfected_hammer_using = 0
-var perfected_chill_focus = 0
-var perfected_sword_using = 0
 
 func boss_attack()
-  follow.ignition(0)
   ?foe = bearer
     state1()
   :?foe = elementalist
@@ -29,117 +20,128 @@ func boss_attack()
   :?foe = perfected
     state3()
   :
-    move.walk()
+    move.action()
 
 // 第一形態
 func state1()
   ?foe.distance >= 6
-    weapon.equip_weapon(10)
+    weapon._equip(52, false)
   :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
-    weapon.equip_weapon(3)
+    weapon._equip(2, false)
     activate R
   :?item.GetCooldown("blade") = 0
-    weapon.equip_weapon(0)
+    weapon._equip(0, false)
     activate R
   :?item.GetCooldown("mask") = 0
-    weapon.equip_weapon(1)
+    weapon._equip(11, false)
     activate R
   :?item.GetCooldown("hammer") <= 0 | buffs.string = bardiche
-    weapon.equip_weapon(5)
+    weapon._equip(4, false)
     activate R
-  // todo: sword で付与した方がいいかも
-  :?(time%180 = 0 | bearer_wand_focus) & bearer_wand_motion_count <= 35
-    weapon.equip_weapon(23)
-    bearer_wand_focus = true
-    bearer_wand_motion_count++
-  :?foe.debuffs.string ! dot
-    weapon.equip_weapon(29)
-  :?(foe.debuffs.string ! chill | bearer_chill_focus) & foe.debuffs.string ! "chill:6"
-    weapon.equip_weapon(19)
-    bearer_chill_focus = true
-    bearer_wand_focus = false
-    bearer_wand_motion_count = 0
-  :
-    weapon.equip_weapon(21)
-    bearer_wand_focus = false
-    bearer_chill_focus = false
-    bearer_wand_motion_count = 0
+  // poison, chill は付与し続ける
+  :?foe.debuffs.string ! "damage"
+    weapon._equip(30, false)
+  :?foe.debuffs.string ! "chill:6"
+    weapon._equip(25, false)
+  :?time%12 = 0
+    weapon_flip = !weapon_flip
+    weapon._equip(23, weapon_flip)
 
 // 第二形態
 func state2()
-  ?foe.distance >= 6
-    weapon.equip_weapon(10)
-  :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
-    weapon.equip_weapon(3)
-    activate R
-  :?buffs.count = 0
-    weapon.equip_weapon(32)
-    activate potion
-  :
-    ?time%12 = 0
-      ?elementalist_sword_using = 19
-        weapon.equip_weapon(21)
-        elementalist_sword_using = 21
-      :
-        weapon.equip_weapon(19)
-        elementalist_sword_using = 19
-  // todo: 目の表示取得できたので弱点武器を担ぐ処理を追加可能
+  // 目の表示を取得
+  // ∞ ♥ * φ ❄ 
   var symbol = draw.GetSymbol(54, 9)
   >`10,10,week = @symbol@
 
+  ?foe.distance > 6
+    weapon._equip(52, false)
+  :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
+    weapon._equip(2, false)
+    activate R
+  // chill は付与し続ける
+  :?foe.debuffs.string ! "chill:6"
+    weapon._equip(25, false)
+  // 弱点属性の判別
+  :?time%12 = 0
+    var weapon_index = 23
+    ?symbol = ∞
+      weapon_index = 24
+    :?symbol = ♥
+      weapon_index = 20
+    :?symbol = "*"
+      weapon_index = 21
+    :?symbol = φ
+      weapon_index = 22
+    :?symbol = ❄
+      weapon_index = 23
+    weapon_flip = !weapon_flip
+    weapon._equip(weapon_index, weapon_flip)
+
 // 第三形態
 func state3()
+  follow.ignition(0)
   // 光線回避
   ?foe.state = 115
     perfected_attack_motion_count++
     ?perfected_attack_motion_count >= 60
-      weapon.equip_weapon(30)
-  :
+      weapon._equip(53, false)
     perfected_attack_motion_count = 0
+  //todo:  シールド付与後のスタン回避
+  :?foe.state = 999
+    var a = 0
+  :
     ?foe.distance >= 9
-      weapon.equip_weapon(10)
+      weapon._equip(52, false)
     :?foe.armor > 0
-      ?time%17 = 0
-        ?perfected_hammer_using = 17
-          weapon.equip_weapon(18)
-          perfected_hammer_using = 18
-        :
-          weapon.equip_weapon(17)
-          perfected_hammer_using = 17
+      ?item.GetCooldown("mind") <= 0 & item.GetCooldown("hammer") = 0
+        weapon._equip(53, false)
+      ?item.GetCooldown("hammer") = 0 | buffs.string = bardiche
+        weapon._equip(4, false)
+        activate R
+      :?time%17 = 0
+        weapon_flip = !weapon_flip
+        weapon._equip(29, weapon_flip)
     :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
-      weapon.equip_weapon(3)
+      weapon._equip(2, false)
       activate R
     :?item.GetCooldown("blade") = 0
-      weapon.equip_weapon(0)
+      weapon._equip(0, false)
       activate R
     :?item.GetCooldown("mask") = 0
-      weapon.equip_weapon(1)
+      weapon._equip(11, false)
       activate R
+    // todo: 回復必要？
     :?hp < 10
-      weapon.equip_weapon(14)
-    :?(foe.debuffs.string ! chill | perfected_chill_focus) & foe.debuffs.string ! "chill:6"
-      weapon.equip_weapon(19)
-      perfected_chill_focus = true
+      weapon._equip(58, false)
+    // poison, chill は付与し続ける
+    :?foe.state = 32 & foe.debuffs.string ! "damage"
+      weapon._equip(30, false)
+    :?foe.debuffs.string ! "chill:6"
+      weapon._equip(25, false)
     :
-      perfected_chill_focus = false
       ?time%12 = 0
-        ?perfected_sword_using = 21
-          weapon.equip_weapon(22)
-          perfected_sword_using = 22
-        :
-          weapon.equip_weapon(21)
-          perfected_sword_using = 21
+        weapon_flip = !weapon_flip
+        weapon._equip(23, weapon_flip)
+        activate potion
     
-// todo: アルカディアの偵察兵
+// アルカディアの偵察兵はスタンハメ可能
 func normal_attack()
-  var a = 0
+  ?foe.distance > 7
+    weapon._equip(51, false)
+  :?time%20 = 0
+    ?weapon_flip
+      weapon._equip(4, false)
+    :
+      weapon._equip(5, false)
+    weapon_flip = !weapon_flip
 
 /** ロッキー高原 **/
 ?loc = rocky_plateau
   ?summon.count = 0 & time > 1
     follow.fire_talisman()
   :?foe.distance >= 40
-    move.walk()
+    move.action()
   :?foe = acronian_scout
     normal_attack()
   :

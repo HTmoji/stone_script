@@ -9,6 +9,7 @@ var follow = import user_script/follow
 var attack_motion = 0
 var heavy_hammer_flip = false
 var bardiche_flip = false
+var sword_flip = false
 
 func boss_attack()
   ?foe = yeti
@@ -17,7 +18,7 @@ func boss_attack()
     ?foe.distance >= 6
       weapon._equip(52, false)
     :
-      weapon._equip(31, false)
+      weapon._equip(29, false)
   :?item.GetCooldown("blade") = 0
     weapon._equip(0, false)
     activate R
@@ -56,7 +57,12 @@ func normal_attack()
       weapon._equip(52, false)
     attack_motion = 0
   // ☆11 ガリガリさん、ツララ
-  :?foe = Giant Ice Elemental | foe = ice_pillar
+  :?foe = Giant Ice Elemental
+    attack_motion = 0
+    ?time%12 = 0
+      sword_flip = !sword_flip
+      weapon._equip(23, sword_flip)
+  :?foe = ice_pillar
     ?item.GetCooldown("hammer") = 0 | buffs.string = bardiche
       weapon._equip(4, false)
       activate R
@@ -74,6 +80,9 @@ func normal_attack()
   :?debuffs.count > 0
     weapon._equip(4, false)
     activate R
+  // heavy hammer を使うよりも早く処理できる場合
+  :?foe.hp < 39 & foe.count < 3
+    weapon._equip(9, false)
   :
     ?attack_motion%20 = 0
       ?heavy_hammer_flip
