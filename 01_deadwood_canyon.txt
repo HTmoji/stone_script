@@ -60,7 +60,7 @@ func normal_attack()
     weapon._equip(0, false)
     activate R
   ?foe ! scarab
-    weapon._equip(6, false)
+    weapon._equip(9, false)
   :
     ?foe.distance >= 8
       ?item.GetCooldown("bash") <= 0

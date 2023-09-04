@@ -1,16 +1,16 @@
 // memo: 同武器を装備する場合、名札orピカピカorエンチャントレベル違いにする必要アリ
 var weapon_list = [
   // 両手武器
-  ["blade *8 +11"],           // 0: blade of god
-  ["skeleton arm *7 +1"],     // 1: skeleton arm
-  ["bardiche *10 +15"],       // 2: crit
-  ["bardiche *10 +11"],       // 3: damage
-  ["heavy hammer *10 +12"],   // 4: damage
-  ["heavy hammer *10 +11"],   // 5: damage
-  ["repeat crossbow *10 +9"], // 6: damage
-  [""],                       // 7: todo: スキル用のheavy hammer を用意？
-  [""],                       // 8:
-  [""],                       // 9:
+  ["blade *8 +11"],             // 0: blade of god
+  ["skeleton arm *7 +1"],       // 1: skeleton arm
+  ["bardiche *10 +15"],         // 2: crit
+  ["bardiche *10 +12"],         // 3: damage
+  ["heavy hammer *10 +12"],     // 4: damage
+  ["heavy hammer *10 +11"],     // 5: damage
+  [""],                         // 6:
+  [""],                         // 7: todo: スキル用のheavy hammer を用意？
+  [""],                         // 8:
+  ["repeat crossbow *10 +12"],  // 9: damage
   // 片手武器（スキル系）
   ["fire talisman *6 +16", "com shield *10 +11"], // 10: 枠だけ、運用はuser_script/follow で行う
   ["wand poison *10 +10", "mask *7 +1"],          // 11: mask
@@ -23,11 +23,11 @@ var weapon_list = [
   [""],                                           // 18:
   [""],                                           // 19:
   // 片手武器（片手剣）
-  ["sword poison *10 +11", "sword poison *10 +9"],  // 20: D 属性エンチャ
+  ["sword poison *10 +11", "sword poison *10 +10"], // 20: D 属性エンチャ
   ["sword vigor *10 +11", "sword vigor *10 +10"],   // 21: D 属性エンチャ
-  ["sword aether *10 +11", "sword aether *10 +9"],  // 22: D 属性エンチャ
-  ["sword fire *10 +12", "sword fire *10 +11"],     // 23: D 属性エンチャ
-  ["sword ice *10 +10", "sword ice *10 +9"],        // 24: D 属性エンチャ
+  ["sword aether *10 +11", "sword aether *10 +10"], // 22: D 属性エンチャ
+  ["sword fire *10 +11", "sword fire *10 +10"],     // 23: D 属性エンチャ
+  ["sword ice *10 +11", "sword ice *10 +10"],       // 24: D 属性エンチャ
   ["sword ice *10 +8", "sword ice *10 +7"],         // 25: dI デバフエンチャ
   [""],                                             // 26: todo: 無属性クリティカルエンチャ ポエナ用
   [""],                                             // 27:
@@ -45,11 +45,11 @@ var weapon_list = [
   [""],                                               // 38:
   [""],                                               // 39:
   // 片手武器（片手杖）
-  ["wand ice *10 +x", "gari-gari kun"],           // 40: D 属性エンチャ
+  ["wand ice *10 +8", "gari-gari kun +8"],        // 40: D 属性エンチャ
   ["wand vigor *10 +11", "wand vigor *10 +10"],   // 41: D 属性エンチャ 
   ["wand aether *10 +11", "wand aether *10 +10"], // 42: D 属性エンチャ
-  ["wand fire *10 +8", "wand poison *10 +10"],    // 43: デバフ付与
-  [""],                                           // 44:
+  ["wand fire *10 +11", "wand fire *10 +10"],     // 43: D 属性エンチャの更新必要
+  ["wand fire *10 +8", "wand poison *10 +10"],    // 44: todo: デバフ付与用の火wand必要
   [""],                                           // 45:
   [""],                                           // 46:
   [""],                                           // 47:

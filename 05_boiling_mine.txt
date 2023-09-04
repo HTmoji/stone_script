@@ -60,8 +60,8 @@ func normal_attack()
     weapon._equip(0, false)
     activate R
   // 連射2発で倒せる且つ敵の数が少ないなら遠距離から始末
-  :?foe.hp + foe.armor <= 36 & foe.count <= 3
-    weapon._equip(6, false)
+  :?foe.hp + foe.armor <= 39 & foe.count <= 3
+    weapon._equip(9, false)
   :?foe.distance > 6
     ?item.GetCooldown("bash") <= 0
       weapon._equip(51, false)

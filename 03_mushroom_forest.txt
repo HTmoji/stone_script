@@ -89,7 +89,7 @@ func normal_attack()
         activate R
   :
     // todo: bardiche, wand 等の範囲武器で処理すべき
-    weapon._equip(6, false)
+    weapon._equip(9, false)
 
 /** キノコの森 **/
 // ボス部屋判定可能

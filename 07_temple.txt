@@ -68,7 +68,7 @@ func normal_attack()
       weapon._equip(0, false)
   // todo: デバフ積みすぎて連射クロスボウがゴミになった際の条件分岐を入れるべき
   :
-    weapon._equip(6, false)
+    weapon._equip(9, false)
 
 /** 神殿 **/
 // ボス部屋判定可能
