@@ -14,7 +14,7 @@ var wand_flip = false
 var sword_flip = false
 
 func boss_attack()
-  follow.ignition(0)
+  follow.ignition(300)
   // 開始待ち
   ?time < 540 | foe.state = -1
     move.speed_walk()
@@ -24,20 +24,23 @@ func boss_attack()
   :?item.GetCooldown("mask") = 0
     weapon._equip(11, false)
     activate R
+  // 回避ロジックは不要？
+  /*
   :?foe.state = 32
     boss_motion_count++
     ?boss_motion_count > 9
       weapon._equip(53, false)
+  */
   // 近接距離
   :?pos.y > 0
     // トリスケル + ダッシュで距離を詰める
     ?foe.distance >= 6
       weapon._equip(54, false)
-    :?item.GetCooldown("hammer") = 0 | buffs.string = bardiche
-      weapon._equip(4, false)
-      activate R
     :?foe.armor > 0
-      ?time%17 = 0
+      ?item.GetCooldown("hammer") = 0 | buffs.string = bardiche
+        weapon._equip(4, false)
+        activate R
+      :?time%17 = 0
         hammer_flip = !hammer_flip
         weapon._equip(28, hammer_flip)
     :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
@@ -71,7 +74,7 @@ func normal_attack()
   // ☆11 ボンバーカート
   :?foe = bomb_cart & foe.distance < 7
     weapon._equip(53, false)
-  :?(foe.count >= 10 & item.GetCooldown("hammer") = 0) | buffs.string = bardiche
+  :?(foe.count >= 6 & item.GetCooldown("hammer") = 0) | buffs.string = bardiche
     weapon._equip(4, false)
     activate R
     heavy_hammer_motion = 0
