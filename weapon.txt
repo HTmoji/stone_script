@@ -26,7 +26,7 @@ var weapon_list = [
   ["sword poison *10 +11", "sword poison *10 +10"],   // 20: D 属性エンチャ
   ["sword vigor *10 +11", "sword vigor *10 +10"],     // 21: D 属性エンチャ
   ["sword aether *10 +11", "sword aether *10 +10"],   // 22: D 属性エンチャ
-  ["sword fire *10 +11", "sword fire *10 +10"],       // 23: D 属性エンチャ
+  ["sword fire *10 +14", "sword fire *10 +10"],       // 23: D 属性エンチャ
   ["sword ice *10 +11", "sword ice *10 +10"],         // 24: D 属性エンチャ
   ["sword ice *10 +8", "sword ice *10 +7"],           // 25: dI デバフエンチャ
   [""],                                               // 26: todo: 無属性クリティカルエンチャ ポエナ用

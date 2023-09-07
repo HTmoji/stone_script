@@ -11,6 +11,8 @@ move.set_harvest_pick(false)
 // 変数
 var weapon_flip = false
 var perfected_attack_motion_count = 0
+var perfected_attack_state32_count = 0
+var perfected_attack_state32_flg = false
 
 func boss_attack()
   ?foe = bearer
@@ -35,9 +37,6 @@ func state1()
   :?item.GetCooldown("mask") = 0
     weapon._equip(11, false)
     activate R
-  :?item.GetCooldown("hammer") <= 0 | buffs.string = bardiche
-    weapon._equip(4, false)
-    activate R
   // poison, chill は付与し続ける
   :?foe.debuffs.string ! "damage"
     weapon._equip(30, false)
@@ -59,9 +58,6 @@ func state2()
   :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
     weapon._equip(2, false)
     activate R
-  // chill は付与し続ける
-  :?foe.debuffs.string ! "chill:6"
-    weapon._equip(25, false)
   // 弱点属性の判別
   :?time%12 = 0
     var weapon_index = 23
@@ -83,19 +79,28 @@ func state3()
   follow.ignition(0)
   // 光線回避
   ?foe.state = 115
+    perfected_attack_state32_count = 0
     perfected_attack_motion_count++
     ?perfected_attack_motion_count >= 60
-      weapon._equip(53, false)
-    perfected_attack_motion_count = 0
-  //todo:  シールド付与後のスタン回避
-  :?foe.state = 999
-    var a = 0
+      ?item.GetCooldown("mind") <= 0
+        weapon._equip(53, false)
+      :
+        weapon._equip(43, false)
   :
+    perfected_attack_motion_count = 0
+    ?foe.state = 32 & !perfected_attack_state32_flg
+      perfected_attack_state32_count++
+      perfected_attack_state32_flg = true
+    :?foe.state ! 32
+      perfected_attack_state32_flg = false
+
+    ?foe.state = 32 & perfected_attack_state32_count = 3
+      weapon._equip(53, false)
+    :
+      weapon._equip(43, false)
     ?foe.distance >= 9
       weapon._equip(52, false)
     :?foe.armor > 0
-      ?item.GetCooldown("mind") <= 0 & item.GetCooldown("hammer") = 0
-        weapon._equip(53, false)
       ?item.GetCooldown("hammer") = 0 | buffs.string = bardiche
         weapon._equip(4, false)
         activate R
@@ -111,9 +116,6 @@ func state3()
     :?item.GetCooldown("mask") = 0
       weapon._equip(11, false)
       activate R
-    // todo: 回復必要？
-    :?hp < 10
-      weapon._equip(58, false)
     // poison, chill は付与し続ける
     :?foe.state = 32 & foe.debuffs.string ! "damage"
       weapon._equip(30, false)
