@@ -15,7 +15,9 @@ var perfected_attack_state32_count = 0
 var perfected_attack_state32_flg = false
 
 func boss_attack()
-  ?foe = bearer
+  ?foe.state = -1 | (foe = bearer & (foe.state = 127 | foe.state = 117 | foe.state = 124)) | (foe = elementalist & foe.state = 107)
+    move.action()
+  :?foe = bearer
     state1()
   :?foe = elementalist
     state2()
@@ -87,24 +89,24 @@ func state3()
       :
         weapon._equip(43, false)
   :
+    // シールド起動時のスタン回避
     perfected_attack_motion_count = 0
-    ?foe.state = 32 & !perfected_attack_state32_flg
-      perfected_attack_state32_count++
-      perfected_attack_state32_flg = true
+    ?foe.state = 32
+      ?!perfected_attack_state32_flg
+        perfected_attack_state32_count++
+        perfected_attack_state32_flg = true
     :?foe.state ! 32
       perfected_attack_state32_flg = false
-
-    ?foe.state = 32 & perfected_attack_state32_count = 3
-      weapon._equip(53, false)
-    :
-      weapon._equip(43, false)
-    ?foe.distance >= 9
+    ?(foe.state = 32 | foe.state = 33) & perfected_attack_state32_count = 3
+      ?item.GetCooldown("mind") <= 0
+        weapon._equip(53, false)
+      :
+        weapon._equip(43, false)
+    // 光線回避後、またはシールド回避後に起動
+    :?foe.distance >= 9
       weapon._equip(52, false)
     :?foe.armor > 0
-      ?item.GetCooldown("hammer") = 0 | buffs.string = bardiche
-        weapon._equip(4, false)
-        activate R
-      :?time%17 = 0
+      ?time%17 = 0
         weapon_flip = !weapon_flip
         weapon._equip(29, weapon_flip)
     :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
@@ -117,7 +119,7 @@ func state3()
       weapon._equip(11, false)
       activate R
     // poison, chill は付与し続ける
-    :?foe.state = 32 & foe.debuffs.string ! "damage"
+    :?foe.debuffs.string ! "damage"
       weapon._equip(30, false)
     :?foe.debuffs.string ! "chill:6"
       weapon._equip(25, false)
@@ -142,7 +144,7 @@ func normal_attack()
 ?loc = rocky_plateau
   ?summon.count = 0 & time > 1
     follow.fire_talisman()
-  :?foe.distance >= 40
+  :?foe.distance >= 25
     move.action()
   :?foe = acronian_scout
     normal_attack()
