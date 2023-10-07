@@ -2,23 +2,23 @@
 var weapon_list = [
   // 両手武器
   ["blade *8 +11"],             // 0: blade of god
-  ["skeleton arm *7 +11"],      // 1: skeleton arm
+  ["skeleton arm *8 +1"],       // 1: skeleton arm
   ["bardiche *10 +16"],         // 2: crit
   ["bardiche *10 +15"],         // 3: damage
   ["heavy hammer *10 +11"],     // 4: damage
   ["heavy hammer *10 +10"],     // 5: damage
   [""],                         // 6:
-  [""],                         // 7: todo: スキル用のheavy hammer を用意？
-  [""],                         // 8:
-  ["repeat crossbow *10 +12"],  // 9: damage
+  [""],                         // 7:
+  [""],                         // 8: 
+  ["repeat crossbow *10 +16"],  // 9: damage
   // 片手武器（スキル系）
-  ["fire talisman *6 +16", "com shield *10 +11"], // 10: 枠だけ、運用はuser_script/follow で行う
-  ["wand poison *10 +10", "mask *7 +16"],         // 11: mask
-  [""],                                           // 12: todo: sword poison + mask21
-  [""],                                           // 13: todo: sword vigor+ mask21
-  [""],                                           // 14: todo: sword aether + mask21
-  [""],                                           // 15: todo: sword fire + mask21
-  [""],                                           // 16: todo: sword ice + mask21
+  ["fire talisman *7 +16", "com shield *10 +11"], // 10: 枠だけ、運用はuser_script/follow で行う
+  ["wand poison *10 +10", "mask *7 +21"],         // 11: mask
+  ["sword poison *10 +11", "mask *7 +21"],        // 12: sword poison + mask21
+  ["sword vigor *10 +11", "mask *7 +21"],         // 13: sword vigor + mask21
+  ["sword aether *10 +11", "mask *7 +21"],        // 14: sword aether + mask21
+  ["sword fire *10 +19", "mask *7 +21"],          // 15: sword fire + mask21
+  ["sword ice *10 +11", "mask *7 +21"],           // 16: sword ice + mask21
   [""],                                           // 17:
   [""],                                           // 18:
   [""],                                           // 19:
@@ -26,13 +26,13 @@ var weapon_list = [
   ["sword poison *10 +11", "sword poison *10 +10"],   // 20: D 属性エンチャ
   ["sword vigor *10 +11", "sword vigor *10 +10"],     // 21: D 属性エンチャ
   ["sword aether *10 +11", "sword aether *10 +10"],   // 22: D 属性エンチャ
-  ["sword fire *10 +16", "sword fire *10 +15"],       // 23: D 属性エンチャ
+  ["sword fire *10 +19", "sword fire *10 +16"],       // 23: D 属性エンチャ
   ["sword ice *10 +11", "sword ice *10 +10"],         // 24: D 属性エンチャ
   ["sword ice *10 +8", "sword ice *10 +7"],           // 25: dI デバフエンチャ
   [""],                                               // 26: todo: 無属性クリティカルエンチャ ポエナ用
   [""],                                               // 27:
   ["hammer aether *10 +11", "hammer aether *10 +10"], // 28: D 倍率エンチャ ガーディアン用
-  ["hammer fire *10 +15", "hammer fire *10 +11"],     // 29: D 倍率エンチャ イエティ、ワルアンジェロ用
+  ["hammer fire *10 +16", "hammer fire *10 +15"],     // 29: D 倍率エンチャ イエティ、ワルアンジェロ用
   // 片手武器（その他、混合）
   ["sword ice *10 +8", "wand poison *10 +10"],        // 30: chill & poison の同時付与 ワルアンジェロ用
   [""],                                               // 31:
@@ -57,8 +57,8 @@ var weapon_list = [
   [""],                                           // 49:
   // 移動手段、盾
   ["quarterstaff *10"],                                 // 50: 六尺棒
-  ["sword ice *10 +8", "bash shield *6 +10"],           // 51: ツッコミシールド
-  ["sword ice *10 +8", "dash shield *10"],              // 52: ダッシュの盾
+  ["sword ice *10 +8", "bash shield *6 +11"],           // 51: ツッコミシールド
+  ["sword ice *10 +8", "dash shield *10 +1"],           // 52: ダッシュの盾
   ["wand poison *10 +10", "mind stone"],                // 53: 後方回避用
   ["triskelion stone", "dash shield *10 +1"],           // 54: ガーディアン用移動
   [""],                                                 // 55:
