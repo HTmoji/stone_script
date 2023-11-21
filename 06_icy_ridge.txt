@@ -13,7 +13,7 @@ var sword_flip = false
 
 func boss_attack()
   ?foe = yeti
-    follow.ignition(0)
+    follow.ignition(100)
   ?foe.armor > 0
     ?foe.distance >= 6
       weapon._equip(52, false)

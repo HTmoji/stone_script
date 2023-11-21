@@ -1,5 +1,5 @@
-// 燃えカスの係数(+16 エンチャ)
-var ignition_damage = 88
+// 燃えカスの係数(+21 エンチャ)
+var ignition_damage = 116
 
 func fire_talisman()
   equipL fire talisman

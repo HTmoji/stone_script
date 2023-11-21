@@ -1,23 +1,23 @@
 // memo: 同武器を装備する場合、名札orピカピカorエンチャントレベル違いにする必要アリ
 var weapon_list = [
   // 両手武器
-  ["blade *8 +11"],             // 0: blade of god
-  ["skeleton arm *8 +1"],       // 1: skeleton arm
-  ["bardiche *10 +16"],         // 2: crit
+  ["blade *8 +21"],             // 0: blade of god
+  ["skeleton arm *8 +6"],       // 1: skeleton arm
+  ["bardiche *10 +21"],         // 2: crit
   ["bardiche *10 +15"],         // 3: damage
-  ["heavy hammer *10 +11"],     // 4: damage
-  ["heavy hammer *10 +10"],     // 5: damage
+  ["heavy hammer *10 +15"],     // 4: damage
+  ["heavy hammer *10 +14"],     // 5: damage
   [""],                         // 6:
   [""],                         // 7:
   [""],                         // 8: 
   ["repeat crossbow *10 +16"],  // 9: damage
   // 片手武器（スキル系）
-  ["fire talisman *7 +16", "com shield *10 +11"], // 10: 枠だけ、運用はuser_script/follow で行う
+  ["fire talisman *7 +21", "com shield *10 +16"], // 10: 枠だけ、運用はuser_script/follow で行う
   ["wand poison *10 +10", "mask *7 +21"],         // 11: mask
   ["sword poison *10 +11", "mask *7 +21"],        // 12: sword poison + mask21
   ["sword vigor *10 +11", "mask *7 +21"],         // 13: sword vigor + mask21
   ["sword aether *10 +11", "mask *7 +21"],        // 14: sword aether + mask21
-  ["sword fire *10 +19", "mask *7 +21"],          // 15: sword fire + mask21
+  ["sword fire *10 +21", "mask *7 +21"],          // 15: sword fire + mask21
   ["sword ice *10 +11", "mask *7 +21"],           // 16: sword ice + mask21
   [""],                                           // 17:
   [""],                                           // 18:
@@ -26,7 +26,7 @@ var weapon_list = [
   ["sword poison *10 +11", "sword poison *10 +10"],   // 20: D 属性エンチャ
   ["sword vigor *10 +11", "sword vigor *10 +10"],     // 21: D 属性エンチャ
   ["sword aether *10 +11", "sword aether *10 +10"],   // 22: D 属性エンチャ
-  ["sword fire *10 +19", "sword fire *10 +16"],       // 23: D 属性エンチャ
+  ["sword fire *10 +21", "sword fire *10 +20"],       // 23: D 属性エンチャ
   ["sword ice *10 +11", "sword ice *10 +10"],         // 24: D 属性エンチャ
   ["sword ice *10 +8", "sword ice *10 +7"],           // 25: dI デバフエンチャ
   [""],                                               // 26: todo: 無属性クリティカルエンチャ ポエナ用
