@@ -7,7 +7,7 @@ var follow = import user_script/follow
 
 // 変数
 var attack_motion = 0
-var heavy_hammer_flip = false
+var heavy_hammer_flip = true
 var bardiche_flip = false
 var sword_flip = false
 
@@ -56,6 +56,9 @@ func normal_attack()
     :
       weapon._equip(52, false)
     attack_motion = 0
+  // heavy hammer を使うよりも早く処理できる場合
+  :?foe.hp < 100 & foe.count < 3
+    weapon._equip(9, false)
   // ☆11 ガリガリさん、ツララ
   :?foe = Giant Ice Elemental
     attack_motion = 0
@@ -80,9 +83,6 @@ func normal_attack()
   :?debuffs.count > 0
     weapon._equip(4, false)
     activate R
-  // heavy hammer を使うよりも早く処理できる場合
-  :?foe.hp < 39 & foe.count < 3
-    weapon._equip(9, false)
   :
     ?attack_motion%20 = 0
       ?heavy_hammer_flip

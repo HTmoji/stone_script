@@ -16,7 +16,7 @@ var perfected_attack_state32_flg = false
 
 func boss_attack()
   ?foe.state = -1 | (foe = bearer & (foe.state = 127 | foe.state = 117 | foe.state = 124)) | (foe = elementalist & foe.state = 107)
-    move.action()
+    weapon._equip(11, false)
   :?foe = bearer
     state1()
   :?foe = elementalist
@@ -60,21 +60,21 @@ func state2()
   :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
     weapon._equip(2, false)
     activate R
-  // 弱点属性の判別
-  :?time%12 = 0
-    var weapon_index = 23
+  :
+    // 弱点属性の判別
+    var weapon_index = 15
     ?symbol = ∞
-      weapon_index = 24
+      weapon_index = 16
     :?symbol = ♥
-      weapon_index = 20
+      weapon_index = 12
     :?symbol = "*"
-      weapon_index = 21
+      weapon_index = 13
     :?symbol = φ
-      weapon_index = 22
+      weapon_index = 14
     :?symbol = ❄
-      weapon_index = 23
-    weapon_flip = !weapon_flip
-    weapon._equip(weapon_index, weapon_flip)
+      weapon_index = 15
+    weapon._equip(weapon_index, false)
+    activate potion
 
 // 第三形態
 func state3()
@@ -87,7 +87,7 @@ func state3()
       ?item.GetCooldown("mind") <= 0
         weapon._equip(53, false)
       :
-        weapon._equip(43, false)
+        weapon._equip(49, false)
   :
     // シールド起動時のスタン回避
     perfected_attack_motion_count = 0
@@ -101,14 +101,12 @@ func state3()
       ?item.GetCooldown("mind") <= 0
         weapon._equip(53, false)
       :
-        weapon._equip(43, false)
+        weapon._equip(49, false)
     // 光線回避後、またはシールド回避後に起動
     :?foe.distance >= 9
       weapon._equip(52, false)
     :?foe.armor > 0
-      ?time%17 = 0
-        weapon_flip = !weapon_flip
-        weapon._equip(29, weapon_flip)
+      weapon._equip(19, false)
     :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
       weapon._equip(2, false)
       activate R
@@ -120,19 +118,18 @@ func state3()
       activate R
     // poison, chill は付与し続ける
     :?foe.debuffs.string ! "damage"
-      weapon._equip(30, false)
+      weapon._equip(17, false)
     :?foe.debuffs.string ! "chill:6"
-      weapon._equip(25, false)
+      weapon._equip(18, false)
     :
-      ?time%12 = 0
-        weapon_flip = !weapon_flip
-        weapon._equip(23, weapon_flip)
-        activate potion
+      weapon._equip(15, false)
     
 // アルカディアの偵察兵はスタンハメ可能
 func normal_attack()
   ?foe.distance > 7
     weapon._equip(51, false)
+  :?foe.hp < 199
+    weapon._equip(9, false)
   :?time%20 = 0
     ?weapon_flip
       weapon._equip(4, false)
