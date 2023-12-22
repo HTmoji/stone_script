@@ -19,8 +19,8 @@ var weapon_list = [
   ["sword aether *10 +15", "mask *8 +21"],        // 14: sword aether + mask21
   ["sword fire *10 +21", "mask *8 +21"],          // 15: sword fire + mask21
   ["sword ice *10 +16", "mask *8 +21"],           // 16: sword ice + mask21
-  ["wand poison *10 +10", "mask *8 +21"],         // 17: sword poison debuff + mask21
-  ["sword ice *10 +8", "mask *8 +21"],            // 18: sword ice debuff + mask21
+  ["sword poison *10 +14", "mask *8 +21"],        // 17: sword poison debuff + mask21
+  ["sword ice *10 +14", "mask *8 +21"],           // 18: sword ice debuff + mask21
   ["hammer fire *10 +16", "mask *8 +21"],         // 19: D 倍率エンチャ + mask21
   // 片手武器（片手剣, 斧）
   ["sword poison *10 +15", "sword poison *10 +14"],   // 20: D 属性エンチャ

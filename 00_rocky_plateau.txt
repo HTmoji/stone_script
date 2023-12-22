@@ -15,7 +15,9 @@ var perfected_attack_state32_count = 0
 var perfected_attack_state32_flg = false
 
 func boss_attack()
-  ?foe.state = -1 | (foe = bearer & (foe.state = 127 | foe.state = 117 | foe.state = 124)) | (foe = elementalist & foe.state = 107)
+  ?(foe.distance > 25 & foe.distance ! 9999) | foe.state = 127 | foe.state = 117
+    move.speed_walk()
+  :?foe.state = -1 | (foe = bearer & foe.state = 124) | (foe = elementalist & foe.state = 107)
     weapon._equip(11, false)
   :?foe = bearer
     state1()
@@ -41,12 +43,12 @@ func state1()
     activate R
   // poison, chill は付与し続ける
   :?foe.debuffs.string ! "damage"
-    weapon._equip(30, false)
+    weapon._equip(17, false)
+    activate potion
   :?foe.debuffs.string ! "chill:6"
-    weapon._equip(25, false)
-  :?time%12 = 0
-    weapon_flip = !weapon_flip
-    weapon._equip(23, weapon_flip)
+    weapon._equip(18, false)
+  :
+    weapon._equip(15, false)
 
 // 第二形態
 func state2()
@@ -74,7 +76,6 @@ func state2()
     :?symbol = ❄
       weapon_index = 15
     weapon._equip(weapon_index, false)
-    activate potion
 
 // 第三形態
 func state3()
@@ -141,7 +142,7 @@ func normal_attack()
 ?loc = rocky_plateau
   ?summon.count = 0 & time > 1
     follow.fire_talisman()
-  :?foe.distance >= 25
+  :?foe.distance >= 25 & pos.x < 200
     move.action()
   :?foe = acronian_scout
     normal_attack()
