@@ -107,7 +107,12 @@ func state3()
     :?foe.distance >= 9
       weapon._equip(52, false)
     :?foe.armor > 0
-      weapon._equip(19, false)
+      weapon._equip(15, false)
+    // poison, chill は付与し続ける
+    :?foe.debuffs.string ! "damage"
+      weapon._equip(17, false)
+    :?foe.debuffs.string ! "chill:6"
+      weapon._equip(18, false)
     :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
       weapon._equip(2, false)
       activate R
@@ -117,11 +122,6 @@ func state3()
     :?item.GetCooldown("mask") = 0
       weapon._equip(11, false)
       activate R
-    // poison, chill は付与し続ける
-    :?foe.debuffs.string ! "damage"
-      weapon._equip(17, false)
-    :?foe.debuffs.string ! "chill:6"
-      weapon._equip(18, false)
     :
       weapon._equip(15, false)
     

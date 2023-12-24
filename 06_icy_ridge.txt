@@ -13,7 +13,7 @@ var sword_flip = false
 
 func boss_attack()
   ?foe = yeti
-    follow.ignition(150)
+    follow.ignition(1000)
   ?foe.armor > 0
     ?foe.distance >= 6
       weapon._equip(52, false)
@@ -50,7 +50,7 @@ func normal_attack()
   ?item.GetCooldown("blade") = 0 & foe.count >= 10
     weapon._equip(0, false)
     activate R
-  :?foe.distance >= 6
+  :?foe.distance >= 6 & (item.GetCooldown("bash") <= 0 | item.GetCooldown("dash") <= 0)
     ?item.GetCooldown("bash") <= 0
       weapon._equip(51, false)
     :

@@ -28,13 +28,13 @@ var weapon_list = [
   ["sword aether *10 +15", "sword aether *10 +14"],   // 22: D 属性エンチャ
   ["sword fire *10 +21", "sword fire *10 +20"],       // 23: D 属性エンチャ
   ["sword ice *10 +16", "sword ice *10 +14"],         // 24: D 属性エンチャ
-  ["sword ice *10 +8", "sword ice *10 +7"],           // 25: dI デバフエンチャ
+  ["sword ice *10 +14", "sword ice *10 +13"],         // 25: dI デバフエンチャ
   [""],                                               // 26: todo: 無属性クリティカルエンチャ ポエナ用
   [""],                                               // 27:
   ["hammer aether *10 +11", "hammer aether *10 +10"], // 28: D 倍率エンチャ ガーディアン用
   ["hammer fire *10 +16", "hammer fire *10 +15"],     // 29: D 倍率エンチャ イエティ用
   // 片手武器（その他、混合）
-  ["sword ice *10 +8", "wand poison *10 +10"],        // 30: chill & poison の同時付与 ワルアンジェロ用
+  [""],                                               // 30:
   [""],                                               // 31:
   [""],                                               // 32:
   [""],                                               // 33:
@@ -57,13 +57,13 @@ var weapon_list = [
   ["wand fire *10 +11", "mask *8 +21"],           // 49: wand fire + mask21
   // 移動手段、盾
   ["quarterstaff *10 +10"],                             // 50: 六尺棒
-  ["sword ice *10 +8", "bash shield *8 +15"],           // 51: ツッコミシールド
-  ["sword ice *10 +8", "dash shield *10 +1"],           // 52: ダッシュの盾
+  ["sword ice *10 +14", "bash shield *8 +15"],          // 51: ツッコミシールド
+  ["sword ice *10 +14", "dash shield *10 +1"],          // 52: ダッシュの盾
   ["wand poison *10 +10", "mind stone"],                // 53: 後方回避用
   ["triskelion stone", "dash shield *10 +1"],           // 54: ガーディアン用移動
   [""],                                                 // 55:
-  ["sword ice *10 +8", "shield fire *10 +1"],           // 56: デバフ用
-  ["sword ice *10 +8", "shield ice *10 +1"],            // 57: 回避用
+  ["sword ice *10 +14", "shield fire *10 +1"],          // 56: デバフ用
+  ["sword ice *10 +14", "shield ice *10 +1"],           // 57: 回避用
   ["sword vigor *xx +xx", "shield vigor *10 +6"],       // 58: 回復用 todo: 回復率or速度エンチャの剣
   ["long sword vigor *xx +xx", "shield vigor *10 +6"],  // 59: 回復用 todo: 回復率エンチャの大剣
   // 拡張用枠
