@@ -6,8 +6,6 @@ var weapon = import user_script/weapon
 var follow = import user_script/follow
 
 // 変数
-//var hammer_flip = false
-var sword_flip = false
 var harder_alive = true
 
 func boss_attack()
@@ -20,76 +18,71 @@ func boss_attack()
     :?item.GetCooldown("mask") = 0
       weapon._equip(11, false)
       activate R
-    :?foe.distance > 10
+    :?foe.distance >= 11 & (item.GetCooldown("bash") <= 0 | item.GetCooldown("dash") <= 0)
       ?item.GetCooldown("bash") <= 0
         weapon._equip(51, false)
       :
         weapon._equip(52, false)
-    :?item.GetCooldown("hammer") = 0 | buffs.string = bardiche
-      weapon._equip(4, false)
-      activate R
+    // smite chill attack
+    :?foe.debuffs.string ! "chill:6"
+      weapon._equip(24, false)
     :
-      // todo: エンチャに余裕があれば毒ハンマー
-      ?time%12 = 0
-        sword_flip = !sword_flip
-        weapon._equip(20, false)
-        activate potion
+      weapon._equip(20, false)
   // 第二形態 手前
   :?foe = boss_fat
     harder_alive = true
     ?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
-      weapon._equip(2, false)
+      weapon._equip(6, false)
       activate R
-    :?foe.armor > 0
-      weapon._equip(4, false)
+    // smite chill attack
+    :?foe.debuffs.string ! "chill:6"
+      weapon._equip(24, false)
+      activate potion
     :
-      ?time%12 = 0
-        sword_flip = !sword_flip
-        weapon._equip(20, sword_flip)
+      weapon._equip(20, false)
   // 第二形態 奥
   :?foe = boss_skinny
-    ?foe.distance > 6
+    ?foe.distance >= 11 & (item.GetCooldown("bash") <= 0 | item.GetCooldown("dash") <= 0)
       ?item.GetCooldown("bash") <= 0
         weapon._equip(51, false)
       :
         weapon._equip(52, false)
-    ?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
-      weapon._equip(2, false)
+    :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
+      weapon._equip(6, false)
       activate R
+    // smite chill attack
+    :?foe.debuffs.string ! "chill:6"
+      weapon._equip(24, false)
     :
-      ?time%12 = 0
-        sword_flip = !sword_flip
-        weapon._equip(20, sword_flip)
+      weapon._equip(20, false)
   :
-    // potion の維持
-    weapon._equip(11, false)
+    weapon._equip(10, false)
 
 func normal_attack()
-  ?item.GetCooldown("blade") = 0 & foe.count >= 10
-    weapon._equip(0, false)
-    activate R
-  // ☆11のカタツムリ
+  // 2画面blade
+  ?item.GetCooldown("blade") <= 0 & foe.count >= 5
+    screen.Next()
+    ?foe.distance < 11
+      weapon._equip(0, false)
+      activate R
+      screen.Resetoffset()
+  // ☆11のカタツムリは適度に距離を保ってbardiche
   :?foe.armor >= 100 & pos.x > 350
-    weapon._equip(2, false)
+    weapon._equip(6, false)
     ?foe.distance <= 9
       activate R
   // 毛玉はdash(bash) で距離を詰めた後、1Fでmind を挟むことで回避可能
   :?foe = fluff & foe.distance <= 5 & item.GetCooldown("mind") = 0
     weapon._equip(53, false)
-  // 時短
-  :?foe.distance > 6
+  // 距離詰め
+  :?foe.distance >= 11 & (item.GetCooldown("bash") <= 0 | item.GetCooldown("dash") <= 0)
     ?item.GetCooldown("bash") <= 0
       weapon._equip(51, false)
     :
       weapon._equip(52, false)
-  // 雑魚が多い際はheavy hammer
-  :?foe.armor > 0
-      weapon._equip(4, false)
-      ?(foe.count > 5 & item.GetCooldown("hammer") = 0) | buffs.string = bardiche
-        activate R
   :
-    // todo: bardiche, wand 等の範囲武器で処理すべき
-    weapon._equip(9, false)
+    // todo: 1週目かつsmite無しの場合、ice小杖は効率が悪い…が1面の敵が5体以上のケースが多いので考慮不要か？
+    weapon._equip(40, wand_flip)
 
 /** キノコの森 **/
 // ボス部屋判定可能

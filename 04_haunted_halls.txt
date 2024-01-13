@@ -6,57 +6,62 @@ var weapon = import user_script/weapon
 var follow = import user_script/follow
 
 // 変数
-var wand_flip = false
 var sword_flip = false
 
 func boss_attack()
   // 第一形態
   ?foe = boss_harder
-    // モーション中に削られる分を考慮
-    follow.ignition(1000)
+    follow.ignition(600)
     // 待ち時間
-    ?time < 400
+    ?time < 400 | foe.distance > 10
       move.action()
-    :?foe.distance > 5
-      weapon._equip(52, false)
-    :?foe.hp < 745
-      weapon._equip(2, false)
+    :?item.GetCooldown("mask") = 0
+      weapon._equip(11, false)
       activate R
+    :?foe.hp < 1000 & foe.distance <= 7 & (item.GetCooldown("bardiche") = 0 | buffs.string = bardiche)
+      weapon._equip(6, false)
+      activate R
+    :?foe.debuffs.string ! "chill:6"
+      weapon._equip(24, false)
+    :?foe.debuffs.string ! "damage"
+      weapon._equip(20, false)
     :
-      ?time%12 = 0
-        sword_flip = !sword_flip
-        weapon._equip(21, sword_flip)
+      // todo: flip?
+      weapon._equip(21, false)
   // 第二形態
   :?foe = boss_stage_2
-    ?foe.distance > 8
+    ?foe.distance > 11
       weapon._equip(52, false)
+    :?foe.debuffs.string ! "chill:6"
+      weapon._equip(24, false)
+      activate potion
+    :?foe.debuffs.string ! "damage"
+      weapon._equip(20, false)
     :
-      ?time%12 = 0
-        sword_flip = !sword_flip
-        weapon._equip(21, sword_flip)
-        activate potion
-  // 雑魚処理、ただし召喚中後は位置関係でボスを殴るのでボス処理に実行される
-  :
-    ?time%16 = 0
-      wand_flip = !wand_flip
-      weapon._equip(41, wand_flip)
+      // todo: flip?
+      weapon._equip(21, false)
 
 func normal_attack()
-  ?item.GetCooldown("blade") = 0 & foe.count >= 10
-    weapon._equip(0, false)
+  // 2画面blade
+  ?item.GetCooldown("blade") = 0 & foe.count >= 5
+    screen.Next()
+    ?foe.distance < 10
+      weapon._equip(0, false)
+      activate R
+      screen.Resetoffset()
+  // 墓石bardiche
+  :?pos.x > 485 & (item.GetCooldown("bardiche") = 0 | buffs.string = bardiche)
+    weapon._equip(6, false)
     activate R
-  // ☆11 墓対策
-  // todo: 時短したいが☆15だと削りきられるので対策必要
-  // todo: ワンパンできないことに起因している
-  :?foe.distance >= 10 & pos.x > 440
+  // 距離詰め
+  :?foe.distance >= 11 & (item.GetCooldown("bash") <= 0 | item.GetCooldown("dash") <= 0)
     ?item.GetCooldown("bash") <= 0
       weapon._equip(51, false)
     :
       weapon._equip(52, false)
   :
-    ?time%16 = 0
-      wand_flip = !wand_flip
-      weapon._equip(41, wand_flip)
+    // todo: 1週目かつsmite無しの場合、ice小杖は効率が悪いのでvigor小杖を持ちたい
+    weapon._equip(40, false)
 
 /** 呪われた会館 **/
 // ボス部屋判定可能
@@ -68,7 +73,7 @@ func normal_attack()
 :?loc = undead_crypt
   ?summon.count = 0 & time > 1
     follow.fire_talisman()
-  :?foe.distance > 17
+  :?foe.distance > 16
     move.action()
   :
     normal_attack()

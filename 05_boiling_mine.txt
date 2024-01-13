@@ -7,11 +7,7 @@ var follow = import user_script/follow
 
 // 変数
 var boss_motion_count = 0
-var heavy_hammer_motion = 0
-var heavy_hammer_flip = false
-var hammer_flip = false
 var wand_flip = false
-var sword_flip = false
 
 func boss_attack()
   follow.ignition(300)
@@ -24,73 +20,59 @@ func boss_attack()
   :?item.GetCooldown("mask") = 0
     weapon._equip(11, false)
     activate R
-  // 回避ロジックは不要？
-  /*
+  // 回避ロジック
   :?foe.state = 32
     boss_motion_count++
-    ?boss_motion_count > 9
+    ?boss_motion_count > 5
       weapon._equip(53, false)
-  */
   // 近接距離
   :?pos.y > 0
     // トリスケル + ダッシュで距離を詰める
     ?foe.distance >= 6
-      weapon._equip(54, false)
+      ?item.GetCooldown("dash") <= 0
+        weapon._equip(54, false)
+      :
+        weapon._equip(55, false)
     :?foe.armor > 0
-      ?item.GetCooldown("hammer") = 0 | buffs.string = bardiche
+      ?item.GetCooldown("hammer") <= 0 | buffs.string = bardiche
         weapon._equip(4, false)
         activate R
-      :?time%17 = 0
-        hammer_flip = !hammer_flip
-        weapon._equip(28, hammer_flip)
-    :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
-        weapon._equip(2, false)
+      :
+        // todo: aether2本持ち必要、斧はいらないかな？
+        weapon._equip(24, false)
+        activate potion
+    :?item.GetCooldown("bardiche") <= 0 | buffs.string = bardiche
+        weapon._equip(6, false)
         activate R
     // todo: 近距離から遠距離への移行時、ワンドで殴りたい
     :
-      ?time%12 = 0
-        sword_flip = !sword_flip
-        weapon._equip(22, sword_flip)
+      // todo: aether2本持ち必要
+      weapon._equip(24, false)
   :
-    var flip_time = 16
-    ?buffs.string = berserk
-      flip_time = 8
-    ?time%flip_time = 0
+    ?time%8 = 0
       wand_flip = !wand_flip
       weapon._equip(42, wand_flip)
-      activate potion
-    boss_motion_count = 0
 
 func normal_attack()
-  ?item.GetCooldown("blade") = 0 & foe.count >= 10
-    weapon._equip(0, false)
-    activate R
-  // 連射2発で倒せる且つ敵の数が少ないなら遠距離から始末
-  :?foe.hp + foe.armor <= 39 & foe.count <= 3
-    weapon._equip(9, false)
-  :?foe.distance > 6
+  // 2画面blade
+  ?item.GetCooldown("blade") <= 0 & foe.count >= 5
+    screen.Next()
+    ?foe.distance < 11
+      weapon._equip(0, false)
+      activate R
+      screen.Resetoffset()
+  // 距離詰め
+  :?foe.distance >= 11 & (item.GetCooldown("bash") <= 0 | item.GetCooldown("dash") <= 0)
     ?item.GetCooldown("bash") <= 0
       weapon._equip(51, false)
     :
       weapon._equip(52, false)
-    heavy_hammer_motion = 0
   // ☆11 ボンバーカート
   :?foe = bomb_cart & foe.distance < 7
     weapon._equip(53, false)
-  :?(foe.count >= 6 & item.GetCooldown("hammer") = 0) | buffs.string = bardiche
-    weapon._equip(4, false)
-    activate R
-    heavy_hammer_motion = 0
-    heavy_hammer_flip = false
   :
-    // todo: heavy hammer 持ち替え？モーションキャンセルのロスは被ダメの影響が大きいので考慮必要
-    ?heavy_hammer_motion%20 = 0
-      ?heavy_hammer_flip
-        weapon._equip(4, false)
-      :
-        weapon._equip(5, false)
-      heavy_hammer_flip = !heavy_hammer_flip
-    heavy_hammer_motion++
+    // todo: 1週目かつsmite無しの場合、ice小杖は効率が悪い…が1面の敵が5体以上のケースが多いので考慮不要か？
+    weapon._equip(40, wand_flip)
 
 /** 地獄の鉱山 **/
 // ボス部屋判定可能

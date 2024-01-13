@@ -5,8 +5,6 @@ var move = import user_script/move
 var weapon = import user_script/weapon
 
 // 変数
-var bardiche_flip = false
-var sword_flip = false
 var poena_flg = false
 
 // initialize
@@ -15,22 +13,14 @@ move.set_harvest_pick(false)
 func boss_attack()
   // 第二形態 
   ?foe = poena
-    ?(foe.hp < 745 & item.GetCooldown("bardiche") = 0) | buffs.string = bardiche 
-      weapon._equip(2, false)
-      activate R
-    :?foe.distance >= 7
-      weapon._equip(52, false)
-      poena_flg = false
-    :?foe.buffs.string ! mirror | poena_flg
-      poena_flg = true
-      ?foe.debuffs.count < 6
-        weapon._equip(25, false)
-        activate potion
-      :
-        // todo: 弱点ないので高火力かオノのstunハメで削り切る
-        ?time%12 = 0
-          sword_flip = !sword_flip
-          weapon._equip(20, sword_flip)
+    // 距離詰め
+    ?foe.distance >= 11 &  item.GetCooldown("dash") <= 0
+        weapon._equip(52, false)
+    :?foe.state = 1
+      weapon._equip(0, false)
+    :?foe.buffs.string ! mirror | poena_flg & state = 32
+      weapon._equip(24, false)
+      activate potion
     :
       weapon._equip(0, false)
   // 第一形態
@@ -41,36 +31,37 @@ func boss_attack()
     :?item.GetCooldown("mask") = 0
       weapon._equip(11, false)
       activate R
-    :?(foe.hp < 745 & item.GetCooldown("bardiche") = 0) | buffs.string = bardiche
-      weapon._equip(2, false)
-      activate R
-    :?foe.distance >= 7
-      weapon._equip(51, false)
-    :?foe.debuffs.count < 6
-      weapon._equip(25, false)
-    :?time%20 = 0
-      ?bardiche_flip
-        weapon._equip(2, false)
-      :
-        weapon._equip(3, false)
-      bardiche_flip = !bardiche_flip
-
-func normal_attack()
-  ?item.GetCooldown("blade") = 0 & foe.count >= 10
-    weapon._equip(0, false)
-    activate R
-  ?foe ! scarab
-    weapon._equip(9, false)
-  :
-    ?foe.distance >= 8
+    // 距離詰め
+    :?foe.distance >= 11 & (item.GetCooldown("bash") <= 0 | item.GetCooldown("dash") <= 0)
       ?item.GetCooldown("bash") <= 0
         weapon._equip(51, false)
       :
         weapon._equip(52, false)
+    :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
+      weapon._equip(6, false)
+      activate R
     :
-      weapon._equip(5, false)
-      ?item.GetCooldown("hammer") <= 0 | buffs.string = bardiche
-        activate R
+      weapon._equip(24, false)
+
+func normal_attack()
+  // 2画面blade
+  ?item.GetCooldown("blade") <= 0 & foe.count >= 5
+    screen.Next()
+    ?foe.distance < 11
+      weapon._equip(0, false)
+      activate R
+      screen.Resetoffset()
+  // 距離詰め
+  :?foe.distance >= 11 & (item.GetCooldown("bash") <= 0 | item.GetCooldown("dash") <= 0)
+    ?item.GetCooldown("bash") <= 0
+      weapon._equip(51, false)
+    :
+      weapon._equip(52, false)
+  :?foe ! scarab
+    weapon._equip(40, false)
+  :
+    // todo: smiteあるので速度エンチャのheavy hammerがほしい
+    weapon._equip(4, false)
 
 /** 枯木の渓谷 **/
 ?loc = deadwood_valley

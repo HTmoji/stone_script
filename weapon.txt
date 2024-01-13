@@ -3,37 +3,37 @@ var weapon_list = [
   // 両手武器
   ["blade *9 +21"],             // 0: blade of god
   ["skeleton arm *8 +7"],       // 1: skeleton arm
-  ["bardiche *10 +21"],         // 2: crit
-  ["bardiche *10 +20"],         // 3: damage
+  [""],                         // 2: 
+  [""],                         // 3: 
   ["heavy hammer *10 +18"],     // 4: damage
-  ["heavy hammer *10 +14"],     // 5: damage
-  [""],                         // 6:
+  [""],                         // 5:
+  ["bardiche *10 +20 shiny"],   // 6: crit
   [""],                         // 7:
   [""],                         // 8: 
-  ["repeat crossbow *10 +21"],  // 9: damage
+  ["repeat crossbow *10 +21"],  // 9: crit
   // 片手武器（スキル系）
   ["fire talisman *8 +21", "com shield *10 +16"], // 10: 枠だけ、運用はuser_script/follow で行う
-  ["wand poison *10 +10", "mask *8 +21"],         // 11: mask
-  ["sword poison *10 +15", "mask *8 +21"],        // 12: sword poison + mask21
-  ["sword vigor *10 +15", "mask *8 +21"],         // 13: sword vigor + mask21
-  ["sword aether *10 +15", "mask *8 +21"],        // 14: sword aether + mask21
-  ["sword fire *10 +21", "mask *8 +21"],          // 15: sword fire + mask21
-  ["sword ice *10 +16", "mask *8 +21"],           // 16: sword ice + mask21
-  ["sword poison *10 +14", "mask *8 +21"],        // 17: sword poison debuff + mask21
-  ["sword ice *10 +14", "mask *8 +21"],           // 18: sword ice debuff + mask21
-  ["hammer fire *10 +16", "mask *8 +21"],         // 19: D 倍率エンチャ + mask21
+  ["wand poison *10 +10", "mask *9 +21"],         // 11: mask for activate
+  ["sword poison *10 +16", "mask *9 +21"],        // 12: sword poison + mask21
+  ["sword vigor *10 +17", "mask *9 +21"],         // 13: sword vigor + mask21
+  ["sword aether *10 +16", "mask *9 +21"],        // 14: sword aether + mask21
+  ["sword fire *10 +21", "mask *9 +21"],          // 15: sword fire + mask21
+  ["sword ice *10 +21 shiny", "mask *9 +21"],     // 16: sword ice + mask21
+  ["sword vigor *10 +14", "mask *9 +21"],         // 17: sword vigor + mask21 回復
+  [""],                                           // 18:
+  ["hammer fire *10 +15", "mask *9 +21"],         // 19: D 倍率エンチャ + mask21
   // 片手武器（片手剣, 斧）
-  ["sword poison *10 +15", "sword poison *10 +14"],   // 20: D 属性エンチャ
-  ["sword vigor *10 +15", "sword vigor *10 +14"],     // 21: D 属性エンチャ
-  ["sword aether *10 +15", "sword aether *10 +14"],   // 22: D 属性エンチャ
-  ["sword fire *10 +21", "sword fire *10 +20"],       // 23: D 属性エンチャ
-  ["sword ice *10 +16", "sword ice *10 +14"],         // 24: D 属性エンチャ
-  ["sword ice *10 +14", "sword ice *10 +13"],         // 25: dI デバフエンチャ
-  [""],                                               // 26: todo: 無属性クリティカルエンチャ ポエナ用
+  ["sword poison *10 +16", "sword ice *10 +21"],      // 20: dP,dI 速度エンチャ
+  ["sword vigor *10 +17", "sword vigor *10 +16"],     // 21: dL 速度エンチャ
+  [""],                                               // 22:
+  ["sword fire *10 +21", "マッチ棒"],                 // 23: D 速度エンチャ
+  ["sword ice *10 +21", "sword ice *10 +21 shiny"],   // 24: dI 速度エンチャ
+  [""],                                               // 25:
+  [""],                                               // 26:
   [""],                                               // 27:
-  ["hammer aether *10 +11", "hammer aether *10 +10"], // 28: D 倍率エンチャ ガーディアン用
-  ["hammer fire *10 +16", "hammer fire *10 +15"],     // 29: D 倍率エンチャ イエティ用
-  // 片手武器（その他、混合）
+  [""],                                               // 28:
+  ["hammer fire *10 +15", "hammer fire *10 +14"],     // 29: D 属性エンチャ イエティ用
+  // 空き
   [""],                                               // 30:
   [""],                                               // 31:
   [""],                                               // 32:
@@ -45,16 +45,16 @@ var weapon_list = [
   [""],                                               // 38:
   [""],                                               // 39:
   // 片手武器（片手杖）
-  ["wand ice *10 +8", "gari-gari kun +8"],        // 40: D 属性エンチャ
-  ["wand vigor *10 +11", "wand vigor *10 +10"],   // 41: D 属性エンチャ 
-  ["wand aether *10 +13", "wand aether *10 +10"], // 42: D 属性エンチャ
+  ["wand ice *10 +21", "gari-gari kun"],          // 40: dI 速度エンチャ
+  [""],                                           // 41:
+  ["wand aether *10 +13", "wand aether *10 +12"], // 42: D 速度エンチャ
   ["wand fire *10 +11", "wand fire *10 +10"],     // 43: D 属性エンチャの更新必要
-  ["wand fire *10 +8", "wand poison *10 +10"],    // 44: todo: デバフ付与用の火wand必要
+  ["wand fire *10 +11", "wand poison *10 +10"],   // 44: todo: デバフ付与用の火wand必要
   [""],                                           // 45:
   [""],                                           // 46:
   [""],                                           // 47:
   [""],                                           // 48:
-  ["wand fire *10 +11", "mask *8 +21"],           // 49: wand fire + mask21
+  ["wand fire *10 +11", "mask *9 +21"],           // 49: ワルアンジェロ用
   // 移動手段、盾
   ["quarterstaff *10 +10"],                             // 50: 六尺棒
   ["sword ice *10 +14", "bash shield *8 +15"],          // 51: ツッコミシールド
@@ -66,8 +66,7 @@ var weapon_list = [
   ["sword ice *10 +14", "shield ice *10 +1"],           // 57: 回避用
   ["sword vigor *xx +xx", "shield vigor *10 +6"],       // 58: 回復用 todo: 回復率or速度エンチャの剣
   ["long sword vigor *xx +xx", "shield vigor *10 +6"],  // 59: 回復用 todo: 回復率エンチャの大剣
-  // 拡張用枠
-  // 両手杖、両手剣、属性クロスボウは使いどころが分からん…
+  // 空き
   [""],                         // 60:
   [""],                         // 61:
   [""],                         // 62:

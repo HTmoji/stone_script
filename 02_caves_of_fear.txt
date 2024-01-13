@@ -5,53 +5,51 @@ var move = import user_script/move
 var weapon = import user_script/weapon
 var follow = import user_script/follow
 
-// 変数
-var wand_flip = false
-var sword_flip = false
-
 func boss_attack()
-  follow.ignition(745)
-  ?(foe.hp < 745 & item.GetCooldown("bardiche") = 0) | buffs.string = bardiche
-    ?foe.distance >= 8
-      weapon._equip(52, false)
+  follow.ignition(1000)
+  ?(foe.hp < 950 & item.GetCooldown("bardiche") = 0) | buffs.string = bardiche
+    // 距離詰め
+    ?foe.distance >= 11 & (item.GetCooldown("bash") <= 0 | item.GetCooldown("dash") <= 0)
+      ?item.GetCooldown("bash") <= 0
+        weapon._equip(51, false)
+      :
+        weapon._equip(52, false)
     :
-      weapon._equip(2, false)
+      weapon._equip(6, false)
       activate R
-  :?item.GetCooldown("mask") = 0
-    weapon._equip(11, false)
-    activate R
+  :?foe.hp > 0
+    ?item.GetCooldown("mask") = 0
+      weapon._equip(11, false)
+      activate R
+    :
+      weapon._equip(40, false)
   :
-    // todo: ダメージが許容できるなら片手で削った方がよい
-    ?time%16 = 0
-      wand_flip = !wand_flip
-      weapon._equip(40, wand_flip)
-      activate potion
+    move.action()
+
 
 func normal_attack()
-  ?item.GetCooldown("blade") = 0 & foe.count > 5
-    weapon._equip(0, false)
-    activate R
-  :?foe.distance >= 8
+  // 2画面blade
+  ?item.GetCooldown("blade") <= 0 & foe.count >= 5
+    screen.Next()
+    ?foe.distance < 11
+      weapon._equip(0, false)
+      activate R
+      screen.Resetoffset()
+  // 距離詰め
+  :?foe.distance >= 11 & (item.GetCooldown("bash") <= 0 | item.GetCooldown("dash") <= 0)
     ?item.GetCooldown("bash") <= 0
       weapon._equip(51, false)
     :
       weapon._equip(52, false)
-  // ☆11 コウモリーズ
+  // ☆11~ コウモリーズ
   :?foe = boss
-    ?(foe.hp < 745 & item.GetCooldown("bardiche") = 0) | buffs.string = bardiche
-      weapon._equip(2, false)
+    ?(foe.hp < 950 & item.GetCooldown("bardiche") = 0) | buffs.string = bardiche
+      weapon._equip(6, false)
       activate R
-    :?foe.debuffs.count < 6
-      weapon._equip(25, false)
     :
-      ?time%12 = 0
-        sword_flip = !sword_flip
-        weapon._equip(24, sword_flip)
+      weapon._equip(24, false)
   :
-    // 雑魚はwand で処理
-    ?time%16 = 0
-      wand_flip = !wand_flip
-      weapon._equip(40, wand_flip)
+    weapon._equip(40, false)
 
 /** 恐怖の洞窟 **/
 // ボス部屋判定不可 且つ 距離判定不可
