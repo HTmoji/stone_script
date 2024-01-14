@@ -47,12 +47,13 @@ func cooldown_print()
 func info_update_print()
   // loc
   var star_index = string.IndexOf(loc, ☆)
-  var star_end = string.Size(loc) - star_index
-  var star_text = string.Sub(loc, star_index, star_end)
-  var area_index = string.IndexOf(loc, " ")
-  var area_text = string.Sub(loc, area_index, star_index - area_index -1)
-  var loc_text = string.Sub(loc, 0, area_index)
-  >`19,1,loc:@star_text@@area_text@(@loc_text@)
+  ?star_index > 0
+    var star_end = string.Size(loc) - star_index
+    var star_text = string.Sub(loc, star_index, star_end)
+    var area_index = string.IndexOf(loc, " ")
+    var area_text = string.Sub(loc, area_index, star_index - area_index -1)
+    var loc_text = string.Sub(loc, 0, area_index)
+    >`19,1,loc:@star_text@@area_text@(@loc_text@)
 
   // player
   var p_text = "idle:"

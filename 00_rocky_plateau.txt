@@ -9,44 +9,52 @@ var follow = import user_script/follow
 move.set_harvest_pick(false)
 
 // 変数
-var weapon_flip = false
 var perfected_attack_motion_count = 0
 var perfected_attack_state32_count = 0
 var perfected_attack_state32_flg = false
+var perfected_alive = true
 
 func boss_attack()
-  ?(foe.distance > 25 & foe.distance ! 9999) | foe.state = 127 | foe.state = 117
-    move.speed_walk()
-  :?foe.state = -1 | (foe = bearer & foe.state = 124) | (foe = elementalist & foe.state = 107)
-    weapon._equip(11, false)
-  :?foe = bearer
+  ?foe = bearer
     state1()
   :?foe = elementalist
     state2()
   :?foe = perfected
     state3()
+  // 変身直後はnameが存在しないのでstateでmask判定
+  :?foe.state = -1 & perfected_alive
+    weapon._equip(11, false)
   :
     move.action()
 
 // 第一形態
 func state1()
-  ?foe.distance >= 6
+  // 変身前にhammerで先制攻撃可能
+  ?foe.distance <= 24 & foe.distance > 18 & (item.GetCooldown("hammer") = 0 | buffs.string = bardiche)
+    weapon._equip(4, false)
+    activate R
+  // 撃破後のmask
+  :?foe.state = 124
+    weapon._equip(11, false)
+  // 戦闘前の待機
+  :?foe.state = 100 | foe.state = 101 | foe.state = 102 | foe.state = 126 | foe.state = 127
+    move.action()
+  :?foe.distance > 11
     weapon._equip(52, false)
+  :?item.GetCooldown("mask") = 0
+    weapon._equip(11, false)
+    activate R
   :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
-    weapon._equip(2, false)
+    weapon._equip(6, false)
     activate R
   :?item.GetCooldown("blade") = 0
     weapon._equip(0, false)
     activate R
-  :?item.GetCooldown("mask") = 0
-    weapon._equip(11, false)
-    activate R
-  // poison, chill は付与し続ける
   :?foe.debuffs.string ! "damage"
-    weapon._equip(17, false)
+    weapon._equip(12, false)
     activate potion
   :?foe.debuffs.string ! "chill:6"
-    weapon._equip(18, false)
+    weapon._equip(16, false)
   :
     weapon._equip(15, false)
 
@@ -57,11 +65,11 @@ func state2()
   var symbol = draw.GetSymbol(54, 9)
   >`10,10,week = @symbol@
 
-  ?foe.distance > 6
+  // 撃破後のmask
+  ?foe.state = 107
+    weapon._equip(11, false)
+  :?foe.distance > 11
     weapon._equip(52, false)
-  :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
-    weapon._equip(2, false)
-    activate R
   :
     // 弱点属性の判別
     var weapon_index = 15
@@ -80,6 +88,11 @@ func state2()
 // 第三形態
 func state3()
   follow.ignition(0)
+  // 撃破後の行動管理フラグ
+  ?foe.hp > 0
+    perfected_alive = true
+  :
+    perfected_alive = false
   // 光線回避
   ?foe.state = 115
     perfected_attack_state32_count = 0
@@ -108,13 +121,12 @@ func state3()
       weapon._equip(52, false)
     :?foe.armor > 0
       weapon._equip(15, false)
-    // poison, chill は付与し続ける
     :?foe.debuffs.string ! "damage"
-      weapon._equip(17, false)
+      weapon._equip(12, false)
     :?foe.debuffs.string ! "chill:6"
-      weapon._equip(18, false)
+      weapon._equip(16, false)
     :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
-      weapon._equip(2, false)
+      weapon._equip(6, false)
       activate R
     :?item.GetCooldown("blade") = 0
       weapon._equip(0, false)
@@ -122,29 +134,33 @@ func state3()
     :?item.GetCooldown("mask") = 0
       weapon._equip(11, false)
       activate R
+   :?hp < 15
+     weapon._equip(17, false)
     :
       weapon._equip(15, false)
     
-// アルカディアの偵察兵はスタンハメ可能
+// アルカディアの偵察兵
 func normal_attack()
-  ?foe.distance > 7
+  // todo: ガイコツの腕がDPS高めでいいらしい…エンチャ候補
+  ?foe.distance > 16
+    move.speed_walk()
+  :?foe.distance > 11
     weapon._equip(51, false)
-  :?foe.hp < 199
-    weapon._equip(9, false)
-  :?time%20 = 0
-    ?weapon_flip
-      weapon._equip(4, false)
-    :
-      weapon._equip(5, false)
-    weapon_flip = !weapon_flip
+  :?foe.debuffs.string ! "damage"
+    weapon._equip(20, false)
+  :?foe.debuffs.string ! "chill:6"
+    weapon._equip(24, false)
+  :
+    weapon._equip(23, false)
 
 /** ロッキー高原 **/
 ?loc = rocky_plateau
   ?summon.count = 0 & time > 1
     follow.fire_talisman()
-  :?foe.distance >= 25 & pos.x < 200
+  // x座標でボス位置判定している、☆11以上前提(200)、それ以下なら120とか
+  :?foe.count = 0 & pos.x < 220
     move.action()
-  :?foe = acronian_scout
+  :?foe = acronian_scout | pos.x < 120
     normal_attack()
   :
     boss_attack()

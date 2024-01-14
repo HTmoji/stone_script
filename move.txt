@@ -1,11 +1,15 @@
 var harvest_pick = false
 var speed_mode = true
+var quarterstaff_use = true
 
 func set_harvest_pick(b)
   harvest_pick = b
 
 func set_speed_mode(b)
   speed_mode = b
+
+func set_quarterstaff_use(b)
+  quarterstaff_use = b
 
 func action()
   ?harvest_pick & harvest.distance <= 8
@@ -34,7 +38,7 @@ func pick_walk()
 
 func heal_walk()
   equip quarterstaff
-  ?(time > 10 & item.CanActivate() & item.GetCooldown("quarterstaff") = 0) | buffs.string = quarterstaff
+  ?(time > 10 & item.CanActivate() & item.GetCooldown("quarterstaff") = 0) | buffs.string = quarterstaff & quarterstaff_use
     activate R
   :
     equipL ouroboros
@@ -42,7 +46,7 @@ func heal_walk()
 
 func speed_walk()
   equip quarterstaff
-  ?(time > 10 & item.CanActivate() & item.GetCooldown("quarterstaff") = 0) | buffs.string = quarterstaff
+  ?(time > 10 & item.CanActivate() & item.GetCooldown("quarterstaff") = 0) | buffs.string = quarterstaff & quarterstaff_use
     activate R
   :
     equipL triskelion stone
