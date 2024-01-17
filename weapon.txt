@@ -15,16 +15,16 @@ var weapon_list = [
   ["fire talisman *8 +21", "com shield *10 +16"], // 10: 枠だけ、運用はuser_script/follow で行う
   ["wand fire *10 +11", "mask *9 +21"],         // 11: mask for activate
   ["sword poison *10 +21", "mask *9 +21"],        // 12: sword poison + mask21
-  ["sword vigor *10 +20", "mask *9 +21"],         // 13: sword vigor + mask21
-  ["sword aether *10 +16", "mask *9 +21"],        // 14: sword aether + mask21
+  ["sword vigor *10 +21", "mask *9 +21"],         // 13: sword vigor + mask21
+  ["sword aether *10 +21", "mask *9 +21"],        // 14: sword aether + mask21
   ["sword fire *10 +21", "mask *9 +21"],          // 15: sword fire + mask21
   ["sword ice *10 +21 shiny", "mask *9 +21"],     // 16: sword ice + mask21
-  ["sword vigor *10 +19", "mask *9 +21"],         // 17: sword vigor + mask21 回復
+  ["sword vigor *10 +16", "mask *9 +21"],         // 17: sword vigor + mask21 回復
   [""],                                           // 18:
   ["hammer fire *10 +15", "mask *9 +21"],         // 19: D 倍率エンチャ + mask21
   // 片手武器（片手剣, 斧）
   ["sword poison *10 +21", "sword ice *10 +21"],      // 20: dP,dI 速度エンチャ
-  ["sword vigor *10 +20", "sword vigor *10 +19"],     // 21: dL 速度エンチャ
+  ["sword vigor *10 +21", "sword vigor *10 +16"],     // 21: dL 速度エンチャ
   [""],                                               // 22:
   ["sword fire *10 +21", "マッチ棒"],                 // 23: D 速度エンチャ
   ["sword ice *10 +21", "sword ice *10 +21 shiny"],   // 24: dI 速度エンチャ

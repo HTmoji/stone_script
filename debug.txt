@@ -1,0 +1,13 @@
+?foe.distance > 7
+  equipR dash
+  equipL sword fire
+:
+  ?time%3 = 0
+    equipR moon
+    equipL sword poison
+  :?time%3 = 1
+    equipR moon
+    equipL sword ice
+  :?time%3 = 2
+    equipR moon
+    equipL マッチ棒

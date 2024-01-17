@@ -7,7 +7,7 @@ var follow = import user_script/follow
 
 func boss_attack()
   follow.ignition(1000)
-  ?(foe.hp < 950 & item.GetCooldown("bardiche") = 0) | buffs.string = bardiche
+  ?(foe.hp < 1000 & item.GetCooldown("bardiche") = 0) | buffs.string = bardiche
     // 距離詰め
     ?foe.distance >= 11 & (item.GetCooldown("bash") <= 0 | item.GetCooldown("dash") <= 0)
       ?item.GetCooldown("bash") <= 0
@@ -43,7 +43,9 @@ func normal_attack()
       weapon._equip(52, false)
   // ☆11~ コウモリーズ
   :?foe = boss
-    ?(foe.hp < 950 & item.GetCooldown("bardiche") = 0) | buffs.string = bardiche
+    ?foe.debuffs.string ! "chill:6"
+      weapon._equip(24, false)
+    :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
       weapon._equip(6, false)
       activate R
     :
