@@ -1,4 +1,4 @@
-// potion: berserk
+// potion: crit
 
 // external script
 var move = import user_script/move
@@ -6,13 +6,8 @@ var weapon = import user_script/weapon
 var follow = import user_script/follow
 
 // initialize
-move.set_harvest_pick(false)
-
-// 変数
-var perfected_attack_motion_count = 0
-var perfected_attack_state32_count = 0
-var perfected_attack_state32_flg = false
-var perfected_alive = true
+var harvest_pick = false
+move.set_harvest_pick(harvest_pick)
 
 func boss_attack()
   ?foe = bearer
@@ -21,9 +16,6 @@ func boss_attack()
     state2()
   :?foe = perfected
     state3()
-  // 変身直後はnameが存在しないのでstateでmask判定
-  :?foe.state = -1 & perfected_alive
-    weapon._equip(11, false)
   :
     move.action()
 
@@ -33,11 +25,8 @@ func state1()
   ?foe.distance <= 24 & foe.distance > 18 & (item.GetCooldown("hammer") = 0 | buffs.string = bardiche)
     weapon._equip(4, false)
     activate R
-  // 撃破後のmask
-  :?foe.state = 124
-    weapon._equip(11, false)
   // 戦闘前の待機
-  :?foe.state = 100 | foe.state = 101 | foe.state = 102 | foe.state = 126 | foe.state = 127
+  :?foe.state = 100 | foe.state = 101 | foe.state = 102 | foe.state = 117 | foe.state = 118 | foe.state = 126 | foe.state = 127 | foe.hp <= 0
     move.action()
   :?foe.distance > 11
     weapon._equip(52, false)
@@ -47,120 +36,124 @@ func state1()
   :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
     weapon._equip(6, false)
     activate R
-  :?item.GetCooldown("blade") = 0
-    weapon._equip(0, false)
-    activate R
-  :?foe.debuffs.string ! "damage"
-    weapon._equip(12, false)
-    activate potion
-  :?foe.debuffs.string ! "chill:6"
-    weapon._equip(16, false)
   :
-    weapon._equip(15, false)
+/* エンチャ待ち
+    var third_hand = 32
+    ?foe.debuffs.string ! "damage"
+      third_hand = 36
+    :?foe.debuffs.string ! "chill:6"
+      third_hand = 34
+    :?hp < maxhp
+      third_hand = 39
+
+    ?time%3 = 0
+      weapon._equip(30, false)
+    :?time%3 = 1
+      weapon._equip(31, false)
+    :?time%3 = 2
+      weapon._equip(third_hand, false)
+*/
+    var third_hand = 39
+    ?foe.debuffs.string ! "chill:6"
+      third_hand = 34
+    ?time%3 = 0
+      weapon._equip(30, false)
+    :?time%3 = 1
+      weapon._equip(31, false)
+    :?time%3 = 2
+      weapon._equip(third_hand, false)
 
 // 第二形態
 func state2()
-  // 目の表示を取得
-  // ∞ ♥ * φ ❄ 
-  var symbol = draw.GetSymbol(54, 9)
-  >`10,10,week = @symbol@
-
-  // 撃破後のmask
-  ?foe.state = 107
-    weapon._equip(11, false)
+  ?foe.state = 107 | foe.hp <= 0
+    move.action()
   :?foe.distance > 11
     weapon._equip(52, false)
   :
     // 弱点属性の判別
-    var weapon_index = 15
-    ?symbol = ∞
-      weapon_index = 16
-    :?symbol = ♥
-      weapon_index = 12
-    :?symbol = "*"
-      weapon_index = 13
-    :?symbol = φ
-      weapon_index = 14
-    :?symbol = ❄
-      weapon_index = 15
-    weapon._equip(weapon_index, false)
+    // todo: AACするなら最低でも属性毎D剣が2本必要なので両手殴りでお茶を濁す
+    ?foe = Poison
+      weapon._equip(24, false)
+    :?foe = Vigor
+      weapon._equip(20, false)
+    :?foe = AEther
+      weapon._equip(21, false)
+    :?foe = Fire
+      weapon._equip(22, false)
+    :?foe = Ice
+      weapon._equip(23, false)
+    :
+      var third_hand = 39
+      ?foe.debuffs.string ! "chill:6"
+        third_hand = 34
+      ?time%3 = 0
+        weapon._equip(30, false)
+      :?time%3 = 1
+        weapon._equip(31, false)
+      :?time%3 = 2
+        weapon._equip(third_hand, false)
 
 // 第三形態
 func state3()
-  follow.ignition(0)
-  // 撃破後の行動管理フラグ
-  ?foe.hp > 0
-    perfected_alive = true
+  follow.ignition(1500)
+
+  ?foe.armor > 0 & hp > 0
+    loc.Leave()
+  :?foe.distance >= 7
+    weapon._equip(52, false)
   :
-    perfected_alive = false
-  // 光線回避
-  ?foe.state = 115
-    perfected_attack_state32_count = 0
-    perfected_attack_motion_count++
-    ?perfected_attack_motion_count >= 60
-      ?item.GetCooldown("mind") <= 0
-        weapon._equip(53, false)
-      :
-        weapon._equip(49, false)
-  :
-    // シールド起動時のスタン回避
-    perfected_attack_motion_count = 0
-    ?foe.state = 32
-      ?!perfected_attack_state32_flg
-        perfected_attack_state32_count++
-        perfected_attack_state32_flg = true
-    :?foe.state ! 32
-      perfected_attack_state32_flg = false
-    ?(foe.state = 32 | foe.state = 33) & perfected_attack_state32_count = 3
-      ?item.GetCooldown("mind") <= 0
-        weapon._equip(53, false)
-      :
-        weapon._equip(49, false)
-    // 光線回避後、またはシールド回避後に起動
-    :?foe.distance >= 9
-      weapon._equip(52, false)
-    :?foe.armor > 0
-      weapon._equip(15, false)
-    :?foe.debuffs.string ! "damage"
-      weapon._equip(12, false)
+/* エンチャ待ち
+    var third_hand = 32
+    ?foe.debuffs.string ! "damage"
+      third_hand = 36
     :?foe.debuffs.string ! "chill:6"
-      weapon._equip(16, false)
-    :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
-      weapon._equip(6, false)
-      activate R
-    :?item.GetCooldown("blade") = 0
-      weapon._equip(0, false)
-      activate R
-    :?item.GetCooldown("mask") = 0
-      weapon._equip(11, false)
-      activate R
-   :?hp < 15
-     weapon._equip(17, false)
-    :
-      weapon._equip(15, false)
-    
+      third_hand = 34
+    :?hp < maxhp
+      third_hand = 39
+
+    ?time%3 = 0
+      weapon._equip(30, false)
+    :?time%3 = 1
+      weapon._equip(31, false)
+    :?time%3 = 2
+      weapon._equip(third_hand, false)
+*/
+    var third_hand = 39
+    ?foe.debuffs.string ! "chill:6"
+      third_hand = 34
+    ?time%3 = 0
+      weapon._equip(30, false)
+      activate potion
+    :?time%3 = 1
+      weapon._equip(31, false)
+    :?time%3 = 2
+      weapon._equip(third_hand, false)
+
 // アルカディアの偵察兵
 func normal_attack()
-  // todo: ガイコツの腕がDPS高めでいいらしい…エンチャ候補
   ?foe.distance > 16
     move.speed_walk()
   :?foe.distance > 11
     weapon._equip(51, false)
-  :?foe.debuffs.string ! "damage"
-    weapon._equip(20, false)
-  :?foe.debuffs.string ! "chill:6"
-    weapon._equip(24, false)
-  :
-    weapon._equip(23, false)
+  // moon AAC todo: 炎デバフで時短も考慮
+  :?time%3 = 0
+    weapon._equip(30, false)
+  :?time%3 = 1
+    weapon._equip(34, false)
+  :?time%3 = 2
+    weapon._equip(39, false) // LifeSteel
 
 /** ロッキー高原 **/
 ?loc = rocky_plateau
   ?summon.count = 0 & time > 1
     follow.fire_talisman()
-  // x座標でボス位置判定している、☆11以上前提(200)、それ以下なら120とか
+  // x座標でボス位置判定している、☆11以上前提(220)、それ以下なら120とか
   :?foe.count = 0 & pos.x < 220
     move.action()
   :?foe = acronian_scout | pos.x < 120
     normal_attack()
   :
-    boss_attack()
+    ?harvest_pick
+      loc.Leave()
+    :
+      boss_attack()

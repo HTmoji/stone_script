@@ -1,4 +1,4 @@
-// potion: berserk
+// potion: crit
 
 // external script
 var move = import user_script/move
@@ -51,7 +51,7 @@ func boss_attack()
   :
     ?time%8 = 0
       wand_flip = !wand_flip
-      weapon._equip(42, wand_flip)
+      weapon._equip(28, wand_flip)
 
 func normal_attack()
   // 2画面blade
@@ -72,7 +72,7 @@ func normal_attack()
     weapon._equip(53, false)
   :
     // todo: 1週目かつsmite無しの場合、ice小杖は効率が悪い…が1面の敵が5体以上のケースが多いので考慮不要か？
-    weapon._equip(40, wand_flip)
+    weapon._equip(25, wand_flip)
 
 /** 地獄の鉱山 **/
 // ボス部屋判定可能

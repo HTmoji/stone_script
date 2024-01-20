@@ -2,6 +2,7 @@
   equipR dash
   equipL sword fire
 :
+/*
   ?time%3 = 0
     equipR moon
     equipL sword poison
@@ -11,3 +12,22 @@
   :?time%3 = 2
     equipR moon
     equipL マッチ棒
+*/
+  ?time%3 = 0
+    equipR moon
+    equipL sword poison
+  :?time%3 = 1
+    equipR sword ice
+    equipL moon
+  :?time%3 = 2
+    equipR sword poison
+    equipL sword ice
+
+
+/**
+normal: 18d *6 -> 108d/sec
+両手待ち: 36d *6 -> 216d/sec
+1本moon: 18d *10 -> 180d/sec
+2本moon: 36d *10 -> 360d/sec
+3本moon: 54d *10 -> 540d/sec
+**/

@@ -1,4 +1,4 @@
-// potion: berserk
+// potion: crit
 
 // external script
 var move = import user_script/move
@@ -22,7 +22,7 @@ func boss_attack()
       weapon._equip(11, false)
       activate R
     :
-      weapon._equip(40, false)
+      weapon._equip(25, false)
   :
     move.action()
 
@@ -51,7 +51,7 @@ func normal_attack()
     :
       weapon._equip(24, false)
   :
-    weapon._equip(40, false)
+    weapon._equip(25, false)
 
 /** 恐怖の洞窟 **/
 // ボス部屋判定不可 且つ 距離判定不可

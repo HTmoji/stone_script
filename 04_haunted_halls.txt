@@ -1,4 +1,4 @@
-// potion: berserk
+// potion: crit
 
 // external script
 var move = import user_script/move
@@ -61,7 +61,7 @@ func normal_attack()
       weapon._equip(52, false)
   :
     // todo: 1週目かつsmite無しの場合、ice小杖は効率が悪いのでvigor小杖を持ちたい
-    weapon._equip(40, false)
+    weapon._equip(25, false)
 
 /** 呪われた会館 **/
 // ボス部屋判定可能

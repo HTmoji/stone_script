@@ -25,23 +25,24 @@ func initialize()
   debugButton.x = 10
   debugButton.SetPressed(debug_buttonPress)
 
-// 武器表示
+// プレイヤー情報
 func weapon_print()
   >`0,6,L:@string.Split(item.left, " ")[0]@
   >`0,7,R:@string.Split(item.right, " ")[0]@
+  >`0,8,pos[@pos.x@,@pos.y@,@pos.z@]
 
 // クールダウン
 func cooldown_print()
-  >`0,9,bard:@item.GetCooldown("bardiche")@
-  >`0,10,heav:@item.GetCooldown("hammer")@
-  >`0,11,blad:@item.GetCooldown("blade")@
-  >`0,12,mask:@item.GetCooldown("mask")@
-  >`0,13,sarm:@item.GetCooldown("skeleton_arm")@
-  >`0,14,bash:@item.GetCooldown("bash")@
-  >`0,15,mind:@item.GetCooldown("mind")@
-  >`0,16,dash:@item.GetCooldown("dash")@
-  >`0,17,staf:@item.GetCooldown("quarterstaff")@
-  >`0,18,hatc:@item.GetCooldown("hatchet")@
+  >`0,10,bard:@item.GetCooldown("bardiche")@
+  >`0,11,heav:@item.GetCooldown("hammer")@
+  >`0,12,blad:@item.GetCooldown("blade")@
+  >`0,13,mask:@item.GetCooldown("mask")@
+  >`0,14,sarm:@item.GetCooldown("skeleton_arm")@
+  >`0,15,bash:@item.GetCooldown("bash")@
+  >`0,16,mind:@item.GetCooldown("mind")@
+  >`0,17,dash:@item.GetCooldown("dash")@
+  >`0,18,staf:@item.GetCooldown("quarterstaff")@
+  >`0,19,hatc:@item.GetCooldown("hatchet")@
 
 // 環境情報
 func info_update_print()
@@ -52,32 +53,16 @@ func info_update_print()
     var star_text = string.Sub(loc, star_index, star_end)
     var area_index = string.IndexOf(loc, " ")
     var area_text = string.Sub(loc, area_index, star_index - area_index -1)
-    var loc_text = string.Sub(loc, 0, area_index)
-    >`19,1,loc:@star_text@@area_text@(@loc_text@)
-
-  // player
-  var p_text = "idle:"
-  ?ai.idle
-    p_text += T
-  :
-    p_text += F
-  p_text += " walking:"
-  ?ai.walking
-    p_text += T
-  :
-    p_text += F
-  p_text += " paused:"
-  ?ai.paused
-    p_text += T
-  :
-    p_text += F
-  >`19,2,player pos[@pos.x@,@pos.y@,@pos.z@] @p_text@
+    // var loc_text = string.Sub(loc, 0, area_index)
+    // >`19,1,loc:@star_text@@area_text@(@loc_text@)
+    >`19,1,loc:@star_text@@area_text@
 
   // enemy
-  >`19,3,enemy count:@foe.count@ state:@foe.state@ distance:@foe.distance@
+  >`19,2,enemy count:@foe.count@ state:@foe.state@ distance:@foe.distance@
 
   // game info
-  >`25,@screen.h -1@,loop:@loopCount@ Time[@totaltime/30@s/@time@(@time/30@s)]
+  >`19,3,loop:@loopCount@ avg:@loc.averageTime@(@loc.averageTime/30@s) best:@loc.bestTime@(@loc.bestTime/30@s)
+  >`19,4,totaltime:@totaltime@(@totaltime/30@s) time:@time@(@time/30@s)
 
 // プレイヤーの情報
 func player_update_print()

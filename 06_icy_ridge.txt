@@ -1,4 +1,4 @@
-// potion: berserk
+// potion: crit
 
 // external script
 var move = import user_script/move
@@ -6,38 +6,36 @@ var weapon = import user_script/weapon
 var follow = import user_script/follow
 
 // 変数
-var sword_flip = false
+var pause = false
 
 func boss_attack()
-  ?foe = yeti
-    follow.ignition(1000)
-  ?foe.armor > 0
-    ?foe.distance >= 6
-      weapon._equip(52, false)
-    :
-      weapon._equip(29, false)
-  :?item.GetCooldown("blade") = 0
-    weapon._equip(0, false)
+  // 距離詰め
+  ?foe.distance >= 8
+    weapon._equip(52, false)
+  // アーマー剥がし
+  :?foe.armor > 0 & (item.GetCooldown("hammer") <= 0 | buffs.string = bardiche)
+    weapon._equip(4, false)
     activate R
-  :?item.GetCooldown("mask") = 0
-    weapon._equip(11, false)
-    activate R
-  :?foe = yeti & foe.distance <= 7 & (item.GetCooldown("bardiche") = 0 | buffs.string = bardiche)
+    pause = true
+  :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
     weapon._equip(6, false)
     activate R
-  // 謎の待機時間
-  :?foe = yeti & foe.state = 1
-    move.action()
-  // 待機後の距離詰め
-  :?foe.distance >= 8
-    weapon._equip(52, false)
+    activate potion
+  // チートくさい動き
+  :?foe = yeti & foe.state = 1 & pause
+    ui.OpenInv()
+    pause = false
   // smite chill attack
-  :?foe.state = 132 & foe.debuffs.string ! "chill:6"
+  :?foe.debuffs.string ! "chill:6"
       weapon._equip(24, false)
-      activate potion
+  // moon AAC
   :
-    // chill詰んだ後はfireでトドメ
-    weapon._equip(23, false)
+    ?time%3 = 0
+      weapon._equip(30, false)
+    :?time%3 = 1
+      weapon._equip(31, false)
+    :?time%3 = 2
+      weapon._equip(37, false)
 
 func normal_attack()
   // 2画面blade
@@ -55,26 +53,37 @@ func normal_attack()
       weapon._equip(52, false)
   // ☆11 ガリガリさん
   :?foe = Giant Ice Elemental
-    // todo: flipしてもいいかも
-    weapon._equip(23, sword_flip)
+    ?foe.debuffs.string ! "damage"
+      weapon._equip(12, false)
+    // moon AAC
+    :?time%3 = 0
+      weapon._equip(30, false)
+    :?time%3 = 1
+      weapon._equip(31, false)
+    :?time%3 = 2
+      weapon._equip(37, false)
   // ツララ
   :?foe = ice_pillar
-    ?item.GetCooldown("hammer") = 0 | buffs.string = bardiche
-      weapon._equip(4, false)
-      activate R
-    :?foe.debuffs.string ! "chill:6"
-      weapon._equip(40, wand_flip)
+    ?foe.debuffs.string ! "chill:6"
+      weapon._equip(25, wand_flip)
     :
-      // todo: chill6積んだあとのつららの処理はどうするか要検討
-      weapon._equip(40, wand_flip)
+      // moon AAC
+      ?time%3 = 0
+        weapon._equip(30, false)
+      :?time%3 = 1
+        weapon._equip(31, false)
+      :?time%3 = 2
+        weapon._equip(37, false)
   :
     // todo: 1週目かつsmite無しの場合、ice小杖は効率が悪い…が1面の敵が5体以上のケースが多いので考慮不要か？
-    weapon._equip(40, wand_flip)
+    weapon._equip(25, wand_flip)
 
 /** 氷の尾根 **/
 // ボス部屋判定不可
 ?loc = icy_ridge
-  ?summon.count = 0 & time > 1
+  ?hp < maxhp
+    loc.Leave()
+  :?summon.count = 0 & time > 1
     follow.fire_talisman()
   :?foe.distance >= 20
     move.action()
