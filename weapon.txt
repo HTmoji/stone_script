@@ -59,7 +59,7 @@ var weapon_list = [
   ["quarterstaff *10 +10"],                             // 50: 六尺棒
   ["sword ice *10 +14", "bash shield *8 +15"],          // 51: ツッコミシールド
   ["sword ice *10 +14", "dash shield *10 +1"],          // 52: ダッシュの盾
-  ["wand fire *10 +11", "mind stone"],                  // 53: 後方回避用
+  ["wand ice *10 +21", "mind stone"],                   // 53: 後方回避用
   ["triskelion stone", "dash shield *10 +1"],           // 54: ガーディアン用移動
   [""],                                                 // 55:
   [""],                                                 // 56:

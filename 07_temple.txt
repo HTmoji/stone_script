@@ -1,13 +1,9 @@
-// potion: berserk
+// potion: crit
 
 // external script
 var move = import user_script/move
 var weapon = import user_script/weapon
 var follow = import user_script/follow
-
-// 変数
-var heavy_hammer_flip = 0
-var sword_flip = 0
 
 func boss_attack()
   follow.ignition(0)
@@ -21,54 +17,50 @@ func boss_attack()
   :? foe.distance > 7
     weapon._equip(51, false)
   :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
-    weapon._equip(2, false)
+    weapon._equip(6, false)
     activate R
-  // デバフは切らさない
-  :?foe.debuffs.string ! "chill:6"
-    weapon._equip(25, false)
+  // moon AAC
   :
-    ?time%12 = 0
-      sword_flip = !sword_flip
-      weapon._equip(24, sword_flip)
-      activate potion
+    ?time%3 = 0
+      weapon._equip(33, false)
+    :?time%3 = 1
+      weapon._equip(34, false)
+    :?time%3 = 2
+      weapon._equip(36, false)
 
 func normal_attack()
-  ?item.GetCooldown("blade") = 0 & foe.count >= 15
-    weapon._equip(0, false)
-    activate R
+  // 2画面blade
+  ?item.GetCooldown("blade") = 0 & foe.count >= 5
+    screen.Next()
+    ?foe.distance < 10
+      weapon._equip(0, false)
+      activate R
+      screen.Resetoffset()
+  // 距離詰め
+  :?foe.distance >= 11 & (item.GetCooldown("bash") <= 0 | item.GetCooldown("dash") <= 0)
+    ?item.GetCooldown("bash") <= 0
+      weapon._equip(51, false)
+    :
+      weapon._equip(52, false)
   // ☆11の特殊敵 時間経過でバフ
   :?foe = acronian_cultist
-    ?foe.hp < 745
-      weapon._equip(2, false)
+    ?foe.hp < 1000
+      weapon._equip(6, false)
       activate R
-    :?foe.distance > 6
-      weapon._equip(51, false)
+    // smite chill attack
     :?foe.debuffs.string ! "chill:6"
-      weapon._equip(25, false)
+      weapon._equip(24, false)
+    // moon AAC
     :
-      ?time%19 = 0
-        ?heavy_hammer_flip
-          weapon._equip(4, heavy_hammer_flip)
-        :
-          weapon._equip(5, heavy_hammer_flip)
-        heavy_hammer_flip = !heavy_hammer_flip
-  // 一部mobは近接で仕留める
-  :?foe = cult_guard | foe = worm_rider
-    ?foe.hp < 113
-      ?foe.distance > 7
-        ?item.GetCooldown("bash") <= 0
-          weapon._equip(51, false)
-        :
-          weapon._equip(52, false)
-      :
-        weapon._equip(4, false)
-        ?(foe.count >= 5 & item.GetCooldown("hammer") = 0) | buffs.string = bardiche
-          activate R
-    :
-      weapon._equip(0, false)
-  // todo: デバフ積みすぎて連射クロスボウがゴミになった際の条件分岐を入れるべき
+      ?time%3 = 0
+        weapon._equip(33, false)
+      :?time%3 = 1
+        weapon._equip(34, false)
+      :?time%3 = 2
+        weapon._equip(36, false)
   :
-    weapon._equip(9, false)
+    // smite attack
+    weapon._equip(25, wand_flip)
 
 /** 神殿 **/
 // ボス部屋判定可能

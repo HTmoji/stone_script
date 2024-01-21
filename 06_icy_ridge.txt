@@ -35,7 +35,7 @@ func boss_attack()
     :?time%3 = 1
       weapon._equip(31, false)
     :?time%3 = 2
-      weapon._equip(37, false)
+      weapon._equip(34, false)
 
 func normal_attack()
   // 2画面blade
@@ -54,14 +54,14 @@ func normal_attack()
   // ☆11 ガリガリさん
   :?foe = Giant Ice Elemental
     ?foe.debuffs.string ! "damage"
-      weapon._equip(12, false)
+      weapon._equip(36, false)
     // moon AAC
     :?time%3 = 0
       weapon._equip(30, false)
     :?time%3 = 1
       weapon._equip(31, false)
     :?time%3 = 2
-      weapon._equip(37, false)
+      weapon._equip(34, false)
   // ツララ
   :?foe = ice_pillar
     ?foe.debuffs.string ! "chill:6"
@@ -73,7 +73,7 @@ func normal_attack()
       :?time%3 = 1
         weapon._equip(31, false)
       :?time%3 = 2
-        weapon._equip(37, false)
+        weapon._equip(34, false)
   :
     // todo: 1週目かつsmite無しの場合、ice小杖は効率が悪い…が1面の敵が5体以上のケースが多いので考慮不要か？
     weapon._equip(25, wand_flip)
