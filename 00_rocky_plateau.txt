@@ -37,29 +37,15 @@ func state1()
     weapon._equip(6, false)
     activate R
   :
-/* エンチャ待ち
-    var third_hand = 32
+    var third_hand = 38
     ?foe.debuffs.string ! "damage"
-      third_hand = 36
-    :?foe.debuffs.string ! "chill:6"
-      third_hand = 34
-    :?hp < maxhp
-      third_hand = 39
-
-    ?time%3 = 0
-      weapon._equip(30, false)
-    :?time%3 = 1
-      weapon._equip(31, false)
-    :?time%3 = 2
-      weapon._equip(third_hand, false)
-*/
-    var third_hand = 39
+      third_hand = 35
     ?foe.debuffs.string ! "chill:6"
-      third_hand = 34
+      third_hand = 32
     ?time%3 = 0
-      weapon._equip(30, false)
+      weapon._equip(42, false)
     :?time%3 = 1
-      weapon._equip(31, false)
+      weapon._equip(43, false)
     :?time%3 = 2
       weapon._equip(third_hand, false)
 
@@ -83,13 +69,15 @@ func state2()
     :?foe = Ice
       weapon._equip(23, false)
     :
-      var third_hand = 39
+      var third_hand = 38
+      ?foe.debuffs.string ! "damage"
+        third_hand = 35
       ?foe.debuffs.string ! "chill:6"
-        third_hand = 34
+        third_hand = 32
       ?time%3 = 0
-        weapon._equip(30, false)
+        weapon._equip(42, false)
       :?time%3 = 1
-        weapon._equip(31, false)
+        weapon._equip(43, false)
       :?time%3 = 2
         weapon._equip(third_hand, false)
 
@@ -102,30 +90,16 @@ func state3()
   :?foe.distance >= 7
     weapon._equip(52, false)
   :
-/* エンチャ待ち
-    var third_hand = 32
+    var third_hand = 38
     ?foe.debuffs.string ! "damage"
-      third_hand = 36
-    :?foe.debuffs.string ! "chill:6"
-      third_hand = 34
-    :?hp < maxhp
-      third_hand = 39
-
-    ?time%3 = 0
-      weapon._equip(30, false)
-    :?time%3 = 1
-      weapon._equip(31, false)
-    :?time%3 = 2
-      weapon._equip(third_hand, false)
-*/
-    var third_hand = 39
+      third_hand = 35
     ?foe.debuffs.string ! "chill:6"
-      third_hand = 34
+      third_hand = 32
     ?time%3 = 0
-      weapon._equip(30, false)
+      weapon._equip(42, false)
       activate potion
     :?time%3 = 1
-      weapon._equip(31, false)
+      weapon._equip(43, false)
     :?time%3 = 2
       weapon._equip(third_hand, false)
 
@@ -137,11 +111,11 @@ func normal_attack()
     weapon._equip(51, false)
   // moon AAC todo: 炎デバフで時短も考慮
   :?time%3 = 0
-    weapon._equip(30, false)
+    weapon._equip(32, false)
   :?time%3 = 1
-    weapon._equip(34, false)
+    weapon._equip(35, false)
   :?time%3 = 2
-    weapon._equip(39, false) // LifeSteel
+    weapon._equip(38, false)
 
 /** ロッキー高原 **/
 ?loc = rocky_plateau

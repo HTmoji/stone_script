@@ -23,32 +23,32 @@ var weapon_list = [
   [""],                                           // 18:
   [""],                                           // 19:
   // 片手武器（片手剣, 斧, 杖）
-  ["sword poison *10 +21", "sword ice *10 +21"],      // 20: D,dI 速度エンチャ
+  ["sword poison *10 +21", "どくばり"],               // 20: D,dP 速度エンチャ
   ["sword vigor *10 +21", "sword ice *10 +21"],       // 21: D,dI 速度エンチャ
   ["sword aether *10 +21", "sword ice *10 +21"],      // 22: D,dI 速度エンチャ
   ["線香花火", "マッチ棒"],                            // 23: D,D 速度エンチャ
   ["sword ice *10 +21 shiny", "sword ice *10 +21"],   // 24: D,dI 速度エンチャ
-  ["wand ice *10 +21", "gari-gari kun"],              // 25: dI,dI 速度エンチャ
+  ["wand ice *10 +21", "ブラックモンブラン"],          // 25: dI,dI 速度エンチャ
   [""],                                               // 26:
   [""],                                               // 27:
   [""],                                               // 28:
   [""],                                               // 29:
   // 月時計
-  ["moon", "線香花火"],                               // 30: 火D
-  ["moon", "マッチ棒"],                               // 31: 火D
-  ["moon", "sword fire *10 +21"],                     // 32: 火D        todo: 作る必要あり
-  ["moon", "sword ice *10 +21 shiny"],                // 33: 氷D
-  ["moon", "sword ice *10 +21"],                      // 34: 氷dI
-  ["moon", "sword poison *10 +21"],                   // 35: 毒D
-  ["moon", "どくばり"],                               // 36: 毒dP       todo: 作る必要あり
-  ["moon", "sword aether *10 +21"],                   // 37: エーテルD
-  ["moon", "sword vigor *10 +21"],                    // 38: 活力D
-  ["moon", "LifeSteel"],                              // 39: 活力dL
-  // 空き
-  [""],                                           // 40:
-  [""],                                           // 41:
-  [""],                                           // 42:
-  [""],                                           // 43:
+  ["moon", "sword ice *10 +21 shiny"],                // 30: 氷D
+  ["moon", ""],                                       // 31: 氷D?
+  ["moon", "sword ice *10 +21"],                      // 32: 氷dI
+  ["moon", "sword poison *10 +20"],                   // 33: 毒D        todo: +21にしよう
+  ["moon", ""],                                       // 34: 毒D?
+  ["moon", "どくばり"],                               // 35: 毒dP
+  ["moon", "sword vigor *10 +21"],                    // 36: 活力D
+  ["moon", ""],                                       // 37: 活力D?
+  ["moon", "LifeSteel"],                              // 38: 活力dL
+  ["moon", "sword aether *10 +21"],                   // 39: エーテルD
+  ["moon", ""],                                       // 40: エーテルD?
+  ["moon", ""],                                       // 41: エーテルD?
+  ["moon", "線香花火"],                               // 42: 火D
+  ["moon", "マッチ棒"],                               // 43: 火D
+  ["moon", ""],                                       // 44: 火dF?
   [""],                                           // 44: 
   [""],                                           // 45:
   [""],                                           // 46:
