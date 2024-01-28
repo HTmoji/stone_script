@@ -1,16 +1,16 @@
 // memo: 同武器を装備する場合、名札orピカピカorエンチャントレベル違いにする必要アリ
 var weapon_list = [
   // 両手武器
-  ["blade *9 +21"],             // 0: blade of god
-  ["skeleton arm *8 +7"],       // 1: skeleton arm
-  [""],                         // 2: 
-  [""],                         // 3: 
-  ["heavy hammer *10 +16"],     // 4: damage
-  [""],                         // 5:
-  ["bardiche *10 +21 shiny"],   // 6: crit
-  [""],                         // 7:
-  [""],                         // 8: 
-  [""],                         // 9:
+  ["blade *9 +21"],                   // 0: blade of god
+  ["skeleton arm *9 +1"],             // 1: skeleton arm
+  [""],                               // 2: 
+  [""],                               // 3: 
+  ["heavy hammer *10 +16"],           // 4: armor damage
+  [""],                               // 5:
+  ["bardiche *10 +21 shiny"],         // 6: crit
+  [""],                               // 7:
+  ["heavy crossbow aether *10 +21"],  // 8: D 速度エンチャ 
+  ["へびぃくろすぼう"],                // 9: D 速度エンチャ
   // 片手武器（mask）
   ["fire talisman *8 +21", "com shield *10 +16"], // 10: 枠だけ、運用はuser_script/follow で行う
   ["moon", "mask *9 +21"],                        // 11: mask for activate
@@ -29,36 +29,35 @@ var weapon_list = [
   ["線香花火", "マッチ棒"],                            // 23: D,D 速度エンチャ
   ["sword ice *10 +21 shiny", "sword ice *10 +21"],   // 24: D,dI 速度エンチャ
   ["wand ice *10 +21", "ブラックモンブラン"],          // 25: dI,dI 速度エンチャ
-  [""],                                               // 26:
+  ["long sword aether *10 +21", "ザラキ"],            // 26: dU,dU 確率エンチャ ツララ用だけど微妙かも
   [""],                                               // 27:
   [""],                                               // 28:
   [""],                                               // 29:
   // 月時計
   ["moon", "sword ice *10 +21 shiny"],                // 30: 氷D
-  ["moon", ""],                                       // 31: 氷D?
+  ["moon", ""],                                       // 31: 氷D         // todo +21
   ["moon", "sword ice *10 +21"],                      // 32: 氷dI
-  ["moon", "sword poison *10 +20"],                   // 33: 毒D        todo: +21にしよう
-  ["moon", ""],                                       // 34: 毒D?
+  ["moon", "sword poison *10 +21"],                   // 33: 毒D
+  ["moon", ""],                                       // 34: 毒D         // todo +21
   ["moon", "どくばり"],                               // 35: 毒dP
   ["moon", "sword vigor *10 +21"],                    // 36: 活力D
-  ["moon", ""],                                       // 37: 活力D?
+  ["moon", ""],                                       // 37: 活力D        // todo +21
   ["moon", "LifeSteel"],                              // 38: 活力dL
   ["moon", "sword aether *10 +21"],                   // 39: エーテルD
-  ["moon", ""],                                       // 40: エーテルD?
-  ["moon", ""],                                       // 41: エーテルD?
+  ["moon", "sword aether *10 +1 "],                   // 40: エーテルD    // todo +21
+  ["moon", ""],                                       // 41: エーテルD    // todo +21
   ["moon", "線香花火"],                               // 42: 火D
   ["moon", "マッチ棒"],                               // 43: 火D
-  ["moon", ""],                                       // 44: 火dF?
-  [""],                                           // 44: 
-  [""],                                           // 45:
-  [""],                                           // 46:
-  [""],                                           // 47:
-  [""],                                           // 48:
-  [""],                                           // 49:
+  ["moon", "sword fire *10 +15"],                     // 44: 火D          // todo +21
+  [""],                                               // 45: 火dF         // smite用？
+  [""],                                               // 46:
+  [""],                                               // 47:
+  [""],                                               // 48:
+  [""],                                               // 49:
   // 移動手段、盾
   ["quarterstaff *10 +10"],                             // 50: 六尺棒
-  ["sword ice *10 +14", "bash shield *8 +15"],          // 51: ツッコミシールド
-  ["sword ice *10 +14", "dash shield *10 +1"],          // 52: ダッシュの盾
+  ["sword ice *10 +21", "bash *8 +16"],                 // 51: ツッコミシールド
+  ["sword ice *10 +21", "dash *10 +1"],                 // 52: ダッシュの盾
   ["wand ice *10 +21", "mind stone"],                   // 53: 後方回避用
   ["triskelion stone", "dash shield *10 +1"],           // 54: ガーディアン用移動
   [""],                                                 // 55:

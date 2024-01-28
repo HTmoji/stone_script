@@ -12,9 +12,9 @@ func set_quarterstaff_use(b)
   quarterstaff_use = b
 
 func action()
-  ?harvest_pick & harvest.distance <= 8
+  ?harvest_pick & harvest.distance <= 9
       harvest_walk()
-  :?pickup & pickup.distance <= 8
+  :?pickup & pickup.distance <= 9
       pick_walk()
   :?speed_mode
     speed_walk()

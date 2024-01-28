@@ -7,19 +7,21 @@ var follow = import user_script/follow
 
 // 変数
 var boss_motion_count = 0
-var wand_flip = false
+var heavy_crossbow = 8
+var heavy_crossbow_equip = false
 
 func boss_attack()
   follow.ignition(300)
   // 開始待ち
-  ?time < 540 | foe.state = -1
-    move.speed_walk()
-  :?item.GetCooldown("blade") = 0 
-    weapon._equip(0, false)
+  ?time < 540 | foe.state = -1 | foe.hp <= 0
+    move.action()
+  :?item.GetCooldown("hammer") <= 0 | buffs.string = bardiche
+    weapon._equip(4, false)
     activate R
   :?item.GetCooldown("mask") = 0
     weapon._equip(11, false)
     activate R
+    heavy_crossbow_equip = true
   // 回避ロジック
   :?foe.state = 32
     boss_motion_count++
@@ -27,31 +29,31 @@ func boss_attack()
       weapon._equip(53, false)
   // 近接距離
   :?pos.y > 0
+    boss_motion_count = 0
+    heavy_crossbow_equip = true
     // トリスケル + ダッシュで距離を詰める
     ?foe.distance >= 6
-      ?item.GetCooldown("dash") <= 0
-        weapon._equip(54, false)
-      :
-        weapon._equip(55, false)
-    :?foe.armor > 0
-      ?item.GetCooldown("hammer") <= 0 | buffs.string = bardiche
-        weapon._equip(4, false)
-        activate R
-      :
-        // todo: aether2本持ち必要、斧はいらないかな？
-        weapon._equip(24, false)
-        activate potion
-    :?item.GetCooldown("bardiche") <= 0 | buffs.string = bardiche
-        weapon._equip(6, false)
-        activate R
-    // todo: 近距離から遠距離への移行時、ワンドで殴りたい
+      weapon._equip(54, false)
+    // moon AAC
     :
-      // todo: aether2本持ち必要
-      weapon._equip(24, false)
+      ?time%3 = 0
+        weapon._equip(39, false)
+        activate potion
+      :?time%3 = 1
+        weapon._equip(32, false)
+      :?time%3 = 2
+        weapon._equip(35, false)
   :
-    ?time%8 = 0
-      wand_flip = !wand_flip
-      weapon._equip(28, wand_flip)
+    ?heavy_crossbow_equip
+      heavy_crossbow_equip = false
+      weapon._equip(heavy_crossbow, false)
+    ?item.left.state = 2
+      ?heavy_crossbow = 8
+        heavy_crossbow = 9
+        weapon._equip(heavy_crossbow, false)
+      :
+        heavy_crossbow = 8
+        weapon._equip(heavy_crossbow, false)
 
 func normal_attack()
   // 2画面blade

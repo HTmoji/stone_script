@@ -6,7 +6,7 @@ var weapon = import user_script/weapon
 var follow = import user_script/follow
 
 func boss_attack()
-  follow.ignition(1000)
+  follow.ignition(2000)
   ?(foe.hp < 1000 & item.GetCooldown("bardiche") = 0) | buffs.string = bardiche
     // 距離詰め
     ?foe.distance >= 11 & (item.GetCooldown("bash") <= 0 | item.GetCooldown("dash") <= 0)
@@ -22,7 +22,19 @@ func boss_attack()
       weapon._equip(11, false)
       activate R
     :
-      weapon._equip(25, false)
+      ?foe.distance >= 11 & (item.GetCooldown("bash") <= 0 | item.GetCooldown("dash") <= 0)
+        ?item.GetCooldown("bash") <= 0
+          weapon._equip(51, false)
+        :
+          weapon._equip(52, false)
+      :
+        ?time%3 = 0
+          weapon._equip(30, false)
+          activate potion
+        :?time%3 = 1
+          weapon._equip(32, false)
+        :?time%3 = 2
+          weapon._equip(35, false)
   :
     move.action()
 
@@ -43,13 +55,12 @@ func normal_attack()
       weapon._equip(52, false)
   // ☆11~ コウモリーズ
   :?foe = boss
-    ?foe.debuffs.string ! "chill:6"
-      weapon._equip(24, false)
-    :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
-      weapon._equip(6, false)
-      activate R
-    :
-      weapon._equip(24, false)
+    ?time%3 = 0
+      weapon._equip(30, false)
+    :?time%3 = 1
+      weapon._equip(32, false)
+    :?time%3 = 2
+      weapon._equip(35, false)
   :
     weapon._equip(25, false)
 
@@ -58,7 +69,7 @@ func normal_attack()
 ?loc = caves
   ?summon.count = 0 & time > 1
     follow.fire_talisman()
-  :?foe.distance >= 22
+  :?foe.distance >= 20
     move.action()
   :?foe ! Bolesh
     normal_attack()

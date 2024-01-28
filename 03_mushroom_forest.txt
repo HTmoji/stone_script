@@ -12,51 +12,40 @@ func boss_attack()
   // 第一形態
   ?foe = boss_harder
     harder_alive = false
-    ?item.GetCooldown("blade") = 0
-      weapon._equip(0, false)
-      activate R
-    :?item.GetCooldown("mask") = 0
+    ?item.GetCooldown("mask") <= 0
       weapon._equip(11, false)
+      activate R
+    :?item.GetCooldown("hammer") <= 0 | buffs.string = bardiche
+      weapon._equip(4, false)
       activate R
     :?foe.distance >= 11 & (item.GetCooldown("bash") <= 0 | item.GetCooldown("dash") <= 0)
       ?item.GetCooldown("bash") <= 0
         weapon._equip(51, false)
       :
         weapon._equip(52, false)
-    // smite chill attack
-    :?foe.debuffs.string ! "chill:6"
-      weapon._equip(24, false)
     :
-      weapon._equip(20, false)
-  // 第二形態 手前
-  :?foe = boss_fat
+      ?time%3 = 0
+        weapon._equip(33, false)
+      :?time%3 = 1
+        weapon._equip(35, false)
+      :?time%3 = 2
+        weapon._equip(32, false)
+  // 第二形態 手前/奥
+  :?foe = boss_fat | foe = boss_skinny
     harder_alive = true
-    ?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
-      weapon._equip(6, false)
-      activate R
-    // smite chill attack
-    :?foe.debuffs.string ! "chill:6"
-      weapon._equip(24, false)
-      activate potion
-    :
-      weapon._equip(20, false)
-  // 第二形態 奥
-  :?foe = boss_skinny
-    ?foe.distance >= 11 & (item.GetCooldown("bash") <= 0 | item.GetCooldown("dash") <= 0)
+    ?foe.distance >= 7 & (item.GetCooldown("bash") <= 0 | item.GetCooldown("dash") <= 0)
       ?item.GetCooldown("bash") <= 0
         weapon._equip(51, false)
       :
         weapon._equip(52, false)
-    :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
-      weapon._equip(6, false)
-      activate R
-    // smite chill attack
-    :?foe.debuffs.string ! "chill:6"
-      weapon._equip(24, false)
     :
-      weapon._equip(20, false)
-  :
-    weapon._equip(10, false)
+      ?time%3 = 0
+        weapon._equip(33, false)
+        activate potion
+      :?time%3 = 1
+        weapon._equip(35, false)
+      :?time%3 = 2
+        weapon._equip(32, false)
 
 func normal_attack()
   // 2画面blade
@@ -67,9 +56,9 @@ func normal_attack()
       activate R
       screen.Resetoffset()
   // ☆11のカタツムリは適度に距離を保ってbardiche
-  :?foe.armor >= 100 & pos.x > 350
+  :?foe.armor >= 100 & pos.x > 400
     weapon._equip(6, false)
-    ?foe.distance <= 9
+    ?foe.distance <= 13
       activate R
   // 毛玉はdash(bash) で距離を詰めた後、1Fでmind を挟むことで回避可能
   :?foe = fluff & foe.distance <= 5 & item.GetCooldown("mind") = 0

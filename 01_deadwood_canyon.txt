@@ -4,9 +4,6 @@
 var move = import user_script/move
 var weapon = import user_script/weapon
 
-// 変数
-var poena_flg = false
-
 // initialize
 move.set_harvest_pick(false)
 
@@ -18,17 +15,19 @@ func boss_attack()
         weapon._equip(52, false)
     :?foe.state = 1
       weapon._equip(0, false)
-    :?foe.buffs.string ! mirror | poena_flg & state = 32
-      weapon._equip(24, false)
-      activate potion
+    :?foe.buffs.string ! mirror
+      ?time%3 = 0
+        weapon._equip(32, false)
+        activate potion
+      :?time%3 = 1
+        weapon._equip(35, false)
+      :?time%3 = 2
+        weapon._equip(38, false)
     :
       weapon._equip(0, false)
   // 第一形態
   :?foe = boss
-    ?item.GetCooldown("blade") = 0
-      weapon._equip(0, false)
-      activate R
-    :?item.GetCooldown("mask") = 0
+    ?item.GetCooldown("mask") = 0
       weapon._equip(11, false)
       activate R
     // 距離詰め
@@ -37,11 +36,17 @@ func boss_attack()
         weapon._equip(51, false)
       :
         weapon._equip(52, false)
-    :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
+    :?foe.hp < 1000 & (item.GetCooldown("bardiche") = 0 | buffs.string = bardiche)
       weapon._equip(6, false)
       activate R
     :
-      weapon._equip(24, false)
+      ?time%3 = 0
+        weapon._equip(32, false)
+      :?time%3 = 1
+        weapon._equip(35, false)
+      :?time%3 = 2
+        weapon._equip(38, false)
+
 
 func normal_attack()
   // 2画面blade

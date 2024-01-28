@@ -11,35 +11,48 @@ var sword_flip = false
 func boss_attack()
   // 第一形態
   ?foe = boss_harder
-    follow.ignition(600)
+    follow.ignition(400)
     // 待ち時間
-    ?time < 400 | foe.distance > 10
+    ?time < 400
       move.action()
+    :?foe.distance > 6
+      weapon._equip(52, false)
     :?item.GetCooldown("mask") = 0
       weapon._equip(11, false)
       activate R
     :?foe.hp < 1000 & foe.distance <= 7 & (item.GetCooldown("bardiche") = 0 | buffs.string = bardiche)
       weapon._equip(6, false)
       activate R
-    :?foe.debuffs.string ! "chill:6"
-      weapon._equip(24, false)
-    :?foe.debuffs.string ! "damage"
-      weapon._equip(20, false)
     :
-      // todo: flip?
-      weapon._equip(21, false)
+      var third_hand = 42
+      ?foe.debuffs.string ! "damage"
+        third_hand = 35
+      :?foe.debuffs.string ! "chill:6"
+        third_hand = 32
+      ?time%3 = 0
+        weapon._equip(36, false)
+      :?time%3 = 1
+        weapon._equip(38, false)
+      :?time%3 = 2
+        weapon._equip(third_hand, false)
+
   // 第二形態
   :?foe = boss_stage_2
     ?foe.distance > 11
       weapon._equip(52, false)
-    :?foe.debuffs.string ! "chill:6"
-      weapon._equip(24, false)
-      activate potion
-    :?foe.debuffs.string ! "damage"
-      weapon._equip(20, false)
     :
-      // todo: flip?
-      weapon._equip(21, false)
+      var third_hand = 42
+      ?foe.debuffs.string ! "damage"
+        third_hand = 35
+      :?foe.debuffs.string ! "chill:6"
+        third_hand = 32
+      ?time%3 = 0
+        weapon._equip(36, false)
+        activate potion
+      :?time%3 = 1
+        weapon._equip(38, false)
+      :?time%3 = 2
+        weapon._equip(third_hand, false)
 
 func normal_attack()
   // 2画面blade
@@ -60,7 +73,6 @@ func normal_attack()
     :
       weapon._equip(52, false)
   :
-    // todo: 1週目かつsmite無しの場合、ice小杖は効率が悪いのでvigor小杖を持ちたい
     weapon._equip(25, false)
 
 /** 呪われた会館 **/

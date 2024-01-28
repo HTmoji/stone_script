@@ -9,7 +9,7 @@ func boss_attack()
   follow.ignition(0)
   // 毒吐きモーション、捕食モーション、等考慮しなくてもよくなった…
   ?(foe.state = 103 | foe.state = 104 | foe.state = 105) & debuffs.count >= 20
-    weapon._equip(3, false)
+    weapon._equip(1, false)
   // 落石
   :?foe.state = 112
       weapon._equip(53, false)
@@ -22,11 +22,11 @@ func boss_attack()
   // moon AAC
   :
     ?time%3 = 0
-      weapon._equip(33, false)
+      weapon._equip(30, false)
     :?time%3 = 1
-      weapon._equip(34, false)
+      weapon._equip(32, false)
     :?time%3 = 2
-      weapon._equip(36, false)
+      weapon._equip(35, false)
 
 func normal_attack()
   // 2画面blade
@@ -47,17 +47,14 @@ func normal_attack()
     ?foe.hp < 1000
       weapon._equip(6, false)
       activate R
-    // smite chill attack
-    :?foe.debuffs.string ! "chill:6"
-      weapon._equip(24, false)
     // moon AAC
     :
       ?time%3 = 0
-        weapon._equip(33, false)
+        weapon._equip(30, false)
       :?time%3 = 1
-        weapon._equip(34, false)
+        weapon._equip(32, false)
       :?time%3 = 2
-        weapon._equip(36, false)
+        weapon._equip(35, false)
   :
     // smite attack
     weapon._equip(25, wand_flip)

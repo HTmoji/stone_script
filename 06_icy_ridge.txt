@@ -16,6 +16,7 @@ func boss_attack()
   :?foe.armor > 0 & (item.GetCooldown("hammer") <= 0 | buffs.string = bardiche)
     weapon._equip(4, false)
     activate R
+    activate potion
     pause = true
   :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
     weapon._equip(6, false)
@@ -25,21 +26,18 @@ func boss_attack()
   :?foe = yeti & foe.state = 1 & pause
     ui.OpenInv()
     pause = false
-  // smite chill attack
-  :?foe.debuffs.string ! "chill:6"
-      weapon._equip(24, false)
   // moon AAC
   :
     ?time%3 = 0
-      weapon._equip(30, false)
+      weapon._equip(42, false)
     :?time%3 = 1
-      weapon._equip(31, false)
+      weapon._equip(43, false)
     :?time%3 = 2
-      weapon._equip(34, false)
+      weapon._equip(32, false)
 
 func normal_attack()
   // 2画面blade
-  ?item.GetCooldown("blade") = 0 & foe.count >= 5
+  ?item.GetCooldown("blade") <= 0 & foe.count >= 5
     screen.Next()
     ?foe.distance < 10
       weapon._equip(0, false)
@@ -53,27 +51,28 @@ func normal_attack()
       weapon._equip(52, false)
   // ☆11 ガリガリさん
   :?foe = Giant Ice Elemental
-    ?foe.debuffs.string ! "damage"
-      weapon._equip(36, false)
-    // moon AAC
-    :?time%3 = 0
-      weapon._equip(30, false)
-    :?time%3 = 1
-      weapon._equip(31, false)
-    :?time%3 = 2
-      weapon._equip(34, false)
+      // moon AAC
+      ?time%3 = 0
+        weapon._equip(42, false)
+      :?time%3 = 1
+        weapon._equip(43, false)
+      :?time%3 = 2
+        weapon._equip(35, false)
   // ツララ
   :?foe = ice_pillar
     ?foe.debuffs.string ! "chill:6"
       weapon._equip(25, wand_flip)
     :
       // moon AAC
+      // todo: 月時計側の攻撃で足が止まることがあるので処理方法は別がいいかも
       ?time%3 = 0
-        weapon._equip(30, false)
+        weapon._equip(42, false)
       :?time%3 = 1
-        weapon._equip(31, false)
+        weapon._equip(43, false)
       :?time%3 = 2
-        weapon._equip(34, false)
+        weapon._equip(35, false)
+    // dUで消す方法は微妙かも
+    // weapon._equip(27, wand_flip)
   :
     // todo: 1週目かつsmite無しの場合、ice小杖は効率が悪い…が1面の敵が5体以上のケースが多いので考慮不要か？
     weapon._equip(25, wand_flip)
