@@ -9,6 +9,8 @@ var follow = import user_script/follow
 var harvest_pick = false
 move.set_harvest_pick(harvest_pick)
 
+var weapon_flip = true
+
 func boss_attack()
   ?foe = bearer
     state1()
@@ -37,7 +39,7 @@ func state1()
     weapon._equip(6, false)
     activate R
   :
-    var third_hand = 38
+    var third_hand = 44
     ?foe.debuffs.string ! "damage"
       third_hand = 35
     :?foe.debuffs.string ! "chill:6"
@@ -59,21 +61,39 @@ func state2()
     // 弱点属性の判別
     // todo: AACするなら最低でも属性毎D剣が2本必要なので両手殴りでお茶を濁す
     ?foe = Poison
-      weapon._equip(24, false)
+      ?time%3 = 0
+        weapon._equip(30, false)
+      :?time%3 = 1
+        weapon._equip(31, false)
+      :?time%3 = 2
+        weapon._equip(32, false)
     :?foe = Vigor
-      weapon._equip(20, false)
+      ?item.right.state = 3
+        weapon_flip = !weapon_flip
+      weapon._equip(20, weapon_flip)
     :?foe = AEther
-      weapon._equip(21, false)
+      ?item.right.state = 3
+        weapon_flip = !weapon_flip
+      weapon._equip(21, weapon_flip)
     :?foe = Fire
-      weapon._equip(22, false)
+      ?item.right.state = 3
+        weapon_flip = !weapon_flip
+      weapon._equip(22, weapon_flip)
     :?foe = Ice
-      weapon._equip(23, false)
+      ?time%3 = 0
+        weapon._equip(42, false)
+      :?time%3 = 1
+        weapon._equip(43, false)
+      :?time%3 = 2
+        weapon._equip(44, false)
     :
-      var third_hand = 38
+      var third_hand = 44
       ?foe.debuffs.string ! "damage"
         third_hand = 35
       :?foe.debuffs.string ! "chill:6"
         third_hand = 32
+      :?hp < maxhp
+        third_hand = 38
       ?time%3 = 0
         weapon._equip(42, false)
       :?time%3 = 1
@@ -83,23 +103,24 @@ func state2()
 
 // 第三形態
 func state3()
-  follow.ignition(1500)
+  follow.ignition(500)
 
   ?foe.armor > 0 & hp > 0
     loc.Leave()
   :?foe.distance >= 7
     weapon._equip(52, false)
   :
-    var third_hand = 38
+    var third_hand = 44
     ?foe.debuffs.string ! "damage"
       third_hand = 35
     :?foe.debuffs.string ! "chill:6"
       third_hand = 32
+    :?hp < maxhp
+      third_hand = 38
     :
       activate potion
     ?time%3 = 0
       weapon._equip(42, false)
-      
     :?time%3 = 1
       weapon._equip(43, false)
     :?time%3 = 2
@@ -111,6 +132,9 @@ func normal_attack()
     move.speed_walk()
   :?foe.distance > 7
     weapon._equip(51, false)
+  :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
+    weapon._equip(6, false)
+    activate R
   // moon AAC todo: 炎デバフで時短も考慮
   :?time%3 = 0
     weapon._equip(32, false)

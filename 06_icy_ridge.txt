@@ -33,7 +33,7 @@ func boss_attack()
     :?time%3 = 1
       weapon._equip(43, false)
     :?time%3 = 2
-      weapon._equip(32, false)
+      weapon._equip(44, false)
 
 func normal_attack()
   // 2画面blade
@@ -57,11 +57,11 @@ func normal_attack()
       :?time%3 = 1
         weapon._equip(43, false)
       :?time%3 = 2
-        weapon._equip(35, false)
+        weapon._equip(44, false)
   // ツララ
   :?foe = ice_pillar
     ?foe.debuffs.string ! "chill:6"
-      weapon._equip(25, wand_flip)
+      weapon._equip(25, false)
     :
       // moon AAC
       // todo: 月時計側の攻撃で足が止まることがあるので処理方法は別がいいかも
@@ -70,12 +70,12 @@ func normal_attack()
       :?time%3 = 1
         weapon._equip(43, false)
       :?time%3 = 2
-        weapon._equip(35, false)
+        weapon._equip(44, false)
     // dUで消す方法は微妙かも
-    // weapon._equip(27, wand_flip)
+    // weapon._equip(27, false)
   :
     // todo: 1週目かつsmite無しの場合、ice小杖は効率が悪い…が1面の敵が5体以上のケースが多いので考慮不要か？
-    weapon._equip(25, wand_flip)
+    weapon._equip(25, false)
 
 /** 氷の尾根 **/
 // ボス部屋判定不可

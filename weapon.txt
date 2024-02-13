@@ -5,7 +5,7 @@ var weapon_list = [
   ["skeleton arm *9 +1"],             // 1: skeleton arm
   [""],                               // 2: 
   [""],                               // 3: 
-  ["heavy hammer *10 +16"],           // 4: armor damage
+  ["heavy hammer *10 +15"],           // 4: armor damage
   [""],                               // 5:
   ["bardiche *10 +21 shiny"],         // 6: crit
   [""],                               // 7:
@@ -18,14 +18,14 @@ var weapon_list = [
   ["sword vigor *10 +21", "mask *9 +21"],         // 13: sword vigor + mask21 回復
   ["sword aether *10 +21", "mask *9 +21"],        // 14: sword aether + mask21
   ["sword fire *10 +21", "mask *9 +21"],          // 15: sword fire + mask21
-  ["sword ice *10 +21 shiny", "mask *9 +21"],     // 16: sword ice + mask21
+  ["sword ice *10 +21 dI", "mask *9 +21"],        // 16: sword ice + mask21
   [""],                                           // 17: 
   [""],                                           // 18:
   [""],                                           // 19:
   // 片手武器（片手剣, 斧, 杖）
   ["sword poison *10 +21", "どくばり"],               // 20: D,dP 速度エンチャ
-  ["sword vigor *10 +21", "sword ice *10 +21"],       // 21: D,dI 速度エンチャ
-  ["sword aether *10 +21", "sword ice *10 +21"],      // 22: D,dI 速度エンチャ
+  ["sword vigor *10 +21", "LifeSteel"],               // 21: D,dI 速度エンチャ
+  ["sword aether *10 +21", "Dagon5"],                 // 22: D,dI 速度エンチャ
   ["線香花火", "マッチ棒"],                            // 23: D,D 速度エンチャ
   ["sword ice *10 +21 shiny", "sword ice *10 +21"],   // 24: D,dI 速度エンチャ
   ["wand ice *10 +21", "ブラックモンブラン"],          // 25: dI,dI 速度エンチャ
@@ -35,20 +35,20 @@ var weapon_list = [
   [""],                                               // 29:
   // 月時計
   ["moon", "sword ice *10 +21 shiny"],                // 30: 氷D
-  ["moon", ""],                                       // 31: 氷D         // todo +21
-  ["moon", "sword ice *10 +21"],                      // 32: 氷dI
+  ["moon", "sword ice *10 +21 D"],                    // 31: 氷D
+  ["moon", "sword ice *10 +21 dI"],                   // 32: 氷dI
   ["moon", "sword poison *10 +21"],                   // 33: 毒D
-  ["moon", ""],                                       // 34: 毒D         // todo +21
+  ["moon", "sword poison *10    "],                   // 34: 毒D         // todo +21
   ["moon", "どくばり"],                               // 35: 毒dP
   ["moon", "sword vigor *10 +21"],                    // 36: 活力D
-  ["moon", ""],                                       // 37: 活力D        // todo +21
+  ["moon", "sword vigor *10    "],                    // 37: 活力D        // todo +21
   ["moon", "LifeSteel"],                              // 38: 活力dL
-  ["moon", "sword aether *10 +21"],                   // 39: エーテルD
-  ["moon", "sword aether *10 +1 "],                   // 40: エーテルD    // todo +21
-  ["moon", ""],                                       // 41: エーテルD    // todo +21
+  ["moon", "Dagon5"],                                 // 39: エーテルD
+  ["moon", "sword aether *10 +21"],                   // 40: エーテルD
+  ["moon", "sword aether *10    "],                   // 41: エーテルD    // todo +21
   ["moon", "線香花火"],                               // 42: 火D
   ["moon", "マッチ棒"],                               // 43: 火D
-  ["moon", "sword fire *10 +15"],                     // 44: 火D          // todo +21
+  ["moon", "sword fire *10 +21"],                     // 44: 火D
   [""],                                               // 45: 火dF         // smite用？
   [""],                                               // 46:
   [""],                                               // 47:
