@@ -40,9 +40,9 @@ func boss_attack()
         weapon._equip(39, false)
         activate potion
       :?time%3 = 1
-        weapon._equip(32, false)
+        weapon._equip(40, false)
       :?time%3 = 2
-        weapon._equip(35, false)
+        weapon._equip(38, false)
   :
     ?heavy_crossbow_equip
       heavy_crossbow_equip = false

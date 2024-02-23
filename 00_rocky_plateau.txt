@@ -68,17 +68,26 @@ func state2()
       :?time%3 = 2
         weapon._equip(32, false)
     :?foe = Vigor
-      ?item.right.state = 3
-        weapon_flip = !weapon_flip
-      weapon._equip(20, weapon_flip)
+      ?time%3 = 0
+        weapon._equip(33, false)
+      :?time%3 = 1
+        weapon._equip(34, false)
+      :?time%3 = 2
+        weapon._equip(35, true)
     :?foe = AEther
-      ?item.right.state = 3
-        weapon_flip = !weapon_flip
-      weapon._equip(21, weapon_flip)
+      ?time%3 = 0
+        weapon._equip(36, false)
+      :?time%3 = 1
+        weapon._equip(38, false)
+      :?time%3 = 2
+        weapon._equip(21, true)
     :?foe = Fire
-      ?item.right.state = 3
-        weapon_flip = !weapon_flip
-      weapon._equip(22, weapon_flip)
+      ?time%3 = 0
+        weapon._equip(39, false)
+      :?time%3 = 1
+        weapon._equip(40, false)
+      :?time%3 = 2
+        weapon._equip(22, false)
     :?foe = Ice
       ?time%3 = 0
         weapon._equip(42, false)
