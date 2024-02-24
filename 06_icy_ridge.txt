@@ -5,6 +5,9 @@ var move = import user_script/move
 var weapon = import user_script/weapon
 var follow = import user_script/follow
 
+// initialize
+move.set_shield("fire socketed_shield")
+
 // 変数
 var pause = false
 
@@ -37,20 +40,20 @@ func boss_attack()
 
 func normal_attack()
   // 2画面blade
-  ?item.GetCooldown("blade") <= 0 & foe.count >= 5
+  ?item.GetCooldown("blade") <= 0 & foe.count >= 1
     screen.Next()
     ?foe.distance < 10
       weapon._equip(0, false)
       activate R
       screen.Resetoffset()
-  // 距離詰め
-  :?foe.distance >= 11 & (item.GetCooldown("bash") <= 0 | item.GetCooldown("dash") <= 0)
-    ?item.GetCooldown("bash") <= 0
-      weapon._equip(51, false)
-    :
-      weapon._equip(52, false)
   // ☆11 ガリガリさん
   :?foe = Giant Ice Elemental
+    ?foe.distance >= 11 & (item.GetCooldown("bash") <= 0 | item.GetCooldown("dash") <= 0)
+      ?item.GetCooldown("bash") <= 0
+        weapon._equip(51, false)
+      :
+        weapon._equip(52, false)
+    :
       // moon AAC
       ?time%3 = 0
         weapon._equip(42, false)
@@ -60,21 +63,22 @@ func normal_attack()
         weapon._equip(44, false)
   // ツララ
   :?foe = ice_pillar
-    ?foe.debuffs.string ! "chill:6"
-      weapon._equip(25, false)
+    ?foe.distance >= 11 & (item.GetCooldown("bash") <= 0 | item.GetCooldown("dash") <= 0)
+      ?item.GetCooldown("bash") <= 0
+        weapon._equip(51, false)
+      :
+        weapon._equip(52, false)
     :
-      // moon AAC
-      // todo: 月時計側の攻撃で足が止まることがあるので処理方法は別がいいかも
-      ?time%3 = 0
-        weapon._equip(42, false)
-      :?time%3 = 1
-        weapon._equip(43, false)
-      :?time%3 = 2
-        weapon._equip(44, false)
-    // dUで消す方法は微妙かも
-    // weapon._equip(27, false)
+      weapon._equip(26, false)
+  // 距離詰め
+  :?foe.distance >= 11 & (item.GetCooldown("bash") <= 0 | item.GetCooldown("dash") <= 0)
+    ?item.GetCooldown("bash") <= 0 & pos.x < 150
+      weapon._equip(51, false)
+    :
+      weapon._equip(52, false)
+  :?armor < 30
+    weapon._equip(27, false)
   :
-    // todo: 1週目かつsmite無しの場合、ice小杖は効率が悪い…が1面の敵が5体以上のケースが多いので考慮不要か？
     weapon._equip(25, false)
 
 /** 氷の尾根 **/

@@ -73,7 +73,7 @@ func state2()
       :?time%3 = 1
         weapon._equip(34, false)
       :?time%3 = 2
-        weapon._equip(35, true)
+        weapon._equip(35, false)
     :?foe = AEther
       ?time%3 = 0
         weapon._equip(36, false)
