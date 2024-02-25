@@ -81,6 +81,9 @@ func normal_attack()
 ?loc = bronze_guardian
   boss_attack()
 :?loc = bronze_mine
+  // initialize
+  move.set_shield("Aether socketed_shield")
+  
   ?summon.count = 0 & time > 1
     follow.fire_talisman()
   :?foe.distance >= 20
