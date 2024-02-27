@@ -85,6 +85,8 @@ func normal_attack()
 :?loc = undead_crypt
   ?summon.count = 0 & time > 1
     follow.fire_talisman()
+    // initialize
+    move.set_shield("vigor socketed_shield")
   :?foe.distance > 16
     move.action()
   :
