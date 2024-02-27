@@ -24,7 +24,7 @@ func boss_attack()
       weapon._equip(6, false)
       activate R
     :
-      var third_hand = 42
+      var third_hand = 38
       ?foe.debuffs.string ! "damage"
         third_hand = 35
       :?foe.debuffs.string ! "chill:6"
@@ -32,7 +32,7 @@ func boss_attack()
       ?time%3 = 0
         weapon._equip(36, false)
       :?time%3 = 1
-        weapon._equip(38, false)
+        weapon._equip(37, false)
       :?time%3 = 2
         weapon._equip(third_hand, false)
 
@@ -41,7 +41,7 @@ func boss_attack()
     ?foe.distance > 11
       weapon._equip(52, false)
     :
-      var third_hand = 42
+      var third_hand = 38
       ?foe.debuffs.string ! "damage"
         third_hand = 35
       :?foe.debuffs.string ! "chill:6"
@@ -50,7 +50,7 @@ func boss_attack()
         weapon._equip(36, false)
         activate potion
       :?time%3 = 1
-        weapon._equip(38, false)
+        weapon._equip(37, false)
       :?time%3 = 2
         weapon._equip(third_hand, false)
 

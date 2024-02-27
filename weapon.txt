@@ -40,8 +40,8 @@ var weapon_list = [
   ["moon", "sword poison *10 +21"],                   // 33: 毒D
   ["moon", "ぽいずん"],                               // 34: 毒D
   ["moon", "どくばり"],                               // 35: 毒dP
-  ["moon", "sword vigor *10 +21"],                    // 36: 活力D
-  ["moon", "sword vigor *10    "],                    // 37: 活力D        // todo +21
+  ["moon", "sword vigor *10 +21 shiny"],              // 36: 活力D
+  ["moon", "sword vigor *10 +21"],                    // 37: 活力D
   ["moon", "LifeSteel"],                              // 38: 活力dL
   ["moon", "Dagon5"],                                 // 39: エーテルD
   ["moon", "sword aether *10 +21"],                   // 40: エーテルD
