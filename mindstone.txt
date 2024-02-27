@@ -1,7 +1,7 @@
-//import Cosmetics/PetBoo
+var freeChest = import UI/freeChestTracker
+freeChest.Main()
 
 import user_script/ui
-
 import user_script/00_rocky_plateau
 import user_script/01_deadwood_canyon
 import user_script/02_caves_of_fear
