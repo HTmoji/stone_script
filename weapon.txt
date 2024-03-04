@@ -5,7 +5,7 @@ var weapon_list = [
   ["skeleton arm *9 +1"],             // 1: skeleton arm
   [""],                               // 2: 
   [""],                               // 3: 
-  ["heavy hammer *10 +15"],           // 4: armor damage
+  ["heavy hammer *10 +17"],           // 4: armor damage
   [""],                               // 5:
   ["bardiche *10 +21 shiny"],         // 6: crit
   [""],                               // 7:
@@ -44,8 +44,8 @@ var weapon_list = [
   ["moon", "sword vigor *10 +21"],                    // 37: 活力D
   ["moon", "LifeSteel"],                              // 38: 活力dL
   ["moon", "Dagon5"],                                 // 39: エーテルD
-  ["moon", "sword aether *10 +21"],                   // 40: エーテルD
-  ["moon", "sword aether *10    "],                   // 41: エーテルD    // todo +21
+  ["moon", "Dagon4"],                                 // 40: エーテルD
+  ["moon", "sword aether *10 +21"],                   // 41: エーテルD
   ["moon", "線香花火"],                               // 42: 火D
   ["moon", "マッチ棒"],                               // 43: 火D
   ["moon", "sword fire *10 +21"],                     // 44: 火D
@@ -56,7 +56,7 @@ var weapon_list = [
   [""],                                               // 49:
   // 移動手段、盾
   ["quarterstaff *10 +10"],                             // 50: 六尺棒
-  ["sword ice *10 +21", "bash *8 +16"],                 // 51: ツッコミシールド
+  ["sword ice *10 +21", "bash *9 +1"],                  // 51: ツッコミシールド
   ["sword ice *10 +21", "dash *10 +1"],                 // 52: ダッシュの盾
   ["wand ice *10 +21", "mind stone"],                   // 53: 後方回避用
   ["triskelion stone", "dash shield *10 +1"],           // 54: ガーディアン用移動

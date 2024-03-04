@@ -55,15 +55,12 @@ func normal_attack()
       weapon._equip(0, false)
       activate R
       screen.Resetoffset()
-  // ☆11のカタツムリは適度に距離を保ってbardiche
+  // 中ボスのカタツムリ
   :?foe.armor >= 100 & pos.x > 400
-    weapon._equip(6, false)
-    ?foe.distance <= 13
-      activate R
-  // 毛玉はdash(bash) で距離を詰めた後、1Fでmind を挟むことで回避可能
-  :?foe = fluff & foe.distance <= 5 & item.GetCooldown("mind") = 0
-    weapon._equip(53, false)
+    weapon._equip(4, false)
+    activate R
   // 距離詰め
+  // 中ボスの毛玉はarmorで受け止める
   :?foe.distance >= 11 & (item.GetCooldown("bash") <= 0 | item.GetCooldown("dash") <= 0)
     ?item.GetCooldown("bash") <= 0
       weapon._equip(51, false)
@@ -83,6 +80,8 @@ func normal_attack()
   harder_alive = true
   ?summon.count = 0 & time > 1
     follow.fire_talisman()
+    // initialize
+    move.set_shield("poison socketed_shield")
   :?foe.distance >= 20
     move.action()
   :

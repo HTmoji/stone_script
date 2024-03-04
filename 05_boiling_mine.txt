@@ -42,7 +42,7 @@ func boss_attack()
       :?time%3 = 1
         weapon._equip(40, false)
       :?time%3 = 2
-        weapon._equip(38, false)
+        weapon._equip(41, false)
   :
     ?heavy_crossbow_equip
       heavy_crossbow_equip = false
@@ -64,16 +64,13 @@ func normal_attack()
       activate R
       screen.Resetoffset()
   // 距離詰め
+  // ボンバーカートはarmorで受け止められるので考慮不要
   :?foe.distance >= 11 & (item.GetCooldown("bash") <= 0 | item.GetCooldown("dash") <= 0)
     ?item.GetCooldown("bash") <= 0
       weapon._equip(51, false)
     :
       weapon._equip(52, false)
-  // ☆11 ボンバーカート
-  :?foe = bomb_cart & foe.distance < 7
-    weapon._equip(53, false)
   :
-    // todo: 1週目かつsmite無しの場合、ice小杖は効率が悪い…が1面の敵が5体以上のケースが多いので考慮不要か？
     weapon._equip(25, wand_flip)
 
 /** 地獄の鉱山 **/

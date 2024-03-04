@@ -35,9 +35,6 @@ func state1()
   :?item.GetCooldown("mask") = 0
     weapon._equip(11, false)
     activate R
-  :?item.GetCooldown("bardiche") = 0 | buffs.string = bardiche
-    weapon._equip(6, false)
-    activate R
   :
     var third_hand = 44
     ?foe.debuffs.string ! "damage"
@@ -87,7 +84,7 @@ func state2()
       :?time%3 = 1
         weapon._equip(40, false)
       :?time%3 = 2
-        weapon._equip(22, false)
+        weapon._equip(41, false)
     :?foe = Ice
       ?time%3 = 0
         weapon._equip(42, false)
@@ -112,13 +109,13 @@ func state2()
 
 // 第三形態
 func state3()
-  follow.ignition(500)
-
   ?foe.armor > 0 & hp > 0
     loc.Leave()
   :?foe.distance >= 7
     weapon._equip(52, false)
   :
+    ?foe.hp < 2000
+        follow.ignition(0)
     var third_hand = 44
     ?foe.debuffs.string ! "damage"
       third_hand = 35

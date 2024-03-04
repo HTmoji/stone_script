@@ -83,6 +83,8 @@ func normal_attack()
 :?loc = temple
   ?summon.count = 0 & time > 1
     follow.fire_talisman()
+    // initialize
+    move.set_shield("ice socketed_shield")
   :?foe.distance > 17
     move.action()
   :
