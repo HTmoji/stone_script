@@ -32,9 +32,6 @@ func state1()
     move.action()
   :?foe.distance > 11
     weapon._equip(52, false)
-  :?item.GetCooldown("mask") = 0
-    weapon._equip(11, false)
-    activate R
   :
     var third_hand = 44
     ?foe.debuffs.string ! "damage"
@@ -77,7 +74,7 @@ func state2()
       :?time%3 = 1
         weapon._equip(37, false)
       :?time%3 = 2
-        weapon._equip(38, true)
+        weapon._equip(38, false)
     :?foe = Fire
       ?time%3 = 0
         weapon._equip(39, false)
@@ -113,6 +110,9 @@ func state3()
     loc.Leave()
   :?foe.distance >= 7
     weapon._equip(52, false)
+  :?item.GetCooldown("mask") = 0
+    weapon._equip(11, false)
+    activate R
   :
     ?foe.hp < 2000
         follow.ignition(0)
@@ -121,7 +121,7 @@ func state3()
       third_hand = 35
     :?foe.debuffs.string ! "chill:6"
       third_hand = 32
-    :?hp < maxhp
+    :?hp < maxhp & buffs.count = 0
       third_hand = 38
     :
       activate potion
